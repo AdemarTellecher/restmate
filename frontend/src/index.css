@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: var(--theme-color-brand);
+  --color-sec: var(--theme-color-sec);
+  --color-accent: var(--theme-color-accent);
+
+  --color-lines: var(--theme-color-lines);
+  --color-txtprim: var(--theme-color-txtprim);
+  --color-txtsec: var(--theme-color-txtsec);
+  --color-lit: var(--theme-color-lit);
+}
+
+@layer base {
+  :root {
+    --theme-color-brand: rgb(13 23 33);
+    --theme-color-sec: rgb(19 31 43);
+    --theme-color-accent: rgb(99 102 241);
+
+    --theme-color-lines: var(--color-gray-700);
+    --theme-color-txtprim: var(--color-gray-300);
+    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-lit: var(--color-white);
+  }
+  [data-theme="postman"] {
+    --theme-color-brand: rgb(33 33 33);
+    --theme-color-sec: rgb(38 38 38);
+    --theme-color-accent: rgb(255 108 55);
+
+    --theme-color-lines: var(--color-gray-700);
+    --theme-color-txtprim: var(--color-gray-300);
+    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-lit: var(--color-white);
+  }
+}
+
+.szh-menu__item--hover {
+  background-color: var(--color-lines) !important;
+}
