@@ -11,7 +11,7 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData }) 
   return (
     <div className="h-full w-full">
       <Tabs style={{ height: "100%", width: "100%" }}>
-        <div className="grid h-full w-full" style={{ gridTemplateRows: "24px minmax(0, 100%)", gridTemplateColumns: "100%" }}>
+        <div className="grid h-full w-full" style={{ gridTemplateRows: "24px minmax(0, 100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
           <div>
             <TabList className="flex items-center h-full gap-x-4 text-sm">
               <Tab
@@ -36,7 +36,7 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData }) 
           </div>
           <div className="h-full w-full">
             <TabPanel style={{ height: "100%", width: "100%" }}>
-              <div className="pt-2 h-full grid w-full" style={{ gridTemplateRows: "min-content minmax(0,100%)" }}>
+              <div className="pt-2 h-full grid w-full" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
                 <ReqBodyOption tabId={tabId} bodyType={bodyType} />
                 {bodyType === "json" ? (
                   <BodyJson tabId={tabId} bodyRaw={bodyRaw} />

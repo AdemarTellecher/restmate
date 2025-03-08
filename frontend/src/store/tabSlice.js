@@ -36,6 +36,7 @@ export class TabSchema {
       bodyRaw: "",
       formData: [new FDSchema()],
       coll_id: null,
+      response: null,
     };
     Object.assign(this, defaults, data);
   }
@@ -44,6 +45,14 @@ export class TabSchema {
 export const createTabsSlice = (set) => ({
   tabs: [
     new TabSchema({
+      response: {
+        statusCode: 200,
+        bodyContent: '{\n    "qwe": "testing response. This is the long response to check the line wrap of monaco editor in golang","success": true\n}',
+        contentType: "JSON",
+        duration: "323ms",
+        httpStatus: "200 OK",
+        headers: [new KeySchema({ key: "Authorization", value: "this value" }), new KeySchema({ key: "Content-Type", value: "this value2" })],
+      },
       headers: [
         new KeySchema({ key: "Authorization", value: "this value" }),
         new KeySchema({ key: "Content-Type", value: "this value2" }),
