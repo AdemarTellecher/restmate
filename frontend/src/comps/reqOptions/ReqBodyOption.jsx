@@ -9,9 +9,9 @@ const ReqBodyOption = ({ tabId, bodyType }) => {
     <div className="">
       <Menu
         menuButton={
-          <button className="shrink-0 h-full cursor-pointer flex justify-center items-center gap-x-1 text-txtsec text-sm font-bold">
+          <button className="shrink-0 h-full cursor-pointer flex justify-center items-center gap-x-1 text-txtsec text-sm font-bold uppercase">
             {bodyType}
-            <LuChevronDown size="16" />
+            <LuChevronDown size="16" className="text-accent" />
           </button>
         }
         menuClassName="!bg-sec"
@@ -21,13 +21,13 @@ const ReqBodyOption = ({ tabId, bodyType }) => {
         gap={6}
       >
         <MenuItem className="text-txtprim" onClick={() => updateTab(tabId, "bodyType", "json")}>
-          json
+          JSON
         </MenuItem>
         <MenuItem className="text-txtprim" onClick={() => updateTab(tabId, "bodyType", "formdata")}>
-          formdata
+          FormData
         </MenuItem>
         <MenuItem className="text-txtprim" onClick={() => updateTab(tabId, "bodyType", "none")}>
-          none
+          None
         </MenuItem>
       </Menu>
     </div>

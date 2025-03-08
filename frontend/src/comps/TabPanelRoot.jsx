@@ -1,7 +1,7 @@
 import React from "react";
-import RespComp from "./RespComp";
 import ReqHead from "./ReqHead";
 import ReqOptionTabs from "./reqOptions/ReqOptionTabs";
+import Response from "./response/Response";
 
 const TabPanelRoot = ({ tab }) => {
   console.log("panel render", "var(--color-brand)");
@@ -12,7 +12,7 @@ const TabPanelRoot = ({ tab }) => {
         <div className="border-r border-lines px-6 h-full w-full">
           <ReqOptionTabs tabId={tab.id} params={tab.params} headers={tab.headers} bodyType={tab.bodyType} bodyRaw={tab.bodyRaw} formData={tab.formData} />
         </div>
-        <RespComp />
+        <Response />
       </div>
     </div>
   );

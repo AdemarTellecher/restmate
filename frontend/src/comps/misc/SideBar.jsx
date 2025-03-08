@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LuFileCog, LuFolder, LuPlus, LuCog } from "react-icons/lu";
-import { collections } from "../store/collSlice";
+import { collections } from "../../store/collSlice";
 import Collections from "./Collections";
 
 const SideBar = () => {

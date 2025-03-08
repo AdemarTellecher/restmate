@@ -1,18 +1,27 @@
 import { useCollapse } from "react-collapsed";
 import { LuChevronDown, LuChevronRight, LuEllipsis } from "react-icons/lu";
-import { getReqType } from "../utils/helper";
-import { useStore } from "../store/store";
+import { getReqType } from "../../utils/helper";
+import { useStore } from "../../store/store";
 
 const Collections = ({ col }) => {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
   return (
     <div className="text-txtprim">
-      <div className={`${isExpanded ? "bg-sec text-lit" : ""} flex items-center py-1 hover:bg-sec hover:text-lit group`}>
+      <div
+        className={`${isExpanded ? "bg-sec text-lit" : ""} flex items-center py-1 hover:bg-sec hover:text-lit group`}
+      >
         <div className="pl-2 pr-1 cursor-pointer" {...getToggleProps()}>
-          {isExpanded ? <LuChevronDown size="18" /> : <LuChevronRight size="18" />}
+          {isExpanded ? (
+            <LuChevronDown size="18" />
+          ) : (
+            <LuChevronRight size="18" />
+          )}
         </div>
         <div className="grow overflow-hidden">
-          <p className="truncate whitespace-nowrap overflow-ellipsis text-sm" style={{ width: "90%" }}>
+          <p
+            className="truncate whitespace-nowrap overflow-ellipsis text-sm"
+            style={{ width: "90%" }}
+          >
             {col.name}
           </p>
         </div>
@@ -33,7 +42,10 @@ const Collections = ({ col }) => {
           >
             <div className="mr-2 text-xs">{getReqType(a.method)}</div>
             <div className="grow overflow-hidden">
-              <p className="truncate whitespace-nowrap overflow-ellipsis text-sm" style={{ width: "90%" }}>
+              <p
+                className="truncate whitespace-nowrap overflow-ellipsis text-sm"
+                style={{ width: "90%" }}
+              >
                 {a.name}
               </p>
             </div>

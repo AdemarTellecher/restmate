@@ -1,4 +1,4 @@
-import Layout from "./comps/Layout";
+import Layout from "./comps/misc/Layout";
 import TabsRoot from "./comps/TabsRoot";
 
 function App() {
