@@ -1,3 +1,5 @@
+import React from "react";
+
 const RspStatus = ({ status, duration, httpStatus }) => {
   const statusColor = (code) => {
     let cls = "text-xs font-bold";
@@ -23,4 +25,4 @@ const RspStatus = ({ status, duration, httpStatus }) => {
   );
 };
 
-export default RspStatus;
+export default React.memo(RspStatus);

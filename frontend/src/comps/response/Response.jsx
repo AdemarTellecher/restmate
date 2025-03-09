@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
-import { LuChevronDown, LuDot } from "react-icons/lu";
+import { LuChevronDown } from "react-icons/lu";
 import RspEditor from "./RspEditor";
 import RspStatus from "./RspStatus";
+import RspHeaders from "./RspHeaders";
 
 const Response = ({ response }) => {
   console.log("Response comp", response);
@@ -45,7 +46,7 @@ const Response = ({ response }) => {
           </div>
           <RspStatus status={response?.statusCode} duration={response?.duration} httpStatus={response?.httpStatus} />
         </div>
-        {rspTab === "body" ? <div className="h-full">{rspTypeRender()}</div> : <div className="h-full"></div>}
+        {rspTab === "body" ? <div className="h-full">{rspTypeRender()}</div> : <RspHeaders headers={response?.headers} />}
       </div>
     </div>
   );
