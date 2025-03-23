@@ -4,7 +4,7 @@ import Spinner from "../misc/Spinner";
 import { useStore } from "../../store/store";
 
 const BodyJson = ({ tabId, bodyRaw }) => {
-  const updateTab = useStore((x) => x.updateTab);
+  const updateReqBody = useStore((x) => x.updateReqBody);
   function rgbToHex(rgb) {
     let rgbValues = rgb.match(/\d+/g);
     return `#${rgbValues.map((val) => Number(val).toString(16).padStart(2, "0")).join("")}`;
@@ -34,7 +34,7 @@ const BodyJson = ({ tabId, bodyRaw }) => {
           theme="redTheme"
           className="myeditor"
           value={bodyRaw}
-          onChange={(e) => updateTab(tabId, "bodyRaw", e)}
+          onChange={(e) => updateReqBody(tabId, "bodyRaw", e)}
           loading={
             <div className="flex justify-center items-center h-full w-full">
               <Spinner />

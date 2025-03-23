@@ -32,9 +32,11 @@ export class TabSchema {
       method: "get",
       headers: [new KeySchema()],
       params: [new KeySchema()],
-      bodyType: "json",
-      bodyRaw: "",
-      formData: [new FDSchema()],
+      body: {
+        bodyType: "json",
+        bodyRaw: "",
+        formData: [new FDSchema()],
+      },
       coll_id: null,
       response: null,
     };
@@ -142,6 +144,10 @@ export const createTabsSlice = (set) => ({
     set((x) => ({
       tabs: x.tabs.map((tab) => (tab.id === id ? { ...tab, [key]: value } : tab)),
     })),
+  updateReqBody: (id, key, value) =>
+    set((x) => ({
+      tabs: x.tabs.map((tab) => (tab.id === id ? { ...tab, body: { ...tab.body, [key]: value } } : tab)),
+    })),
 
   deleteTab: (id) =>
     set((x) => {
@@ -205,22 +211,23 @@ export const createTabsSlice = (set) => ({
     })),
 
   updateFormData: (id, pId, key, value) =>
-    set((x) => {
-      console.log(id, pId, key, value);
-      return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, formData: t.formData.map((p) => (p.id === pId ? { ...p, [key]: value } : p)) } : t)) };
-    }),
+    set((x) => ({
+      tabs: x.tabs.map((tab) =>
+        tab.id === id ? { ...tab, body: { ...tab.body, formData: tab.body.formData.map((p) => (p.id === pId ? { ...p, [key]: value } : p)) } } : tab,
+      ),
+    })),
   deleteFormData: (id, pId) =>
     set((x) => {
       let p = x.tabs.find((t) => t.id === id);
-      let len = p && p.formData.length;
+      let len = p && p.body?.formData?.length;
       if (len > 1) {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, formData: t.formData.filter((p) => p.id !== pId) } : t)) };
+        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, body: { ...t.body, formData: t.body.formData.filter((p) => p.id !== pId) } } : t)) };
       } else {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, formData: [new FDSchema()] } : t)) };
+        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, body: { ...t.body, formData: [new FDSchema()] } } : t)) };
       }
     }),
   addFormData: (id) =>
     set((x) => ({
-      tabs: x.tabs.map((t) => (t.id === id ? { ...t, formData: [...t.formData, new FDSchema()] } : t)),
+      tabs: x.tabs.map((t) => (t.id === id ? { ...t, body: { ...t.body, formData: [...t.body.formData, new FDSchema()] } } : t)),
     })),
 });

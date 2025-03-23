@@ -18,7 +18,14 @@ const TabPanelRoot = ({ tab }) => {
         }}
       >
         <div className="border-r border-lines px-6 h-full w-full">
-          <ReqOptionTabs tabId={tab.id} params={tab.params} headers={tab.headers} bodyType={tab.bodyType} bodyRaw={tab.bodyRaw} formData={tab.formData} />
+          <ReqOptionTabs
+            tabId={tab.id}
+            params={tab.params}
+            headers={tab.headers}
+            bodyType={tab.body?.bodyType}
+            bodyRaw={tab.body?.bodyRaw}
+            formData={tab.body?.formData}
+          />
         </div>
         {/*no rsp and error handler here*/}
         {tab.response && tab.response.statusCode ? <Response response={tab.response} /> : <NullResponse />}

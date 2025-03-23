@@ -57,10 +57,10 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
             />
           </div>
           <div className="h-full">
-            <button className="bg-accent h-full px-8 text-lit rounded-sm font-bold cursor-pointer">Send</button>
+            <button className="bg-accent h-full px-8 text-lit rounded-sm font-bold cursor-pointer active:bg-accent/80">Send</button>
           </div>
           <div className="h-full">
-            <button className="h-full bg-txtsec text-txtprim rounded-sm px-6 cursor-pointer hover:text-lit">
+            <button className="h-full bg-txtsec text-txtprim rounded-sm px-6 cursor-pointer hover:text-lit active:bg-txtsec/80">
               <LuSave size="20" />
             </button>
           </div>

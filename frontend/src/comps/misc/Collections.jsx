@@ -32,7 +32,7 @@ const Collections = ({ col }) => {
         </div>
       </div>
       <section {...getCollapseProps()}>
-        {col.apis.map((a) => (
+        {col.requests.map((a) => (
           <div
             key={a.id}
             className="hover:bg-sec hover:text-lit pl-7 py-1 cursor-pointer group flex items-center"

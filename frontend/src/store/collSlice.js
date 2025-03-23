@@ -4,7 +4,7 @@ export const collections = [
   {
     id: "col-d33df",
     name: "Hobby project rest",
-    apis: [
+    requests: [
       new TabSchema({ name: "Signup Api", method: "post", coll_id: "col-d33df" }),
       new TabSchema({ name: "Login Api", method: "get", coll_id: "col-d33df" }),
       new TabSchema({ name: "Delete user", method: "delete", coll_id: "col-d33df" }),
@@ -14,7 +14,7 @@ export const collections = [
   {
     id: "col-123df",
     name: "My Awsome Collection",
-    apis: [
+    requests: [
       new TabSchema({ name: "Signup Api", method: "post", coll_id: "col-123df" }),
       new TabSchema({ name: "Login Api", method: "get", coll_id: "col-123df" }),
       new TabSchema({ name: "Delete user", method: "delete", coll_id: "col-123df" }),
@@ -23,7 +23,7 @@ export const collections = [
   {
     id: "col-1c3df",
     name: "My Awsome Collection which has a very long fuckin name",
-    apis: [
+    requests: [
       new TabSchema({ name: "Signup Api with super duper long name what you gonna do. ", method: "post", coll_id: "col-123df" }),
       new TabSchema({ name: "Login Api", method: "get", coll_id: "col-123df" }),
       new TabSchema({ name: "Delete user", method: "delete", coll_id: "col-123df" }),

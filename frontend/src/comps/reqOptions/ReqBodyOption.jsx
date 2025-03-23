@@ -4,7 +4,7 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LuChevronDown } from "react-icons/lu";
 
 const ReqBodyOption = ({ tabId, bodyType }) => {
-  const updateTab = useStore((x) => x.updateTab);
+  const updateReqBody = useStore((x) => x.updateReqBody);
   return (
     <div className="">
       <Menu
@@ -20,13 +20,13 @@ const ReqBodyOption = ({ tabId, bodyType }) => {
         direction="bottom"
         gap={6}
       >
-        <MenuItem className="text-txtprim text-sm" onClick={() => updateTab(tabId, "bodyType", "json")}>
+        <MenuItem className="text-txtprim text-sm" onClick={() => updateReqBody(tabId, "bodyType", "json")}>
           JSON
         </MenuItem>
-        <MenuItem className="text-txtprim text-sm" onClick={() => updateTab(tabId, "bodyType", "formdata")}>
+        <MenuItem className="text-txtprim text-sm" onClick={() => updateReqBody(tabId, "bodyType", "formdata")}>
           FormData
         </MenuItem>
-        <MenuItem className="text-txtprim text-sm" onClick={() => updateTab(tabId, "bodyType", "none")}>
+        <MenuItem className="text-txtprim text-sm" onClick={() => updateReqBody(tabId, "bodyType", "none")}>
           None
         </MenuItem>
       </Menu>
