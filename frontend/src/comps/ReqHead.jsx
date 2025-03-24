@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useStore } from "../store/store";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { getReqType } from "../utils/helper";
-import { LuChevronDown, LuRadio, LuSave } from "react-icons/lu";
+import { LuChevronDown, LuInfo, LuRadio, LuSave } from "react-icons/lu";
+import CustomButton from "./misc/CustomButton";
+import ModalLayout from "./misc/ModalLayout";
 
 const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   console.log("reqHead render");
+  const [saveModal, setSaveModal] = useState(false);
+  const [selcol, setSelcol] = useState("");
+  let cLoading = useStore((x) => x.cLoading);
+  let cols = useStore((x) => x.collections);
   const getColsName = () => {
     if (coll_id) {
       // find in colls. return coll_name / request name
@@ -13,6 +19,9 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
     } else {
       return name;
     }
+  };
+  const updateReq = () => {
+    setSaveModal(true);
   };
   return (
     <div className="h-full px-6">
@@ -57,15 +66,55 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
             />
           </div>
           <div className="h-full">
-            <button className="bg-accent h-full px-8 text-lit rounded-sm font-bold cursor-pointer active:bg-accent/80">Send</button>
+            <CustomButton clx="h-full px-8" name="Send" />
           </div>
           <div className="h-full">
-            <button className="h-full bg-txtsec text-txtprim rounded-sm px-6 cursor-pointer hover:text-lit active:bg-txtsec/80">
-              <LuSave size="20" />
-            </button>
+            <CustomButton clx="h-full px-6" bg="bg-txtsec" name={<LuSave size="20" />} onClick={updateReq} />
           </div>
         </div>
       </div>
+      {saveModal && (
+        <ModalLayout close={() => setSaveModal(false)} title="Save Request">
+          <form>
+            <div className="p-6">
+              <p className="text-txtprim text-sm mb-2">Request Name</p>
+              <input
+                name="req_name"
+                className="border border-lines text-lit w-full outline-none p-1 px-3 text-lg focus:border-txtprim rounded-sm"
+                required
+                maxLength={100}
+                autoFocus
+              />
+              <div className="mt-4">
+                <p className="text-txtsec text-sm">Select Collection</p>
+              </div>
+              {cols && cols.length ? (
+                <div className="bg-sec mt-2 border border-lines overflow-y-auto" style={{ maxHeight: "300px" }}>
+                  {cols.map((x) => (
+                    <div className={`${x.id === selcol ? "bg-brand text-lit" : "text-txtprim"} p-2 cursor-pointer`} key={x.id} onClick={() => setSelcol(x.id)}>
+                      <p className="text-sm truncate whitespace-nowrap overflow-ellipsis" style={{ maxWidth: "90%" }}>
+                        {x.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-sec mt-2 p-4 border border-lines rounded-sm">
+                  <div className="flex justify-center mb-1 text-orange-400">
+                    <LuInfo size="22" />
+                  </div>
+                  <p className="text-txtprim text-sm text-center">No collections found.</p>
+                  <p className="text-txtprim text-sm text-center">Please create a new collection first.</p>
+                </div>
+              )}
+              <div className="w-full flex justify-end items-center mt-6 gap-x-4">
+                <CustomButton name="Save" type="submit" loading={cLoading} clx="px-4 py-1" />
+                <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setSaveModal(false)} />
+              </div>
+            </div>
+          </form>
+        </ModalLayout>
+      )}
     </div>
   );
 };

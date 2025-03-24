@@ -1,5 +1,11 @@
 package main
 
+type JSResp struct {
+	Success bool   `json:"success"`
+	Msg     string `json:"msg"`
+	Data    any    `json:"data,omitempty"`
+}
+
 type Rsp struct {
 	Success bool   `json:"success"`
 	Msg     string `json:"msg"`
@@ -51,4 +57,16 @@ type Result struct {
 	ContentType  string   `json:"contentType"`
 	Duration     string   `json:"duration"`
 	Headers      []Header `json:"headers"`
+}
+type ReqRsp struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Url    string `json:"url"`
+	Method string `json:"method"`
+	CollId string `json:"coll_id"`
+}
+type CollRsp struct {
+	ID       string   `json:"id"`
+	Name     string   `json:"name"`
+	Requests []ReqRsp `json:"requests"`
 }

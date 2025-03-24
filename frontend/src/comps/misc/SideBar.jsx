@@ -1,22 +1,31 @@
 import { useState } from "react";
+import { nanoid } from "nanoid";
 import { LuFileCog, LuFolder, LuPlus, LuCog } from "react-icons/lu";
-import { collections } from "../../store/collSlice";
 import Collections from "./Collections";
 import ModalLayout from "./ModalLayout";
+import CustomButton from "./CustomButton";
+import { useStore } from "../../store/store";
 
 const SideBar = () => {
   const [colOpen, setColOpen] = useState(false);
   const [newColModal, setnewColModal] = useState(false);
+  let cLoading = useStore((x) => x.cLoading);
+  let cols = useStore((x) => x.collections);
+  console.log("cols ->", cols);
   let closeW = "50px";
   let openW = "250px";
 
   const applytheme = (t) => {
     document.documentElement.setAttribute("data-theme", t);
   };
-  console.log("cols ->", collections);
-  const createNewCollection = (e) => {
+  const createNewCollection = async (e) => {
     e.preventDefault();
-    console.log(e.target.coll_name.value);
+    let c = {
+      id: nanoid(),
+      name: e.target.coll_name.value,
+    };
+    useStore.getState().addCols(c);
+    setnewColModal(false);
   };
   return (
     <div className="w-full h-full flex">
@@ -57,7 +66,7 @@ const SideBar = () => {
             </div>
           </div>
           <div id="colls-map" className="py-2">
-            {collections?.length && collections.map((c) => <Collections key={c.id} col={c} />)}
+            {cols?.length ? cols.map((c) => <Collections key={c.id} col={c} />) : null}
           </div>
         </div>
       </div>
@@ -74,12 +83,8 @@ const SideBar = () => {
                 autoFocus
               />
               <div className="w-full flex justify-end items-center mt-6 gap-x-4">
-                <button type="submit" className="bg-accent px-4 py-1 text-lit font-bold rounded-sm active:bg-accent/80 cursor-pointer">
-                  Create
-                </button>
-                <button className="bg-txtsec px-4 py-1 text-lit font-bold rounded-sm active:bg-txtsec/80 cursor-pointer" onClick={() => setnewColModal(false)}>
-                  Close
-                </button>
+                <CustomButton name="Create" type="submit" loading={cLoading} clx="px-4 py-1" />
+                <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setnewColModal(false)} />
               </div>
             </div>
           </form>

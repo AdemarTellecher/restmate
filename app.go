@@ -81,3 +81,97 @@ func (a *App) UpsertRequest(r Request) Rsp {
 		Msg:     "Request added successfully",
 	}
 }
+func (a *App) GetCollections() (resp JSResp) {
+	f, err := os.ReadFile(a.db)
+	if err != nil {
+		resp.Msg = "Error! Cannot add collection"
+		return
+	}
+	var c []Collection
+	err = json.Unmarshal(f, &c)
+	if err != nil {
+		resp.Msg = "Error! Cannot add collection"
+		return
+	}
+	var collRspSlice []CollRsp
+
+	for i := range c {
+		var reqRspSlice []ReqRsp
+		for j := range c[i].Requests {
+			reqRspSlice = append(reqRspSlice, ReqRsp{
+				ID:     c[i].Requests[j].ID,
+				Name:   c[i].Requests[j].Name,
+				Url:    c[i].Requests[j].Url,
+				Method: c[i].Requests[j].Method,
+				CollId: c[i].Requests[j].CollId,
+			})
+		}
+
+		collRspSlice = append(collRspSlice, CollRsp{
+			ID:       c[i].ID,
+			Name:     c[i].Name,
+			Requests: reqRspSlice,
+		})
+	}
+	resp.Success = true
+	resp.Msg = "Collection saved successfully"
+	resp.Data = collRspSlice
+	return
+}
+func (a *App) AddCollection(id, name string) (resp JSResp) {
+	if id == "" || name == "" {
+		resp.Msg = "Error! Cannot add collection"
+		return
+	}
+	f, err := os.ReadFile(a.db)
+	if err != nil {
+		resp.Msg = "Error! Cannot add collection"
+		return
+	}
+	var c []Collection
+	err = json.Unmarshal(f, &c)
+	if err != nil {
+		resp.Msg = "Error! Cannot add collection"
+		return
+	}
+	newCol := Collection{
+		ID:       id,
+		Name:     name,
+		Requests: []Request{},
+	}
+	c = append(c, newCol)
+	b, err := json.Marshal(c)
+	if err != nil {
+		resp.Msg = "Error! Cannot add collection"
+		return
+	}
+	err = os.WriteFile(a.db, b, 0644)
+	if err != nil {
+		resp.Msg = "Error! Cannot add collection"
+		return
+	}
+	var collRspSlice []CollRsp
+
+	for i := range c {
+		var reqRspSlice []ReqRsp
+		for j := range c[i].Requests {
+			reqRspSlice = append(reqRspSlice, ReqRsp{
+				ID:     c[i].Requests[j].ID,
+				Name:   c[i].Requests[j].Name,
+				Url:    c[i].Requests[j].Url,
+				Method: c[i].Requests[j].Method,
+				CollId: c[i].Requests[j].CollId,
+			})
+		}
+
+		collRspSlice = append(collRspSlice, CollRsp{
+			ID:       c[i].ID,
+			Name:     c[i].Name,
+			Requests: reqRspSlice,
+		})
+	}
+	resp.Success = true
+	resp.Msg = "Collection saved successfully"
+	resp.Data = collRspSlice
+	return
+}
