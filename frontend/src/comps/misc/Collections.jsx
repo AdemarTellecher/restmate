@@ -31,13 +31,13 @@ const Collections = ({ col }) => {
           direction="bottom"
           gap={0}
         >
-          <MenuItem className="text-txtprim" onClick={() => console.log("qwe1", col.name)}>
+          <MenuItem className="text-txtprim text-sm" onClick={() => console.log("qwe1", col.name)}>
             Rename
           </MenuItem>
-          <MenuItem className="text-txtprim" onClick={() => console.log("export", col.name)}>
+          <MenuItem className="text-txtprim text-sm" onClick={() => console.log("export", col.name)}>
             Export
           </MenuItem>
-          <MenuItem className="text-red-400" onClick={() => console.log("delete", col.name)}>
+          <MenuItem className="text-red-400 text-sm" onClick={() => console.log("delete", col.name)}>
             Delete
           </MenuItem>
         </Menu>

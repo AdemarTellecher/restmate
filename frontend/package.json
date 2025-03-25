@@ -13,6 +13,7 @@
     "@monaco-editor/react": "^4.7.0",
     "@szhsin/react-menu": "^4.3.0",
     "@tailwindcss/vite": "^4.0.12",
+    "immer": "^10.1.1",
     "react": "^19.0.0",
     "react-collapsed": "^4.2.0",
     "react-dom": "^19.0.0",

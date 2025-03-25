@@ -23,6 +23,11 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   const updateReq = () => {
     setSaveModal(true);
   };
+  const onUpdateReq = (e) => {
+    e.preventDefault();
+    let n = e.target.req_name.value;
+    if (!n || n === "" || !selcol || selcol === "") return;
+  };
   return (
     <div className="h-full px-6">
       <div className="flex items-center text-accent gap-x-2">
@@ -75,7 +80,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
       </div>
       {saveModal && (
         <ModalLayout close={() => setSaveModal(false)} title="Save Request">
-          <form>
+          <form onSubmit={onUpdateReq}>
             <div className="p-6">
               <p className="text-txtprim text-sm mb-2">Request Name</p>
               <input

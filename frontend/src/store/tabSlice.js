@@ -1,132 +1,29 @@
 import { nanoid } from "nanoid";
 
-class KeySchema {
-  constructor(data = {}) {
-    const defaults = {
-      id: nanoid(),
-      key: "",
-      value: "",
-      active: true,
-    };
-    Object.assign(this, defaults, data);
-  }
+function tabSchema(data = {}) {
+  const defaults = {
+    id: nanoid(),
+    name: "Untitled",
+    url: "",
+    method: "get",
+    headers: [{ id: nanoid(), key: "", value: "", active: true }],
+    params: [{ id: nanoid(), key: "", value: "", active: true }],
+    body: {
+      bodyType: "json",
+      bodyRaw: "",
+      formData: [{ id: nanoid(), key: "", value: "", type: "text", active: true }],
+    },
+    coll_id: null,
+    response: null,
+  };
+  return { ...defaults, ...data };
 }
-class FDSchema {
-  constructor(data = {}) {
-    const defaults = {
-      id: nanoid(),
-      key: "",
-      value: "",
-      type: "text",
-      active: true,
-    };
-    Object.assign(this, defaults, data);
-  }
-}
-export class TabSchema {
-  constructor(data = {}) {
-    const defaults = {
-      id: nanoid(),
-      name: "Untitled",
-      url: "",
-      method: "get",
-      headers: [new KeySchema()],
-      params: [new KeySchema()],
-      body: {
-        bodyType: "json",
-        bodyRaw: "",
-        formData: [new FDSchema()],
-      },
-      coll_id: null,
-      response: null,
-    };
-    Object.assign(this, defaults, data);
-  }
-}
-
 export const createTabsSlice = (set) => ({
-  tabs: [
-    new TabSchema({
-      response: {
-        statusCode: 200,
-        bodyContent: '{\n    "qwe": "testing response. This is the long response to check the line wrap of monaco editor in golang","success": true\n}',
-        contentType: "JSON",
-        duration: "323ms",
-        httpStatus: "200 OK",
-        headers: [
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({
-            key: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-            value: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-          }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "testing response. This is the long response to check the line wrap of monaco editor in golang", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "testing response. This is the long response to check the line wrap of monaco editor in golang" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({
-            key: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-            value: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-          }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "testing response. This is the long response to check the line wrap of monaco editor in golang", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "testing response. This is the long response to check the line wrap of monaco editor in golang" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({
-            key: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-            value: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-          }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "testing response. This is the long response to check the line wrap of monaco editor in golang", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "testing response. This is the long response to check the line wrap of monaco editor in golang" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({
-            key: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-            value: "testing response. This is the long response to check the line wrap of monaco editor in golang",
-          }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "this value" }),
-          new KeySchema({ key: "testing response. This is the long response to check the line wrap of monaco editor in golang", value: "this value2" }),
-          new KeySchema({ key: "Authorization", value: "testing response. This is the long response to check the line wrap of monaco editor in golang" }),
-          new KeySchema({ key: "Content-Type", value: "this value2" }),
-        ],
-      },
-      headers: [
-        new KeySchema({ key: "Authorization", value: "this value" }),
-        new KeySchema({ key: "Content-Type", value: "this value2" }),
-        new KeySchema({ key: "this secone", value: "this value2", active: false }),
-      ],
-      params: [
-        new KeySchema({ key: "this key", value: "this value" }),
-        new KeySchema({ key: "this secone", value: "this value2", active: false }),
-        new KeySchema({ key: "this secone", value: "this value2", active: false }),
-      ],
-    }),
-    new TabSchema({
-      method: "put",
-      response: {
-        statusCode: 200,
-        bodyContent: "<div><p>This is the p tag. testing response. This is the long response to check the line wrap of monaco editor in golang</p></div>",
-        contentType: "HTML",
-        duration: "323ms",
-        httpStatus: "200 OK",
-        headers: [new KeySchema({ key: "Authorization", value: "this value" }), new KeySchema({ key: "Content-Type", value: "this value2" })],
-      },
-    }),
-  ],
+  tabs: [tabSchema({ name: "new name func" })],
   tabInx: 0,
   setTabInx: (i) => set(() => ({ tabInx: i })),
 
-  createTab: () => set((x) => ({ tabs: [...x.tabs, new TabSchema()], tabInx: x.tabs.length })),
+  createTab: () => set((x) => ({ tabs: [...x.tabs, tabSchema({ name: "Untitled" })], tabInx: x.tabs.length })),
 
   openTab: (t) =>
     set((x) => {
@@ -141,13 +38,18 @@ export const createTabsSlice = (set) => ({
     }),
 
   updateTab: (id, key, value) =>
-    set((x) => ({
-      tabs: x.tabs.map((tab) => (tab.id === id ? { ...tab, [key]: value } : tab)),
-    })),
+    set((x) => {
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      t[key] = value;
+    }),
+
   updateReqBody: (id, key, value) =>
-    set((x) => ({
-      tabs: x.tabs.map((tab) => (tab.id === id ? { ...tab, body: { ...tab.body, [key]: value } } : tab)),
-    })),
+    set((x) => {
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      t.body[key] = value;
+    }),
 
   deleteTab: (id) =>
     set((x) => {
@@ -170,64 +72,80 @@ export const createTabsSlice = (set) => ({
 
   updateHeaders: (id, pId, key, value) =>
     set((x) => {
-      return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, headers: t.headers.map((p) => (p.id === pId ? { ...p, [key]: value } : p)) } : t)) };
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      let h = t.headers.find((h) => h.id === pId);
+      if (!h) return;
+      h[key] = value;
     }),
 
   deleteHeaders: (id, pId) =>
     set((x) => {
-      let p = x.tabs.find((t) => t.id === id);
-      let len = p && p.headers.length;
-      if (len > 1) {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, headers: t.headers.filter((p) => p.id !== pId) } : t)) };
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      if (t.headers.length > 1) {
+        t.headers = t.headers.filter((h) => h.id !== pId);
       } else {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, headers: [new KeySchema()] } : t)) };
+        t.headers = [{ id: nanoid(), key: "", value: "", active: true }];
       }
     }),
 
   addHeaders: (id) =>
-    set((x) => ({
-      tabs: x.tabs.map((t) => (t.id === id ? { ...t, headers: [...t.headers, new KeySchema()] } : t)),
-    })),
+    set((x) => {
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      t.headers.push({ id: nanoid(), key: "", value: "", active: true });
+    }),
 
   updateParams: (id, pId, key, value) =>
     set((x) => {
-      return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, params: t.params.map((p) => (p.id === pId ? { ...p, [key]: value } : p)) } : t)) };
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      let h = t.params.find((h) => h.id === pId);
+      if (!h) return;
+      h[key] = value;
     }),
 
   deleteParam: (id, pId) =>
     set((x) => {
-      let p = x.tabs.find((t) => t.id === id);
-      let len = p && p.params.length;
-      if (len > 1) {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, params: t.params.filter((p) => p.id !== pId) } : t)) };
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      if (t.params.length > 1) {
+        t.params = t.params.filter((h) => h.id !== pId);
       } else {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, params: [new KeySchema()] } : t)) };
+        t.params = [{ id: nanoid(), key: "", value: "", active: true }];
       }
     }),
 
   addParam: (id) =>
-    set((x) => ({
-      tabs: x.tabs.map((t) => (t.id === id ? { ...t, params: [...t.params, new KeySchema()] } : t)),
-    })),
+    set((x) => {
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      t.params.push({ id: nanoid(), key: "", value: "", active: true });
+    }),
 
   updateFormData: (id, pId, key, value) =>
-    set((x) => ({
-      tabs: x.tabs.map((tab) =>
-        tab.id === id ? { ...tab, body: { ...tab.body, formData: tab.body.formData.map((p) => (p.id === pId ? { ...p, [key]: value } : p)) } } : tab,
-      ),
-    })),
+    set((x) => {
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      let h = t.body.formData.find((h) => h.id === pId);
+      if (!h) return;
+      h[key] = value;
+    }),
   deleteFormData: (id, pId) =>
     set((x) => {
-      let p = x.tabs.find((t) => t.id === id);
-      let len = p && p.body?.formData?.length;
-      if (len > 1) {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, body: { ...t.body, formData: t.body.formData.filter((p) => p.id !== pId) } } : t)) };
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      if (t.body?.formData.length > 1) {
+        t.body.formData = t.body.formData.filter((h) => h.id !== pId);
       } else {
-        return { tabs: x.tabs.map((t) => (t.id === id ? { ...t, body: { ...t.body, formData: [new FDSchema()] } } : t)) };
+        t.body.formData = [{ id: nanoid(), key: "", value: "", type: "text", active: true }];
       }
     }),
   addFormData: (id) =>
-    set((x) => ({
-      tabs: x.tabs.map((t) => (t.id === id ? { ...t, body: { ...t.body, formData: [...t.body.formData, new FDSchema()] } } : t)),
-    })),
+    set((x) => {
+      let t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      t.body.formData.push({ id: nanoid(), key: "", value: "", type: "text", active: true });
+    }),
 });

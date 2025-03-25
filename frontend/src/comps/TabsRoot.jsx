@@ -8,7 +8,6 @@ import { getReqType } from "../utils/helper";
 
 const TabsRoot = () => {
   const { tabs, deleteTab, createTab, tabInx } = useStore();
-  console.log("focusInx ->", tabInx, "tabLength ->", tabs.length);
   const tabsWrapper = useRef(null);
   const scrolLeftBtn = useRef(null);
   const scrolRightBtn = useRef(null);
