@@ -28,7 +28,6 @@ export const createTabsSlice = (set) => ({
 
   openTab: async (t) => {
     let rsp = await GetRequest(t.id, t.coll_id);
-    console.log(rsp);
     if (!rsp.success) return;
     set((x) => {
       const eInx = x.tabs.findIndex((tab) => tab.id === t.id);

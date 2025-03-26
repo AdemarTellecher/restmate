@@ -5,6 +5,7 @@ import { getReqType } from "../utils/helper";
 import { LuChevronDown, LuInfo, LuRadio, LuSave } from "react-icons/lu";
 import CustomButton from "./misc/CustomButton";
 import ModalLayout from "./misc/ModalLayout";
+import { toast } from "react-toastify";
 
 const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   console.log("reqHead render");
@@ -21,16 +22,33 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
     return name;
   };
   const updateReqModal = async () => {
-    setSelcol(coll_id)
-    setSaveModal(true);
+    if (coll_id !== null || coll_id === "") {
+      let rsp = await useStore.getState().updateReq(tabId);
+      if (rsp) {
+        toast.success("Request saved successfully!");
+      }
+    } else {
+      setSelcol(coll_id);
+      setSaveModal(true);
+    }
   };
   const onUpdateReq = async (e) => {
     e.preventDefault();
     let n = e.target.req_name.value;
-    if (!n || n === "" || !selcol || selcol === "") return;
+    if (!n || n === "") {
+      toast.warn("Name cannot be empty.");
+      return;
+    }
+    if (!selcol || selcol === "") {
+      toast.warn("Please select collection.");
+      return;
+    }
     let rsp = await useStore.getState().saveReq(tabId, n, selcol);
     if (rsp) {
       setSaveModal(false);
+      toast.success("Request saved successfully!");
+    } else {
+      toast.error("Error! Cannot save Request.");
     }
   };
   return (
@@ -83,49 +101,51 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
           </div>
         </div>
       </div>
-      {saveModal && (
-        <ModalLayout close={() => setSaveModal(false)} title="Save Request">
-          <form onSubmit={onUpdateReq}>
-            <div className="p-6">
-              <p className="text-txtprim text-sm mb-2">Request Name</p>
-              <input
-                name="req_name"
-                className="border border-lines text-lit w-full outline-none p-1 px-3 text-lg focus:border-txtprim rounded-sm"
-                defaultValue={name}
-                required
-                maxLength={100}
-                autoFocus
-              />
-              <div className="mt-4">
-                <p className="text-txtsec text-sm">Select Collection</p>
-              </div>
-              {cols && cols.length ? (
-                <div className="bg-sec mt-2 border border-lines overflow-y-auto" style={{ maxHeight: "300px" }}>
-                  {cols.map((x) => (
-                    <div className={`${x.id === selcol ? "bg-brand text-lit" : "text-txtprim"} p-2 cursor-pointer`} key={x.id} onClick={() => setSelcol(x.id)}>
-                      <p className="text-sm truncate whitespace-nowrap overflow-ellipsis" style={{ maxWidth: "90%" }}>
-                        {x.name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-sec mt-2 p-4 border border-lines rounded-sm">
-                  <div className="flex justify-center mb-1 text-orange-400">
-                    <LuInfo size="22" />
-                  </div>
-                  <p className="text-txtprim text-sm text-center">No collections found.</p>
-                  <p className="text-txtprim text-sm text-center">Please create a new collection first.</p>
-                </div>
-              )}
-              <div className="w-full flex justify-end items-center mt-6 gap-x-4">
-                <CustomButton name="Save" type="submit" loading={cLoading} clx="px-4 py-1" />
-                <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setSaveModal(false)} />
-              </div>
+      <ModalLayout open={saveModal} onClose={() => setSaveModal(false)} title="Save Request">
+        <form onSubmit={onUpdateReq}>
+          <div className="p-6">
+            <p className="text-txtprim text-sm mb-2">Request Name</p>
+            <input
+              name="req_name"
+              className="border border-lines text-lit w-full outline-none p-1 px-3 text-lg focus:border-txtprim rounded-sm"
+              defaultValue={name}
+              required
+              maxLength={100}
+              autoFocus
+            />
+            <div className="mt-4">
+              <p className="text-txtsec text-sm">Select Collection</p>
             </div>
-          </form>
-        </ModalLayout>
-      )}
+            {cols && cols.length ? (
+              <div className="bg-sec mt-2 border border-lines overflow-y-auto" style={{ maxHeight: "300px" }}>
+                {cols.map((x) => (
+                  <div
+                    className={`${x.id === selcol ? "bg-brand text-accent" : "bg-sec text-txtprim"} rounded-sm p-2 cursor-pointer`}
+                    key={x.id}
+                    onClick={() => setSelcol(x.id)}
+                  >
+                    <p className="text-sm truncate whitespace-nowrap overflow-ellipsis" style={{ maxWidth: "90%" }}>
+                      {x.name}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-sec mt-2 p-4 border border-lines rounded-sm">
+                <div className="flex justify-center mb-1 text-orange-400">
+                  <LuInfo size="22" />
+                </div>
+                <p className="text-txtprim text-sm text-center">No collections found.</p>
+                <p className="text-txtprim text-sm text-center">Please create a new collection first.</p>
+              </div>
+            )}
+            <div className="w-full flex justify-end items-center mt-6 gap-x-4">
+              <CustomButton name="Save" type="submit" loading={cLoading} clx="px-4 py-1" />
+              <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setSaveModal(false)} />
+            </div>
+          </div>
+        </form>
+      </ModalLayout>
     </div>
   );
 };

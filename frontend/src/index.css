@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+.Toastify__toast-theme--dark {
+  background-color: var(--theme-color-brand) !important;
+  border: 1px solid var(--theme-color-accent);
+}
 @theme {
   --color-brand: var(--theme-color-brand);
   --color-sec: var(--theme-color-sec);
@@ -13,8 +17,10 @@
 
 @layer base {
   :root {
-    --theme-color-brand: rgb(13 23 33);
-    --theme-color-sec: rgb(19 31 43);
+    /* --theme-color-brand: rgb(13 23 33); */
+    --theme-color-brand: rgb(33 33 33);
+    /* --theme-color-sec: rgb(19 31 43); */
+    --theme-color-sec: rgb(38 38 38);
     --theme-color-accent: rgb(99 102 241);
 
     --theme-color-lines: var(--color-gray-700);
@@ -25,6 +31,7 @@
   [data-theme="postman"] {
     --theme-color-brand: rgb(33 33 33);
     --theme-color-sec: rgb(38 38 38);
+    /* --theme-color-accent: var(--color-indigo-400); */
     --theme-color-accent: rgb(255 108 55);
 
     --theme-color-lines: var(--color-gray-700);

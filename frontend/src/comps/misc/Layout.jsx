@@ -1,3 +1,4 @@
+import { Bounce, ToastContainer } from "react-toastify";
 import SideBar from "./SideBar";
 
 const Layout = ({ children }) => {
@@ -11,6 +12,19 @@ const Layout = ({ children }) => {
           {children}
         </div>
       </div>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
     </div>
   );
 };

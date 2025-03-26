@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import { LuFileCog, LuFolder, LuPlus, LuCog } from "react-icons/lu";
-import Collections from "./Collections";
 import ModalLayout from "./ModalLayout";
 import CustomButton from "./CustomButton";
 import { useStore } from "../../store/store";
+import Collection from "../collections/Collection";
 
 const SideBar = () => {
   const [colOpen, setColOpen] = useState(false);
@@ -68,30 +68,28 @@ const SideBar = () => {
             </div>
           </div>
           <div id="colls-map" className="py-2">
-            {cols?.length ? cols.map((c) => <Collections key={c.id} col={c} />) : null}
+            {cols?.length ? cols.map((c) => <Collection key={c.id} col={c} />) : null}
           </div>
         </div>
       </div>
-      {newColModal && (
-        <ModalLayout close={() => setnewColModal(false)} title="New Collection">
-          <form onSubmit={createNewCollection}>
-            <div className="p-6">
-              <p className="text-txtprim text-sm mb-2">Collection Name</p>
-              <input
-                name="coll_name"
-                className="border border-txtsec text-lit w-full outline-none p-1 px-3 text-lg focus:border-txtprim rounded-sm"
-                required
-                maxLength={100}
-                autoFocus
-              />
-              <div className="w-full flex justify-end items-center mt-6 gap-x-4">
-                <CustomButton name="Create" type="submit" loading={cLoading} clx="px-4 py-1" />
-                <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setnewColModal(false)} />
-              </div>
+      <ModalLayout open={newColModal} onClose={() => setnewColModal(false)} title="New Collection">
+        <form onSubmit={createNewCollection}>
+          <div className="p-6">
+            <p className="text-txtprim text-sm mb-2">Collection Name</p>
+            <input
+              name="coll_name"
+              className="border border-txtsec text-lit w-full outline-none p-1 px-3 text-lg focus:border-txtprim rounded-sm"
+              required
+              maxLength={100}
+              autoFocus
+            />
+            <div className="w-full flex justify-end items-center mt-6 gap-x-4">
+              <CustomButton name="Create" type="submit" loading={cLoading} clx="px-4 py-1" />
+              <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setnewColModal(false)} />
             </div>
-          </form>
-        </ModalLayout>
-      )}
+          </div>
+        </form>
+      </ModalLayout>
     </div>
   );
 };
