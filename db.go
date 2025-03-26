@@ -30,5 +30,10 @@ func (a *App) initFile() {
 		fmt.Println("Error creating file:", err)
 		return
 	}
-	file.Close()
+	defer file.Close()
+	_, err = file.WriteString("[]")
+	if err != nil {
+		fmt.Println("Error writing to file:", err)
+		return
+	}
 }

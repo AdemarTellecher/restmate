@@ -5,6 +5,7 @@ import Response from "./response/Response";
 import NullResponse from "./response/NullResponse";
 
 const TabPanelRoot = ({ tab }) => {
+  console.log("new tab -> ", tab);
   return (
     <div className="h-full grid pt-4" id="tabPanelRoot" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0,100%)" }}>
       <ReqHead tabId={tab.id} method={tab.method} url={tab.url} name={tab.name} coll_id={tab.coll_id} />

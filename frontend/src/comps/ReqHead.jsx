@@ -9,24 +9,29 @@ import ModalLayout from "./misc/ModalLayout";
 const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   console.log("reqHead render");
   const [saveModal, setSaveModal] = useState(false);
-  const [selcol, setSelcol] = useState("");
+  const [selcol, setSelcol] = useState(coll_id);
   let cLoading = useStore((x) => x.cLoading);
   let cols = useStore((x) => x.collections);
   const getColsName = () => {
     if (coll_id) {
-      // find in colls. return coll_name / request name
-      return name;
-    } else {
-      return name;
+      let rsp = useStore.getState().getColName(coll_id);
+      if (!rsp) return null;
+      return rsp + " / " + name;
     }
+    return name;
   };
-  const updateReq = () => {
+  const updateReqModal = async () => {
+    setSelcol(coll_id)
     setSaveModal(true);
   };
-  const onUpdateReq = (e) => {
+  const onUpdateReq = async (e) => {
     e.preventDefault();
     let n = e.target.req_name.value;
     if (!n || n === "" || !selcol || selcol === "") return;
+    let rsp = await useStore.getState().saveReq(tabId, n, selcol);
+    if (rsp) {
+      setSaveModal(false);
+    }
   };
   return (
     <div className="h-full px-6">
@@ -74,7 +79,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
             <CustomButton clx="h-full px-8" name="Send" />
           </div>
           <div className="h-full">
-            <CustomButton clx="h-full px-6" bg="bg-txtsec" name={<LuSave size="20" />} onClick={updateReq} />
+            <CustomButton clx="h-full px-6" bg="bg-txtsec" loading={cLoading} name={<LuSave size="20" />} onClick={updateReqModal} />
           </div>
         </div>
       </div>
@@ -86,6 +91,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
               <input
                 name="req_name"
                 className="border border-lines text-lit w-full outline-none p-1 px-3 text-lg focus:border-txtprim rounded-sm"
+                defaultValue={name}
                 required
                 maxLength={100}
                 autoFocus

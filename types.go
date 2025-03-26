@@ -6,10 +6,6 @@ type JSResp struct {
 	Data    any    `json:"data,omitempty"`
 }
 
-type Rsp struct {
-	Success bool   `json:"success"`
-	Msg     string `json:"msg"`
-}
 type KeyValue struct {
 	ID     string `json:"id"`
 	Key    string `json:"key"`

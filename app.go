@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/goccy/go-json"
 )
@@ -31,19 +32,55 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) UpsertRequest(r Request) Rsp {
-	opr := false
-	if r.CollId == "" || r.ID == "" {
-		return Rsp{Success: false, Msg: "Invalid request"}
+func (a *App) GetRequest(id, coll_id string) (resp JSResp) {
+	time.Sleep(time.Second * 3)
+	if id == "" || coll_id == "" {
+		resp.Msg = "Error! Cannot fetch request"
+		return
 	}
 	f, err := os.ReadFile(a.db)
 	if err != nil {
-		return Rsp{Success: false, Msg: err.Error()}
+		resp.Msg = "Error! Cannot fetch request"
+		return
 	}
 	var c []Collection
 	err = json.Unmarshal(f, &c)
 	if err != nil {
-		return Rsp{Success: false, Msg: err.Error()}
+		resp.Msg = "Error! Cannot fetch request"
+		return
+	}
+	for i := range c {
+		if c[i].ID == coll_id {
+			for j := range c[i].Requests {
+				if c[i].Requests[j].ID == id {
+					resp.Success = true
+					resp.Msg = "Success! request found"
+					resp.Data = c[i].Requests[j]
+					return
+				}
+			}
+		}
+	}
+	resp.Msg = "Error! Cannot fetch request"
+	return
+}
+func (a *App) UpsertRequest(r Request) (resp JSResp) {
+	time.Sleep(time.Second * 3)
+	opr := false
+	if r.CollId == "" || r.ID == "" {
+		resp.Msg = "Error! Cannot save request"
+		return
+	}
+	f, err := os.ReadFile(a.db)
+	if err != nil {
+		resp.Msg = "Error! Cannot save request"
+		return
+	}
+	var c []Collection
+	err = json.Unmarshal(f, &c)
+	if err != nil {
+		resp.Msg = "Error! Cannot save request"
+		return
 	}
 	for i := range c {
 		if c[i].ID == r.CollId {
@@ -66,22 +103,46 @@ func (a *App) UpsertRequest(r Request) Rsp {
 		}
 	}
 	if !opr {
-		return Rsp{Success: false, Msg: "Collection not found"}
+		resp.Msg = "Error! Cannot save request"
+		return
 	}
 	b, err := json.Marshal(c)
 	if err != nil {
-		return Rsp{Success: false, Msg: err.Error()}
+		resp.Msg = "Error! Cannot save request"
+		return
 	}
 	err = os.WriteFile(a.db, b, 0644)
 	if err != nil {
-		return Rsp{Success: false, Msg: err.Error()}
+		resp.Msg = "Error! Cannot save request"
+		return
 	}
-	return Rsp{
-		Success: true,
-		Msg:     "Request added successfully",
+	var collRspSlice []CollRsp
+
+	for i := range c {
+		var reqRspSlice []ReqRsp
+		for j := range c[i].Requests {
+			reqRspSlice = append(reqRspSlice, ReqRsp{
+				ID:     c[i].Requests[j].ID,
+				Name:   c[i].Requests[j].Name,
+				Url:    c[i].Requests[j].Url,
+				Method: c[i].Requests[j].Method,
+				CollId: c[i].Requests[j].CollId,
+			})
+		}
+
+		collRspSlice = append(collRspSlice, CollRsp{
+			ID:       c[i].ID,
+			Name:     c[i].Name,
+			Requests: reqRspSlice,
+		})
 	}
+	resp.Success = true
+	resp.Msg = "request saved successfully"
+	resp.Data = collRspSlice
+	return
 }
 func (a *App) GetCollections() (resp JSResp) {
+	time.Sleep(time.Second * 3)
 	f, err := os.ReadFile(a.db)
 	if err != nil {
 		resp.Msg = "Error! Cannot add collection"
@@ -114,11 +175,12 @@ func (a *App) GetCollections() (resp JSResp) {
 		})
 	}
 	resp.Success = true
-	resp.Msg = "Collection saved successfully"
+	resp.Msg = "Collection fetched successfully"
 	resp.Data = collRspSlice
 	return
 }
 func (a *App) AddCollection(id, name string) (resp JSResp) {
+	time.Sleep(time.Second * 3)
 	if id == "" || name == "" {
 		resp.Msg = "Error! Cannot add collection"
 		return

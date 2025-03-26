@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { GetRequest } from "../../wailsjs/go/main/App";
 
 function tabSchema(data = {}) {
   const defaults = {
@@ -25,17 +26,22 @@ export const createTabsSlice = (set) => ({
 
   createTab: () => set((x) => ({ tabs: [...x.tabs, tabSchema({ name: "Untitled" })], tabInx: x.tabs.length })),
 
-  openTab: (t) =>
+  openTab: async (t) => {
+    let rsp = await GetRequest(t.id, t.coll_id);
+    console.log(rsp);
+    if (!rsp.success) return;
     set((x) => {
       const eInx = x.tabs.findIndex((tab) => tab.id === t.id);
       if (eInx !== -1) {
-        const updatedTabs = [...x.tabs];
-        updatedTabs[eInx] = t;
-        return { tabs: updatedTabs, tabInx: eInx };
+        x.tabInx = eInx;
+        // const updatedTabs = [...x.tabs];
+        // updatedTabs[eInx] = t;
+        // return { tabs: updatedTabs, tabInx: eInx };
       } else {
-        return { tabs: [...x.tabs, t], tabInx: x.tabs.length };
+        return { tabs: [...x.tabs, rsp.data], tabInx: x.tabs.length };
       }
-    }),
+    });
+  },
 
   updateTab: (id, key, value) =>
     set((x) => {

@@ -24,8 +24,10 @@ const SideBar = () => {
       id: nanoid(),
       name: e.target.coll_name.value,
     };
-    useStore.getState().addCols(c);
-    setnewColModal(false);
+    let success = await useStore.getState().addCols(c);
+    if (success) {
+      setnewColModal(false);
+    }
   };
   return (
     <div className="w-full h-full flex">
