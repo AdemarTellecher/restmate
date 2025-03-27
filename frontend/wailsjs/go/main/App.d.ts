@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function AddCollection(arg1:string,arg2:string):Promise<main.JSResp>;
 
+export function ChoseFile():Promise<main.JSResp>;
+
 export function DeleteCollection(arg1:string):Promise<main.JSResp>;
 
 export function DeleteRequest(arg1:string,arg2:string):Promise<main.JSResp>;
@@ -14,7 +16,7 @@ export function GetCollections():Promise<main.JSResp>;
 
 export function GetRequest(arg1:string,arg2:string):Promise<main.JSResp>;
 
-export function Greet(arg1:string):Promise<string>;
+export function InvokeRequest(arg1:main.Request):Promise<main.JSResp>;
 
 export function MoveRequest(arg1:string,arg2:string,arg3:string):Promise<main.JSResp>;
 

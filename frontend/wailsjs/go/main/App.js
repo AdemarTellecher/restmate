@@ -6,6 +6,10 @@ export function AddCollection(arg1, arg2) {
   return window['go']['main']['App']['AddCollection'](arg1, arg2);
 }
 
+export function ChoseFile() {
+  return window['go']['main']['App']['ChoseFile']();
+}
+
 export function DeleteCollection(arg1) {
   return window['go']['main']['App']['DeleteCollection'](arg1);
 }
@@ -26,8 +30,8 @@ export function GetRequest(arg1, arg2) {
   return window['go']['main']['App']['GetRequest'](arg1, arg2);
 }
 
-export function Greet(arg1) {
-  return window['go']['main']['App']['Greet'](arg1);
+export function InvokeRequest(arg1) {
+  return window['go']['main']['App']['InvokeRequest'](arg1);
 }
 
 export function MoveRequest(arg1, arg2, arg3) {

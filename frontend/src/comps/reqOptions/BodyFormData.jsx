@@ -8,13 +8,17 @@ const BodyFormData = ({ tabId, formData }) => {
   const updateFormData = useStore((x) => x.updateFormData);
   const deleteFormData = useStore((x) => x.deleteFormData);
   const addFormData = useStore((x) => x.addFormData);
+
+  const onChoseFile = async (form_id) => {
+    await useStore.getState().openChoseFile(tabId, form_id);
+  };
   return (
     <div className="pt-2 h-full grid" style={{ gridTemplateRows: "fit-content(100%) min-content" }}>
-      <div className="border border-lines overflow-y-auto overflow-x-hidden">
-        {formData &&
-          formData.map((p) => (
+      {formData && formData.length ? (
+        <div className="border border-lines overflow-y-auto overflow-x-hidden">
+          {formData.map((p) => (
             <div key={p.id} className="flex items-center border-b border-lines last:border-none h-10">
-              <div className="border-r border-lines grow h-full">
+              <div className="border-r border-lines grow h-full w-full">
                 <input
                   value={p.key}
                   className="outline-none text-txtprim px-2 w-full h-full focus:text-lit focus:bg-sec"
@@ -26,7 +30,7 @@ const BodyFormData = ({ tabId, formData }) => {
               <div className="border-r border-lines grow h-full">
                 <Menu
                   menuButton={
-                    <button className="px-4 w-full h-full cursor-pointer flex justify-start items-center gap-x-1 text-txtsec text-sm capitalize">
+                    <button className="px-4 w-20 h-full cursor-pointer flex justify-start items-center gap-x-1 text-txtsec text-sm capitalize">
                       {p.type}
                       <LuChevronDown size="16" />
                     </button>
@@ -45,14 +49,26 @@ const BodyFormData = ({ tabId, formData }) => {
                   </MenuItem>
                 </Menu>
               </div>
-              <div className="grow h-full">
-                <input
-                  value={p.value}
-                  className="outline-none text-txtprim px-2 w-full h-full focus:text-lit focus:bg-sec"
-                  placeholder="value"
-                  maxLength="999"
-                  onChange={(e) => updateFormData(tabId, p.id, "value", e.target.value)}
-                />
+              <div className="grow h-full w-full">
+                {p.type === "text" ? (
+                  <input
+                    value={p.value}
+                    className="outline-none text-txtprim px-2 w-full h-full focus:text-lit focus:bg-sec"
+                    placeholder="value"
+                    maxLength="999"
+                    onChange={(e) => updateFormData(tabId, p.id, "value", e.target.value)}
+                  />
+                ) : (
+                  <div className="w-full h-full px-2 flex items-center cursor-pointer" onClick={() => onChoseFile(p.id)}>
+                    {p.files && p.files?.length ? (
+                      <p className="text-sm text-txtprim bg-sec px-4 py-1 rounded-full">
+                        {p.files?.length} {p.files?.length > 1 ? "files" : "file"} selected
+                      </p>
+                    ) : (
+                      <p className="text-sm text-txtsec">Choose files</p>
+                    )}
+                  </div>
+                )}
               </div>
               <div
                 className="h-full flex items-center px-2 hover:bg-sec cursor-pointer border-x border-lines"
@@ -65,7 +81,8 @@ const BodyFormData = ({ tabId, formData }) => {
               </div>
             </div>
           ))}
-      </div>
+        </div>
+      ) : null}
       {!formData.length || (formData.length && formData[formData.length - 1].key !== "" && formData.length < 20) ? (
         <div className="flex mt-2">
           <div className="flex items-center gap-x-1 text-txtsec text-sm font-bold cursor-pointer hover:text-accent" onClick={() => addFormData(tabId)}>

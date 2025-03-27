@@ -13,11 +13,12 @@ type KeyValue struct {
 	Active bool   `json:"active"`
 }
 type FormData struct {
-	ID     string `json:"id"`
-	Key    string `json:"key"`
-	Value  string `json:"value"`
-	Type   string `json:"type"`
-	Active bool   `json:"active"`
+	ID     string   `json:"id"`
+	Key    string   `json:"key"`
+	Value  string   `json:"value"`
+	Files  []string `json:"files"`
+	Type   string   `json:"type"`
+	Active bool     `json:"active"`
 }
 type Body struct {
 	BodyType string     `json:"bodyType"`

@@ -11,9 +11,9 @@ const ReqHeaders = ({ tabId, headers }) => {
       <div className="">
         <p className="text-txtsec text-sm font-bold">Request Headers</p>
       </div>
-      <div className="mt-2 border border-lines overflow-y-auto overflow-x-hidden">
-        {headers &&
-          headers.map((p) => (
+      {headers && headers.length ? (
+        <div className="mt-2 border border-lines overflow-y-auto overflow-x-hidden">
+          {headers.map((p) => (
             <div key={p.id} className="flex items-center border-b border-lines last:border-none h-10">
               <div className="border-r border-lines grow h-full">
                 <input
@@ -44,7 +44,8 @@ const ReqHeaders = ({ tabId, headers }) => {
               </div>
             </div>
           ))}
-      </div>
+        </div>
+      ) : null}
       {!headers.length || (headers.length && headers[headers.length - 1].key !== "" && headers.length < 20) ? (
         <div className="flex mt-2">
           <div className="flex items-center gap-x-1 text-txtsec text-sm font-bold cursor-pointer hover:text-accent" onClick={() => addHeaders(tabId)}>

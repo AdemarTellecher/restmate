@@ -12,6 +12,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   const [saveModal, setSaveModal] = useState(false);
   const [selcol, setSelcol] = useState(coll_id);
   let saveLoad = useStore((x) => x.saveLoad);
+  let invokeLoading = useStore((x) => x.invokeLoading);
   let cols = useStore((x) => x.collections);
   const getColsName = () => {
     if (coll_id) {
@@ -50,6 +51,9 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
     } else {
       toast.error("Error! Cannot save Request.");
     }
+  };
+  const onInvokeReq = async () => {
+    await useStore.getState().invokeReq(tabId);
   };
   return (
     <div className="h-full px-6">
@@ -94,7 +98,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
             />
           </div>
           <div className="h-full">
-            <CustomButton clx="h-full px-8" name="Send" />
+            <CustomButton clx="h-full px-8" name="Send" loading={invokeLoading} onClick={onInvokeReq} />
           </div>
           <div className="h-full">
             <CustomButton clx="h-full px-6" bg="bg-txtsec" loading={saveLoad} name={<LuSave size="20" />} onClick={updateReqModal} />

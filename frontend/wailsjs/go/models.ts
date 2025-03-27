@@ -4,6 +4,7 @@ export namespace main {
 	    id: string;
 	    key: string;
 	    value: string;
+	    files: string[];
 	    type: string;
 	    active: boolean;
 	
@@ -16,6 +17,7 @@ export namespace main {
 	        this.id = source["id"];
 	        this.key = source["key"];
 	        this.value = source["value"];
+	        this.files = source["files"];
 	        this.type = source["type"];
 	        this.active = source["active"];
 	    }
