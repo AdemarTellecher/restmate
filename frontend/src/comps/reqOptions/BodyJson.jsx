@@ -5,20 +5,13 @@ import { useStore } from "../../store/store";
 
 const BodyJson = ({ tabId, bodyRaw }) => {
   const updateReqBody = useStore((x) => x.updateReqBody);
-  function rgbToHex(rgb) {
-    let rgbValues = rgb.match(/\d+/g);
-    return `#${rgbValues.map((val) => Number(val).toString(16).padStart(2, "0")).join("")}`;
-  }
   function monacoSetup(monaco) {
-    let styles = getComputedStyle(document.documentElement);
-    let brandrgb = styles.getPropertyValue("--color-brand").trim();
-    let brand = rgbToHex(brandrgb);
     monaco.editor.defineTheme("redTheme", {
       base: "vs-dark",
       inherit: true,
       rules: [],
       colors: {
-        "editor.background": brand,
+        "editor.background": "#212121",
       },
     });
     monaco.editor.setTheme("redTheme");
