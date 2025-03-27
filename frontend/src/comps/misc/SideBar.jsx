@@ -56,7 +56,7 @@ const SideBar = () => {
           </div>
         </div>
       </div>
-      <div style={{ width: colOpen ? openW : 0, transition: "width, 300ms" }} className="overflow-hidden" id="colls-bar">
+      <div style={{ width: colOpen ? openW : 0, transition: "width, 300ms" }} className="overflow-hidden h-full" id="colls-bar">
         <div className="border-r border-lines w-full h-full">
           <div className="text-txtprim flex justify-between items-center p-2 border-b border-lines" style={{ height: "48px" }} id="colls-topbar">
             <div className="flex justify-start items-center gap-x-0.5 cursor-pointer hover:text-lit" onClick={() => setnewColModal(true)}>
@@ -67,7 +67,7 @@ const SideBar = () => {
               <p>Import</p>
             </div>
           </div>
-          <div id="colls-map" className="py-2">
+          <div id="colls-map" className="py-2 overflow-y-auto" style={{ height: "calc(100% - 48px)" }}>
             {cols?.length ? cols.map((c) => <Collection key={c.id} col={c} />) : null}
           </div>
         </div>

@@ -1,17 +1,24 @@
+import { toast } from "react-toastify";
 import { useStore } from "../../store/store";
 import CustomButton from "../misc/CustomButton";
 import ModalLayout from "../misc/ModalLayout";
 
 const RenameCol = ({ col, renameCol, setRenameCol }) => {
   let cLoading = useStore((x) => x.cLoading);
-  const onRenameCol = (e) => {
+  const onRenameCol = async (e) => {
     e.preventDefault();
     let n = e.target.col_name.value;
     if (!n || n === "") {
       toast.warn("Name cannot be empty.");
       return;
     }
-    console.log(n);
+    let rsp = await useStore.getState().renameCollection(col.id, n);
+    if (rsp) {
+      setRenameCol(false);
+      toast.success("Request renamed successfully!");
+    } else {
+      toast.error("Error! Cannot rename Request.");
+    }
   };
   return (
     <ModalLayout open={renameCol} onClose={() => setRenameCol(false)} title="Rename Collection">

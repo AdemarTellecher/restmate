@@ -11,7 +11,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   console.log("reqHead render");
   const [saveModal, setSaveModal] = useState(false);
   const [selcol, setSelcol] = useState(coll_id);
-  let cLoading = useStore((x) => x.cLoading);
+  let saveLoad = useStore((x) => x.saveLoad);
   let cols = useStore((x) => x.collections);
   const getColsName = () => {
     if (coll_id) {
@@ -97,7 +97,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
             <CustomButton clx="h-full px-8" name="Send" />
           </div>
           <div className="h-full">
-            <CustomButton clx="h-full px-6" bg="bg-txtsec" loading={cLoading} name={<LuSave size="20" />} onClick={updateReqModal} />
+            <CustomButton clx="h-full px-6" bg="bg-txtsec" loading={saveLoad} name={<LuSave size="20" />} onClick={updateReqModal} />
           </div>
         </div>
       </div>
@@ -114,13 +114,13 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
               autoFocus
             />
             <div className="mt-4">
-              <p className="text-txtsec text-sm">Select Collection</p>
+              <p className="text-txtprim text-sm">Select Collection</p>
             </div>
             {cols && cols.length ? (
               <div className="bg-sec mt-2 border border-lines overflow-y-auto" style={{ maxHeight: "300px" }}>
                 {cols.map((x) => (
                   <div
-                    className={`${x.id === selcol ? "bg-brand text-accent" : "bg-sec text-txtprim"} rounded-sm p-2 cursor-pointer`}
+                    className={`${x.id === selcol ? "bg-txtprim text-brand" : "bg-sec text-txtprim"} rounded-sm p-2 cursor-pointer`}
                     key={x.id}
                     onClick={() => setSelcol(x.id)}
                   >
@@ -140,7 +140,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
               </div>
             )}
             <div className="w-full flex justify-end items-center mt-6 gap-x-4">
-              <CustomButton name="Save" type="submit" loading={cLoading} clx="px-4 py-1" />
+              <CustomButton name="Save" type="submit" loading={saveLoad} clx="px-4 py-1" />
               <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setSaveModal(false)} />
             </div>
           </div>

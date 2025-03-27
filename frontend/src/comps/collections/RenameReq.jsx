@@ -1,17 +1,24 @@
+import { toast } from "react-toastify";
 import { useStore } from "../../store/store";
 import CustomButton from "../misc/CustomButton";
 import ModalLayout from "../misc/ModalLayout";
 
 const RenameReq = ({ req, renameModal, setRenameModal }) => {
   let cLoading = useStore((x) => x.cLoading);
-  const onRenameReq = (e) => {
+  const onRenameReq = async (e) => {
     e.preventDefault();
     let n = e.target.req_name.value;
     if (!n || n === "") {
       toast.warn("Name cannot be empty.");
       return;
     }
-    console.log(n);
+    let rsp = await useStore.getState().renameReq(req.coll_id, req.id, n);
+    if (rsp) {
+      setRenameModal(false);
+      toast.success("Request renamed successfully!");
+    } else {
+      toast.error("Error! Cannot rename Request.");
+    }
   };
   return (
     <ModalLayout open={renameModal} onClose={() => setRenameModal(false)} title="Rename Request">

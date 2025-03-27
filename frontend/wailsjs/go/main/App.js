@@ -6,6 +6,18 @@ export function AddCollection(arg1, arg2) {
   return window['go']['main']['App']['AddCollection'](arg1, arg2);
 }
 
+export function DeleteCollection(arg1) {
+  return window['go']['main']['App']['DeleteCollection'](arg1);
+}
+
+export function DeleteRequest(arg1, arg2) {
+  return window['go']['main']['App']['DeleteRequest'](arg1, arg2);
+}
+
+export function ExportCollection(arg1) {
+  return window['go']['main']['App']['ExportCollection'](arg1);
+}
+
 export function GetCollections() {
   return window['go']['main']['App']['GetCollections']();
 }
@@ -16,6 +28,18 @@ export function GetRequest(arg1, arg2) {
 
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
+}
+
+export function MoveRequest(arg1, arg2, arg3) {
+  return window['go']['main']['App']['MoveRequest'](arg1, arg2, arg3);
+}
+
+export function RenameCollection(arg1, arg2) {
+  return window['go']['main']['App']['RenameCollection'](arg1, arg2);
+}
+
+export function RenameRequest(arg1, arg2, arg3) {
+  return window['go']['main']['App']['RenameRequest'](arg1, arg2, arg3);
 }
 
 export function UpsertRequest(arg1) {
