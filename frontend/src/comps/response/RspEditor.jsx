@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LuBraces, LuChevronDown, LuCodeXml, LuCopy, LuWrapText } from "react-icons/lu";
@@ -17,8 +17,11 @@ const RspEditor = ({ lang, bodyContent }) => {
       .run()
       .then(() => rspRef.current.updateOptions({ readOnly: true }));
   };
+  useEffect(() => {
+    seteditorLang(lang);
+  }, [lang]);
 
-  console.log("editorlang", editorLang);
+  console.log("editorlang", lang, editorLang);
   const bodyTypeIcon = (l) => {
     if (l === "JSON") {
       return (
@@ -45,21 +48,14 @@ const RspEditor = ({ lang, bodyContent }) => {
       );
     }
   };
-  function rgbToHex(rgb) {
-    let rgbValues = rgb.match(/\d+/g);
-    return `#${rgbValues.map((val) => Number(val).toString(16).padStart(2, "0")).join("")}`;
-  }
   function monacoSetup(monaco) {
     console.log("theme ", monaco);
-    let styles = getComputedStyle(document.documentElement);
-    let brandrgb = styles.getPropertyValue("--color-brand").trim();
-    let brand = rgbToHex(brandrgb);
     monaco.editor.defineTheme("redTheme", {
       base: "vs-dark",
       inherit: true,
       rules: [],
       colors: {
-        "editor.background": brand,
+        "editor.background": "#212121",
       },
     });
     monaco.editor.setTheme("redTheme");

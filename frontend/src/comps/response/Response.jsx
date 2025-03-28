@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { Menu, MenuItem } from "@szhsin/react-menu";
-import { LuChevronDown } from "react-icons/lu";
+import React from "react";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import RspEditor from "./RspEditor";
-import RspStatus from "./RspStatus";
 import RspHeaders from "./RspHeaders";
+import RspStatus from "./RspStatus";
 
 const Response = ({ response }) => {
   console.log("Response comp", response);
-  const [rspTab, setRspTab] = useState("body");
   const rspTypeRender = () => {
     switch (response?.contentType) {
       case "JSON":
@@ -20,34 +18,33 @@ const Response = ({ response }) => {
   };
   return (
     <div className="h-full w-full px-6">
-      <div className="grid h-full" style={{ gridTemplateRows: "min-content minmax(0, 100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
-        <div className="h-full flex justify-between items-center pb-1">
-          <div className="h-full">
-            <Menu
-              menuButton={
-                <button className="shrink-0 h-full cursor-pointer flex justify-center items-center gap-x-1 text-txtprim text-sm font-bold capitalize">
-                  {rspTab}
-                  <LuChevronDown size="16" className="text-accent" />
-                </button>
-              }
-              menuClassName="!bg-sec"
-              unmountOnClose={false}
-              align="start"
-              direction="bottom"
-              gap={6}
-            >
-              <MenuItem className="text-txtprim text-sm" onClick={() => setRspTab("body")}>
+      <Tabs style={{ height: "100%", width: "100%" }}>
+        <div className="grid h-full w-full" style={{ gridTemplateRows: "24px minmax(0, 100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
+          <div className="flex justify-between items-center">
+            <TabList className="flex items-center h-full gap-x-4 text-sm">
+              <Tab
+                selectedClassName="!text-lit bg-brand !border-accent"
+                className="inline-block outline-none h-full text-txtprim border-b-2 border-brand cursor-pointer"
+              >
                 Body
-              </MenuItem>
-              <MenuItem className="text-txtprim text-sm" onClick={() => setRspTab("headers")}>
+              </Tab>
+              <Tab
+                selectedClassName="!text-lit bg-brand !border-accent"
+                className="inline-block outline-none h-full text-txtprim border-b-2 border-brand cursor-pointer"
+              >
                 Headers
-              </MenuItem>
-            </Menu>
+              </Tab>
+            </TabList>
+            <RspStatus status={response?.statusCode} duration={response?.duration} httpStatus={response?.httpStatus} />
           </div>
-          <RspStatus status={response?.statusCode} duration={response?.duration} httpStatus={response?.httpStatus} />
+          <div className="h-full w-full">
+            <TabPanel style={{ height: "100%" }}>{rspTypeRender()}</TabPanel>
+            <TabPanel style={{ height: "100%" }}>
+              <RspHeaders headers={response?.headers} />
+            </TabPanel>
+          </div>
         </div>
-        {rspTab === "body" ? <div className="h-full">{rspTypeRender()}</div> : <RspHeaders headers={response?.headers} />}
-      </div>
+      </Tabs>
     </div>
   );
 };

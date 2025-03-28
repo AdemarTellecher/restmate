@@ -93,6 +93,7 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			body = &b
 			autoHeaders.Set("Content-Type", writer.FormDataContentType())
 		} else {
+			fmt.Println("meth -> ", method)
 			body = strings.NewReader(r.Body.BodyRaw)
 			autoHeaders.Set("Content-Type", "application/json")
 		}
@@ -652,7 +653,7 @@ func parseMethod(m string) string {
 	} else if m == "post" {
 		return "POST"
 	} else if m == "put" {
-		return "POST"
+		return "PUT"
 	} else if m == "delete" {
 		return "DELETE"
 	}

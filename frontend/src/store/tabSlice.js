@@ -25,15 +25,7 @@ function tabSchema(data = {}) {
       ],
     },
     coll_id: null,
-    response: {
-      bodyContent: '{"userId": 1, "id": 1,"title": "delectus aut autem","completed": false}',
-      contentType: "JSON",
-      duration: "66",
-      errorContent: "",
-      headers: [],
-      httpStatus: "200 OK",
-      statusCode: 200,
-    },
+    response: {},
   };
   return { ...defaults, ...data };
 }
