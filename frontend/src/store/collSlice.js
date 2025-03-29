@@ -14,6 +14,8 @@ export const createColSlice = (set, get) => ({
       set({ cLoading: false });
       return;
     }
+    console.log("get-cols -> ",rsp)
+
     set({ cLoading: false, collections: rsp.data });
   },
   addCols: async (c) => {

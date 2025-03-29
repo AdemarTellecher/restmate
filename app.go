@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -40,6 +41,15 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	if r.Url == "" {
 		resp.Msg = "Error! URL cannot be empty"
 		return
+	}
+	hasCol := false
+	if r.CollId != "" {
+		hasCol = true
+	}
+	vars := map[string]string{
+		"my_var":    "hello",
+		"user.name": "john",
+		"user-id":   "1234",
 	}
 	u, err := url.Parse(r.Url)
 	if err != nil {
@@ -93,8 +103,24 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			body = &b
 			autoHeaders.Set("Content-Type", writer.FormDataContentType())
 		} else {
-			fmt.Println("meth -> ", method)
-			body = strings.NewReader(r.Body.BodyRaw)
+			if hasCol {
+				fmt.Println("post -> ", r.Body.BodyRaw)
+				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
+				output := re.ReplaceAllStringFunc(r.Body.BodyRaw, func(match string) string {
+					// extract variable name from match
+					key := re.FindStringSubmatch(match)[1]
+					if val, ok := vars[key]; ok {
+						return val
+					}
+					// return original if not found in map
+					return match
+				})
+				fmt.Println("out -> ", output)
+        //replace with output later 
+				body = strings.NewReader(r.Body.BodyRaw)
+			} else {
+				body = strings.NewReader(r.Body.BodyRaw)
+			}
 			autoHeaders.Set("Content-Type", "application/json")
 		}
 	} else {
@@ -411,6 +437,7 @@ func (a *App) AddCollection(id, name string) (resp JSResp) {
 		ID:       id,
 		Name:     name,
 		Requests: []Request{},
+		Variable: []KV{},
 	}
 	c = append(c, newCol)
 	b, err := json.Marshal(c)
@@ -643,6 +670,7 @@ func makeCollRsp(c *[]Collection) []CollRsp {
 			ID:       (*c)[i].ID,
 			Name:     (*c)[i].Name,
 			Requests: reqRspSlice,
+			Variable: (*c)[i].Variable,
 		})
 	}
 	return collRspSlice
@@ -659,10 +687,10 @@ func parseMethod(m string) string {
 	}
 	return "GET"
 }
-func parseResponseHeaders(data *http.Header) []Header {
-	var result []Header
+func parseResponseHeaders(data *http.Header) []KV {
+	var result []KV
 	for k, v := range *data {
-		h := Header{}
+		h := KV{}
 		h.Key = k
 		h.Value = strings.Join(v, "")
 		result = append(result, h)

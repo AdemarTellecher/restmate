@@ -40,20 +40,21 @@ type Collection struct {
 	ID       string    `json:"id"`
 	Name     string    `json:"name"`
 	Requests []Request `json:"requests"`
+	Variable []KV      `json:"variable"`
 }
 
-type Header struct {
+type KV struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
 }
 type Result struct {
-	StatusCode   int      `json:"statusCode"`
-	HttpStatus   string   `json:"httpStatus"`
-	BodyContent  string   `json:"bodyContent"`
-	ErrorContent string   `json:"errorContent"`
-	ContentType  string   `json:"contentType"`
-	Duration     string   `json:"duration"`
-	Headers      []Header `json:"headers"`
+	StatusCode   int    `json:"statusCode"`
+	HttpStatus   string `json:"httpStatus"`
+	BodyContent  string `json:"bodyContent"`
+	ErrorContent string `json:"errorContent"`
+	ContentType  string `json:"contentType"`
+	Duration     string `json:"duration"`
+	Headers      []KV   `json:"headers"`
 }
 type ReqRsp struct {
 	ID     string `json:"id"`
@@ -66,4 +67,5 @@ type CollRsp struct {
 	ID       string   `json:"id"`
 	Name     string   `json:"name"`
 	Requests []ReqRsp `json:"requests"`
+	Variable []KV     `json:"variable"`
 }

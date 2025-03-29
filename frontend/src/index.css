@@ -1,4 +1,18 @@
 @import "tailwindcss";
+.manacoEnvFound {
+  color: white !important;
+  font-style: italic !important;
+  border-radius: 6px;
+  background-color: var(--color-green-600) !important;
+  font-weight: bold !important;
+}
+.manacoEnvError {
+  color: white !important;
+  font-style: italic !important;
+  border-radius: 6px;
+  background-color: var(--color-red-600) !important;
+  font-weight: bold !important;
+}
 
 .Toastify__toast-theme--dark {
   background-color: var(--theme-color-brand) !important;

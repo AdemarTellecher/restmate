@@ -1,10 +1,19 @@
 import { Editor } from "@monaco-editor/react";
-import React from "react";
+import React, { useRef } from "react";
 import Spinner from "../misc/Spinner";
 import { useStore } from "../../store/store";
 
+const ENVIRONMENT_REGEX = /\{\{([\w.-]+)\}\}/g;
+const varss = [
+  { key: "qwe", value: "xxx" },
+  { key: "my_var", value: "pop123" },
+  { key: "ddd", value: "ddd1231jlknw" },
+];
+
 const BodyJson = ({ tabId, bodyRaw }) => {
   const updateReqBody = useStore((x) => x.updateReqBody);
+  const editorRef = useRef(null);
+  const decorationsRef = useRef([]);
   function monacoSetup(monaco) {
     monaco.editor.defineTheme("redTheme", {
       base: "vs-dark",
@@ -15,6 +24,52 @@ const BodyJson = ({ tabId, bodyRaw }) => {
       },
     });
     monaco.editor.setTheme("redTheme");
+  }
+  function handleEditorDidMount(editor, monaco) {
+    editorRef.current = editor;
+    updateDecorations(editor, monaco);
+    editor.onDidChangeModelContent(() => {
+      updateDecorations(editor, monaco);
+    });
+  }
+  function updateDecorations(editor, monaco) {
+    if (!editor) return;
+
+    const model = editor.getModel();
+    if (!model) return;
+
+    const matches = [...model.getValue().matchAll(ENVIRONMENT_REGEX)];
+    const decorations =
+      matches &&
+      matches.map((match) => {
+        const start = match.index;
+        const end = start + match[0].length;
+        const startPos = model.getPositionAt(start);
+        const endPos = model.getPositionAt(end);
+        let clx = "";
+        let tooltip = "Value: Variable Not found!";
+        if (match[0]) {
+          const output = match[0].replace(/\{\{([\w.-]+)\}\}/, "$1");
+          let x = varss.find((v) => v.key === output);
+          if (!x) {
+            clx = "manacoEnvError";
+          } else {
+            clx = "manacoEnvFound";
+            tooltip = `Value: ${x.value}`;
+          }
+        }
+
+        return {
+          range: new monaco.Range(startPos.lineNumber, startPos.column, endPos.lineNumber, endPos.column),
+          options: {
+            inlineClassName: clx,
+            hoverMessage: {
+              value: tooltip,
+            },
+          },
+        };
+      });
+    decorationsRef.current = editor.deltaDecorations(decorationsRef.current, decorations);
   }
 
   return (
@@ -49,6 +104,7 @@ const BodyJson = ({ tabId, bodyRaw }) => {
             },
           }}
           beforeMount={monacoSetup}
+          onMount={handleEditorDidMount}
         />
       </div>
     </div>

@@ -7,7 +7,7 @@ import BodyFormData from "./BodyFormData";
 import BodyJson from "./BodyJson";
 
 const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData }) => {
-  console.log("reqOptions tab render");
+  // console.log("reqOptions tab render");
   return (
     <div className="h-full w-full">
       <Tabs style={{ height: "100%", width: "100%" }}>
