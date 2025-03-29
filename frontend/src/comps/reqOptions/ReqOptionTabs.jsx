@@ -6,7 +6,7 @@ import ReqBodyOption from "./ReqBodyOption";
 import BodyFormData from "./BodyFormData";
 import BodyJson from "./BodyJson";
 
-const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData }) => {
+const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, envVars }) => {
   // console.log("reqOptions tab render");
   return (
     <div className="h-full w-full">
@@ -39,7 +39,7 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData }) 
               <div className="pt-2 h-full grid w-full" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
                 <ReqBodyOption tabId={tabId} bodyType={bodyType} />
                 {bodyType === "json" ? (
-                  <BodyJson tabId={tabId} bodyRaw={bodyRaw} />
+                  <BodyJson tabId={tabId} bodyRaw={bodyRaw} envVars={envVars} />
                 ) : bodyType === "formdata" ? (
                   <BodyFormData tabId={tabId} formData={formData} />
                 ) : null}

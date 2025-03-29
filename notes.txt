@@ -1,4 +1,7 @@
 Todos:
-- add envs
 - button active not working
+- test formData
+- url and params, headers variables
 
+DONE:
+- add envs

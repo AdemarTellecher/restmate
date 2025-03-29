@@ -3,15 +3,23 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import RspEditor from "./RspEditor";
 import RspHeaders from "./RspHeaders";
 import RspStatus from "./RspStatus";
+import RspImage from "./RspImage";
+import RspPdfContent from "./RspPdfContent";
+import RspText from "./RspText";
 
 const Response = ({ response }) => {
-  console.log("Response comp", response);
   const rspTypeRender = () => {
     switch (response?.contentType) {
       case "JSON":
       case "JAVASCRIPT":
       case "HTML":
         return <RspEditor lang={response.contentType} bodyContent={response?.bodyContent} />;
+      case "IMAGE":
+        return <RspImage bodyContent={response?.bodyContent} />;
+      case "PDF":
+        return <RspPdfContent bodyContent={response?.bodyContent} />;
+      case "TEXT":
+        return <RspText bodyContent={response?.bodyContent} />;
       default:
         return null;
     }

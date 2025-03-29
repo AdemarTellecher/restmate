@@ -1,4 +1,4 @@
-import { DeleteRequest } from "../../wailsjs/go/main/App";
+import { AddVariable, DeleteRequest, DeleteVariable } from "../../wailsjs/go/main/App";
 import { MoveRequest } from "../../wailsjs/go/main/App";
 import { DeleteCollection } from "../../wailsjs/go/main/App";
 import { RenameRequest } from "../../wailsjs/go/main/App";
@@ -14,7 +14,7 @@ export const createColSlice = (set, get) => ({
       set({ cLoading: false });
       return;
     }
-    console.log("get-cols -> ",rsp)
+    console.log("get-cols -> ", rsp);
 
     set({ cLoading: false, collections: rsp.data });
   },
@@ -26,6 +26,33 @@ export const createColSlice = (set, get) => ({
       return false;
     }
     set({ cLoading: false, collections: rsp.data });
+    return true;
+  },
+  getVars: (coll_id) => {
+    if (!coll_id || coll_id === "") {
+      return [];
+    }
+    let v = get().collections.find((c) => c.id === coll_id);
+    return v.variable;
+  },
+  addNewVar: async (coll_id, kv) => {
+    set({ cLoading: true });
+    let rsp = await AddVariable(coll_id, kv);
+    if (!rsp.success) {
+      set({ cLoading: false });
+      return false;
+    }
+    set({ collections: rsp.data, cLoading: false });
+    return true;
+  },
+  deleteVar: async (coll_id, name) => {
+    set({ cLoading: true });
+    let rsp = await DeleteVariable(coll_id, name);
+    if (!rsp.success) {
+      set({ cLoading: false });
+      return false;
+    }
+    set({ collections: rsp.data, cLoading: false });
     return true;
   },
   getColName: (id) => {

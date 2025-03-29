@@ -43,14 +43,30 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		return
 	}
 	hasCol := false
+	vars := make(map[string]string)
 	if r.CollId != "" {
 		hasCol = true
+		f, err := os.ReadFile(a.db)
+		if err != nil {
+			resp.Msg = "Error! Failed to read collection"
+			return
+		}
+		var c []Collection
+		err = json.Unmarshal(f, &c)
+		if err != nil {
+			resp.Msg = "Error! Failed to unmarshal collection"
+			return
+		}
+		for i := range c {
+			if c[i].ID == r.CollId {
+				for j := range c[i].Variable {
+					vars[c[i].Variable[j].Key] = c[i].Variable[j].Value
+				}
+				break
+			}
+		}
 	}
-	vars := map[string]string{
-		"my_var":    "hello",
-		"user.name": "john",
-		"user-id":   "1234",
-	}
+	fmt.Println("vars -> ", vars)
 	u, err := url.Parse(r.Url)
 	if err != nil {
 		resp.Msg = "Error! cannot parse URL"
@@ -103,22 +119,21 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			body = &b
 			autoHeaders.Set("Content-Type", writer.FormDataContentType())
 		} else {
-			if hasCol {
-				fmt.Println("post -> ", r.Body.BodyRaw)
+			fmt.Println("post -> ", r.Body.BodyRaw)
+			if hasCol && len(vars) > 0 {
 				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
 				output := re.ReplaceAllStringFunc(r.Body.BodyRaw, func(match string) string {
-					// extract variable name from match
+					fmt.Println("match --> ", match)
 					key := re.FindStringSubmatch(match)[1]
 					if val, ok := vars[key]; ok {
 						return val
 					}
-					// return original if not found in map
 					return match
 				})
-				fmt.Println("out -> ", output)
-        //replace with output later 
-				body = strings.NewReader(r.Body.BodyRaw)
+				fmt.Println("out with vars -> ", output)
+				body = strings.NewReader(output)
 			} else {
+				fmt.Println("out raw body -> ", r.Body.BodyRaw)
 				body = strings.NewReader(r.Body.BodyRaw)
 			}
 			autoHeaders.Set("Content-Type", "application/json")
@@ -193,6 +208,97 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	return
 }
 
+func (a *App) DeleteVariable(coll_id string, name string) (resp JSResp) {
+	if coll_id == "" || name == "" {
+		resp.Msg = "Error! Cannot delete variable"
+		return
+	}
+	f, err := os.ReadFile(a.db)
+	if err != nil {
+		resp.Msg = "Error! Cannot delete variable"
+		return
+	}
+	var c []Collection
+	err = json.Unmarshal(f, &c)
+	if err != nil {
+		resp.Msg = "Error! Cannot delete variable"
+		return
+	}
+	for i := range c {
+		if c[i].ID == coll_id {
+			for j := range c[i].Variable {
+				if c[i].Variable[j].Key == name {
+					c[i].Variable = append(c[i].Variable[:j], c[i].Variable[j+1:]...)
+					break
+				}
+			}
+			break
+		}
+	}
+	b, err := json.Marshal(c)
+	if err != nil {
+		resp.Msg = "Error! Cannot delete variable"
+		return
+	}
+	err = os.WriteFile(a.db, b, 0644)
+	if err != nil {
+		resp.Msg = "Error! Cannot delete variable"
+		return
+	}
+	collRspSlice := makeCollRsp(&c)
+	resp.Success = true
+	resp.Msg = "Variable deleted successfully"
+	resp.Data = collRspSlice
+	return
+}
+func (a *App) AddVariable(coll_id string, v KV) (resp JSResp) {
+	if coll_id == "" || v.Key == "" || v.Value == "" {
+		resp.Msg = "Error! Cannot add new variable"
+		return
+	}
+	f, err := os.ReadFile(a.db)
+	if err != nil {
+		resp.Msg = "Error! Cannot add new variable"
+		return
+	}
+	var c []Collection
+	err = json.Unmarshal(f, &c)
+	if err != nil {
+		resp.Msg = "Error! Cannot add new variable"
+		return
+	}
+	for i := range c {
+		if c[i].ID == coll_id {
+			found := false
+			for j := range c[i].Variable {
+				if c[i].Variable[j].Key == v.Key {
+					c[i].Variable[j] = v
+					found = true
+					break
+				}
+			}
+			if !found {
+				c[i].Variable = append(c[i].Variable, v)
+			}
+			break
+		}
+	}
+	b, err := json.Marshal(c)
+	if err != nil {
+		resp.Msg = "Error! Cannot add new variable"
+		return
+	}
+	err = os.WriteFile(a.db, b, 0644)
+	if err != nil {
+		resp.Msg = "Error! Cannot add new variable"
+		return
+	}
+	collRspSlice := makeCollRsp(&c)
+	resp.Success = true
+	resp.Msg = "Variable add successfully to collection"
+	resp.Data = collRspSlice
+	return
+}
 func (a *App) ChoseFile() (resp JSResp) {
 	s, err := runtime.OpenMultipleFilesDialog(a.ctx, runtime.OpenDialogOptions{
 		Title: "Choose files",

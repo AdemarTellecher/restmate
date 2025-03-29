@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReqHead from "./ReqHead";
 import ReqOptionTabs from "./reqOptions/ReqOptionTabs";
 import Response from "./response/Response";
 import NullResponse from "./response/NullResponse";
+import { useStore } from "../store/store";
 
 const TabPanelRoot = ({ tab }) => {
-  // console.log("new tab -> ", tab);
+  const [envVars, setenvVars] = useState([]);
+  useEffect(() => {
+    if (tab.coll_id && tab.coll_id !== "") {
+      let vs = useStore.getState().getVars(tab.coll_id);
+      setenvVars(vs);
+    }
+  }, [tab?.coll_id]);
+
   return (
     <div className="h-full grid pt-4" id="tabPanelRoot" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0,100%)" }}>
       <ReqHead tabId={tab.id} method={tab.method} url={tab.url} name={tab.name} coll_id={tab.coll_id} />
@@ -24,6 +32,7 @@ const TabPanelRoot = ({ tab }) => {
             bodyType={tab.body?.bodyType}
             bodyRaw={tab.body?.bodyRaw}
             formData={tab.body?.formData}
+            envVars={envVars}
           />
         </div>
         {/*no rsp and error handler here*/}

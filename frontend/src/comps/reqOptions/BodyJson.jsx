@@ -1,19 +1,18 @@
 import { Editor } from "@monaco-editor/react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Spinner from "../misc/Spinner";
 import { useStore } from "../../store/store";
 
 const ENVIRONMENT_REGEX = /\{\{([\w.-]+)\}\}/g;
-const varss = [
-  { key: "qwe", value: "xxx" },
-  { key: "my_var", value: "pop123" },
-  { key: "ddd", value: "ddd1231jlknw" },
-];
 
-const BodyJson = ({ tabId, bodyRaw }) => {
+const BodyJson = ({ tabId, bodyRaw, envVars }) => {
   const updateReqBody = useStore((x) => x.updateReqBody);
   const editorRef = useRef(null);
   const decorationsRef = useRef([]);
+  const envs = useRef([]);
+  useEffect(() => {
+    if (envVars && envVars.length) envs.current = envVars;
+  }, [envVars]);
   function monacoSetup(monaco) {
     monaco.editor.defineTheme("redTheme", {
       base: "vs-dark",
@@ -34,7 +33,6 @@ const BodyJson = ({ tabId, bodyRaw }) => {
   }
   function updateDecorations(editor, monaco) {
     if (!editor) return;
-
     const model = editor.getModel();
     if (!model) return;
 
@@ -50,7 +48,7 @@ const BodyJson = ({ tabId, bodyRaw }) => {
         let tooltip = "Value: Variable Not found!";
         if (match[0]) {
           const output = match[0].replace(/\{\{([\w.-]+)\}\}/, "$1");
-          let x = varss.find((v) => v.key === output);
+          let x = envs.current && envs.current.find((v) => v.key === output);
           if (!x) {
             clx = "manacoEnvError";
           } else {
@@ -58,7 +56,6 @@ const BodyJson = ({ tabId, bodyRaw }) => {
             tooltip = `Value: ${x.value}`;
           }
         }
-
         return {
           range: new monaco.Range(startPos.lineNumber, startPos.column, endPos.lineNumber, endPos.column),
           options: {

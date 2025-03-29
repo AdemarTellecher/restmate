@@ -18,7 +18,7 @@ const ReqParams = ({ tabId, params }) => {
               <div className="border-r border-lines grow h-full">
                 <input
                   value={p.key}
-                  className="outline-none text-txtprim px-2 w-full h-full focus:text-lit focus:bg-sec"
+                  className="outline-none text-txtprim text-sm px-2 w-full h-full focus:text-lit focus:bg-sec"
                   placeholder="key"
                   maxLength="99"
                   onChange={(e) => updateParam(tabId, p.id, "key", e.target.value)}
@@ -27,7 +27,7 @@ const ReqParams = ({ tabId, params }) => {
               <div className="grow h-full">
                 <input
                   value={p.value}
-                  className="outline-none text-txtprim px-2 w-full h-full focus:text-lit focus:bg-sec"
+                  className="outline-none text-txtprim text-sm px-2 w-full h-full focus:text-lit focus:bg-sec"
                   placeholder="value"
                   maxLength="999"
                   onChange={(e) => updateParam(tabId, p.id, "value", e.target.value)}

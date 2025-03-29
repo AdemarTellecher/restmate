@@ -6,6 +6,10 @@ export function AddCollection(arg1, arg2) {
   return window['go']['main']['App']['AddCollection'](arg1, arg2);
 }
 
+export function AddVariable(arg1, arg2) {
+  return window['go']['main']['App']['AddVariable'](arg1, arg2);
+}
+
 export function ChoseFile() {
   return window['go']['main']['App']['ChoseFile']();
 }
@@ -16,6 +20,10 @@ export function DeleteCollection(arg1) {
 
 export function DeleteRequest(arg1, arg2) {
   return window['go']['main']['App']['DeleteRequest'](arg1, arg2);
+}
+
+export function DeleteVariable(arg1, arg2) {
+  return window['go']['main']['App']['DeleteVariable'](arg1, arg2);
 }
 
 export function ExportCollection(arg1) {

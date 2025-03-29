@@ -4,11 +4,15 @@ import {main} from '../models';
 
 export function AddCollection(arg1:string,arg2:string):Promise<main.JSResp>;
 
+export function AddVariable(arg1:string,arg2:main.KV):Promise<main.JSResp>;
+
 export function ChoseFile():Promise<main.JSResp>;
 
 export function DeleteCollection(arg1:string):Promise<main.JSResp>;
 
 export function DeleteRequest(arg1:string,arg2:string):Promise<main.JSResp>;
+
+export function DeleteVariable(arg1:string,arg2:string):Promise<main.JSResp>;
 
 export function ExportCollection(arg1:string):Promise<main.JSResp>;
 
