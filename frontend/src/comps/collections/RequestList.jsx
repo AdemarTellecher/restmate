@@ -53,8 +53,8 @@ const RequestList = ({ req }) => {
           Delete
         </MenuItem>
       </Menu>
-      <RenameReq renameModal={renameModal} setRenameModal={setRenameModal} req={req} />
-      <MoveReq moveModal={moveReqModal} setmoveModal={setmoveReqModal} req_id={req.id} coll_id={req.coll_id} />
+      {renameModal && <RenameReq renameModal={renameModal} setRenameModal={setRenameModal} req={req} />}
+      {moveReqModal && <MoveReq moveModal={moveReqModal} setmoveModal={setmoveReqModal} req_id={req.id} coll_id={req.coll_id} />}
     </div>
   );
 };

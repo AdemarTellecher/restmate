@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { useStore } from "../../store/store";
 
 const VarModal = ({ varModal, setVarModal, vars, coll_id, coll_name }) => {
-  console.log("var-modal ", coll_id, coll_name);
   const [addVar, setaddVar] = useState(false);
   let cLoading = useStore((x) => x.cLoading);
 

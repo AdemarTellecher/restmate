@@ -7,12 +7,15 @@ import { useStore } from "../store/store";
 
 const TabPanelRoot = ({ tab }) => {
   const [envVars, setenvVars] = useState([]);
+  const cols = useStore((x) => x.collections);
   useEffect(() => {
     if (tab.coll_id && tab.coll_id !== "") {
-      let vs = useStore.getState().getVars(tab.coll_id);
-      setenvVars(vs);
+      let c = cols.find((x) => x.id === tab.coll_id);
+      if (c.variable && c.variable.length) {
+        setenvVars(c.variable);
+      }
     }
-  }, [tab?.coll_id]);
+  }, [tab?.coll_id, cols]);
 
   return (
     <div className="h-full grid pt-4" id="tabPanelRoot" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0,100%)" }}>

@@ -5,6 +5,7 @@ import { LuBraces, LuChevronDown, LuCodeXml, LuCopy, LuWrapText } from "react-ic
 import { IoLogoJavascript } from "react-icons/io";
 import WithTooltip from "../misc/WithTooltip";
 import Spinner from "../misc/Spinner";
+import { toast } from "react-toastify";
 
 const RspEditor = ({ lang, bodyContent }) => {
   const [editorLang, seteditorLang] = useState(lang);
@@ -20,6 +21,11 @@ const RspEditor = ({ lang, bodyContent }) => {
   useEffect(() => {
     seteditorLang(lang);
   }, [lang]);
+  const onCopy = (str) => {
+    navigator.clipboard.writeText(str).then(() => {
+      toast.success("Variable copied to clipboard!");
+    });
+  };
 
   console.log("editorlang", lang, editorLang);
   const bodyTypeIcon = (l) => {
@@ -103,7 +109,7 @@ const RspEditor = ({ lang, bodyContent }) => {
             </div>
           </WithTooltip>
           <WithTooltip text={"Copy"}>
-            <div className="hover:text-lit cursor-pointer">
+            <div className="hover:text-lit cursor-pointer" onClick={() => onCopy(bodyContent)}>
               <LuCopy size="16" />
             </div>
           </WithTooltip>

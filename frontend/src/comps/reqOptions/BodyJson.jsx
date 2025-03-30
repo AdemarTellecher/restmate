@@ -6,12 +6,16 @@ import { useStore } from "../../store/store";
 const ENVIRONMENT_REGEX = /\{\{([\w.-]+)\}\}/g;
 
 const BodyJson = ({ tabId, bodyRaw, envVars }) => {
+  console.log("envars changed -->", envVars)
   const updateReqBody = useStore((x) => x.updateReqBody);
   const editorRef = useRef(null);
   const decorationsRef = useRef([]);
   const envs = useRef([]);
   useEffect(() => {
-    if (envVars && envVars.length) envs.current = envVars;
+    if (envVars && envVars.length) {
+      envs.current = envVars
+      console.log("useEf if ->")
+    };
   }, [envVars]);
   function monacoSetup(monaco) {
     monaco.editor.defineTheme("redTheme", {

@@ -2,6 +2,7 @@ Todos:
 - button active not working
 - test formData
 - url and params, headers variables
+- variable don't go green. when new added
 
 DONE:
 - add envs
