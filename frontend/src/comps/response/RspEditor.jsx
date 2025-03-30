@@ -3,9 +3,9 @@ import { Editor } from "@monaco-editor/react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LuBraces, LuChevronDown, LuCodeXml, LuCopy, LuWrapText } from "react-icons/lu";
 import { IoLogoJavascript } from "react-icons/io";
-import WithTooltip from "../misc/WithTooltip";
 import Spinner from "../misc/Spinner";
 import { toast } from "react-toastify";
+import Tippy from "@tippyjs/react";
 
 const RspEditor = ({ lang, bodyContent }) => {
   const [editorLang, seteditorLang] = useState(lang);
@@ -23,7 +23,7 @@ const RspEditor = ({ lang, bodyContent }) => {
   }, [lang]);
   const onCopy = (str) => {
     navigator.clipboard.writeText(str).then(() => {
-      toast.success("Variable copied to clipboard!");
+      toast.success("Copied to clipboard!");
     });
   };
 
@@ -98,21 +98,21 @@ const RspEditor = ({ lang, bodyContent }) => {
           </Menu>
         </div>
         <div className="flex justify-end items-center gap-x-2 text-txtsec">
-          <WithTooltip text={"Format"}>
+          <Tippy content="Format">
             <div className="hover:text-lit cursor-pointer relative group" onClick={formatBody}>
               <LuBraces size="16" />
             </div>
-          </WithTooltip>
-          <WithTooltip text={"Wrap Lines"}>
+          </Tippy>
+          <Tippy content="Wrap Lines">
             <div className="hover:text-lit cursor-pointer" onClick={() => setWrap(!wrap)}>
               <LuWrapText size="16" />
             </div>
-          </WithTooltip>
-          <WithTooltip text={"Copy"}>
+          </Tippy>
+          <Tippy content="Copy this large text">
             <div className="hover:text-lit cursor-pointer" onClick={() => onCopy(bodyContent)}>
               <LuCopy size="16" />
             </div>
-          </WithTooltip>
+          </Tippy>
         </div>
       </div>
       <div className="pt-2 h-full w-full">
