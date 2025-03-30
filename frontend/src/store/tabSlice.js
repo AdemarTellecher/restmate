@@ -8,7 +8,9 @@ function tabSchema(data = {}) {
     name: "Untitled",
     url: "",
     method: "get",
-    headers: [{ id: nanoid(), key: "", value: "", active: true }],
+    headers: [
+      { id: nanoid(), key: "lwkejr", value: "lkwer", active: true },
+    ],
     params: [{ id: nanoid(), key: "", value: "", active: true }],
     body: {
       bodyType: "json",
@@ -30,7 +32,7 @@ function tabSchema(data = {}) {
   return { ...defaults, ...data };
 }
 export const createTabsSlice = (set, get) => ({
-  tabs: [tabSchema({ name: "new name func" })],
+  tabs: [tabSchema({ name: "new name func", url: "http://localhost:4000" })],
 
   invokeLoading: false,
   invokeReq: async (id) => {
@@ -192,7 +194,6 @@ export const createTabsSlice = (set, get) => ({
       let h = t.body.formData.find((h) => h.id === pId);
       if (!h) return;
       h[key] = value;
-      console.log(key, value);
       if (key === "type") {
         if (value === "file") h.value = "";
         if (value === "text") h.files = [];

@@ -2,20 +2,17 @@ import { Editor } from "@monaco-editor/react";
 import React, { useEffect, useRef } from "react";
 import Spinner from "../misc/Spinner";
 import { useStore } from "../../store/store";
-
-const ENVIRONMENT_REGEX = /\{\{([\w.-]+)\}\}/g;
+import { ENVIRONMENT_REGEX, extractEnv } from "../../utils/utils";
 
 const BodyJson = ({ tabId, bodyRaw, envVars }) => {
-  console.log("envars changed -->", envVars)
   const updateReqBody = useStore((x) => x.updateReqBody);
   const editorRef = useRef(null);
   const decorationsRef = useRef([]);
   const envs = useRef([]);
   useEffect(() => {
     if (envVars && envVars.length) {
-      envs.current = envVars
-      console.log("useEf if ->")
-    };
+      envs.current = envVars;
+    }
   }, [envVars]);
   function monacoSetup(monaco) {
     monaco.editor.defineTheme("redTheme", {
@@ -51,7 +48,7 @@ const BodyJson = ({ tabId, bodyRaw, envVars }) => {
         let clx = "";
         let tooltip = "Value: Variable Not found!";
         if (match[0]) {
-          const output = match[0].replace(/\{\{([\w.-]+)\}\}/, "$1");
+          const output = extractEnv(match[0]);
           let x = envs.current && envs.current.find((v) => v.key === output);
           if (!x) {
             clx = "manacoEnvError";

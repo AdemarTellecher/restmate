@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* .public-DraftEditor-content { */
+/*   padding-inline: 20px !important; */
+/* } */
 .manacoEnvFound {
   color: white !important;
   font-style: italic !important;

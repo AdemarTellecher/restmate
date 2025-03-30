@@ -6,6 +6,7 @@ import { LuChevronDown, LuInfo, LuRadio, LuSave } from "react-icons/lu";
 import CustomButton from "./misc/CustomButton";
 import ModalLayout from "./misc/ModalLayout";
 import { toast } from "react-toastify";
+import DraftEditor from "./misc/DraftEditor";
 
 const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   console.log("reqHead render");
@@ -55,6 +56,10 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
   const onInvokeReq = async () => {
     await useStore.getState().invokeReq(tabId);
   };
+
+  const onChangeURL = (e) => {
+    useStore.getState().updateTab(tabId, "url", e);
+  };
   return (
     <div className="h-full px-6">
       <div className="flex items-center text-accent gap-x-2">
@@ -66,7 +71,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
           <div className="grow border border-txtsec flex justify-start items-center rounded-sm h-full">
             <Menu
               menuButton={
-                <button className="w-28 shrink-0 h-full cursor-pointer flex justify-center items-center gap-x-4 text-txtsec">
+                <button className="w-28 shrink-0 h-full cursor-pointer flex justify-center items-center gap-x-4 text-txtsec border-r border-txtsec">
                   {getReqType(method)}
                   <LuChevronDown size="22" />
                 </button>
@@ -90,12 +95,15 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
                 DELETE
               </MenuItem>
             </Menu>
+            {/*
             <input
               value={url}
               onChange={(e) => useStore.getState().updateTab(tabId, "url", e.target.value)}
               className="border-l border-txtsec text-lit w-full h-full outline-none px-4 text-lg"
               maxLength={999}
             />
+            */}
+            <DraftEditor value={url} setValue={(e) => useStore.getState().updateTab("tabId", "url", e)} fontsm={false} />
           </div>
           <div className="h-full">
             <CustomButton clx="h-full px-8" name="Send" loading={invokeLoading} onClick={onInvokeReq} />
