@@ -46,7 +46,7 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, en
               </div>
             </TabPanel>
             <TabPanel style={{ height: "100%" }}>
-              <ReqHeaders headers={headers} tabId={tabId} />
+              <ReqHeaders headers={headers} tabId={tabId} envVars={envVars} />
             </TabPanel>
             <TabPanel style={{ height: "100%" }}>
               <ReqParams params={params} tabId={tabId} />

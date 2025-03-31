@@ -3,7 +3,7 @@ import { LuCircle, LuCircleCheckBig, LuPlus, LuTrash2 } from "react-icons/lu";
 import { useStore } from "../../store/store";
 import DraftEditor from "../misc/DraftEditor";
 
-const ReqHeaders = ({ tabId, headers }) => {
+const ReqHeaders = ({ tabId, headers, envVars }) => {
   const updateHeaders = useStore((x) => x.updateHeaders);
   const deleteHeaders = useStore((x) => x.deleteHeaders);
   const addHeaders = useStore((x) => x.addHeaders);
@@ -41,7 +41,7 @@ const ReqHeaders = ({ tabId, headers }) => {
                   onChange={(e) => updateHeaders(tabId, p.id, "value", e.target.value)}
                 />
                 */}
-                <DraftEditor value={p.value} setValue={(e) => updateHeaders(tabId, p.id, "value", e)} />
+                <DraftEditor value={p.value} setValue={(e) => updateHeaders(tabId, p.id, "value", e)} envVars={envVars} />
               </div>
               <div
                 className="h-full flex items-center px-2 hover:bg-sec cursor-pointer border-x border-lines"
