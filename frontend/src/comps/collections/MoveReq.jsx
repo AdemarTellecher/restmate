@@ -3,6 +3,7 @@ import { useStore } from "../../store/store";
 import CustomButton from "../misc/CustomButton";
 import ModalLayout from "../misc/ModalLayout";
 import { useState } from "react";
+import { LuInfo } from "react-icons/lu";
 
 const MoveReq = ({ moveModal, setmoveModal, req_id, coll_id }) => {
   let cLoading = useStore((x) => x.cLoading);
@@ -29,7 +30,7 @@ const MoveReq = ({ moveModal, setmoveModal, req_id, coll_id }) => {
         <div className="">
           <p className="text-txtprim text-sm">Select Collection</p>
         </div>
-        {cols && cols.length ? (
+        {cols && cols.length && cols.filter((x) => x.id !== coll_id).length ? (
           <div className="bg-sec mt-2 border border-lines overflow-y-auto" style={{ maxHeight: "300px" }}>
             {cols.map((x) =>
               x.id === coll_id ? null : (

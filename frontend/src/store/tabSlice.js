@@ -8,9 +8,7 @@ function tabSchema(data = {}) {
     name: "Untitled",
     url: "",
     method: "get",
-    headers: [
-      { id: nanoid(), key: "lwkejr", value: "lkwer", active: true },
-    ],
+    headers: [{ id: nanoid(), key: "lwkejr", value: "lkwer", active: true }],
     params: [{ id: nanoid(), key: "", value: "", active: true }],
     body: {
       bodyType: "json",

@@ -18,7 +18,7 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, en
                 selectedClassName="!text-lit bg-brand !border-accent"
                 className="inline-block outline-none h-full text-txtprim border-b-2 border-brand cursor-pointer"
               >
-                Body
+                Params
               </Tab>
               <Tab
                 selectedClassName="!text-lit bg-brand !border-accent"
@@ -30,26 +30,26 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, en
                 selectedClassName="!text-lit bg-brand !border-accent"
                 className="inline-block outline-none h-full text-txtprim border-b-2 border-brand cursor-pointer"
               >
-                Params
+                Body
               </Tab>
             </TabList>
           </div>
           <div className="h-full w-full">
+            <TabPanel style={{ height: "100%" }}>
+              <ReqParams params={params} tabId={tabId} envVars={envVars} />
+            </TabPanel>
+            <TabPanel style={{ height: "100%" }}>
+              <ReqHeaders headers={headers} tabId={tabId} envVars={envVars} />
+            </TabPanel>
             <TabPanel style={{ height: "100%", width: "100%" }}>
               <div className="pt-2 h-full grid w-full" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
                 <ReqBodyOption tabId={tabId} bodyType={bodyType} />
                 {bodyType === "json" ? (
                   <BodyJson tabId={tabId} bodyRaw={bodyRaw} envVars={envVars} />
                 ) : bodyType === "formdata" ? (
-                  <BodyFormData tabId={tabId} formData={formData} />
+                  <BodyFormData tabId={tabId} formData={formData} envVars={envVars} />
                 ) : null}
               </div>
-            </TabPanel>
-            <TabPanel style={{ height: "100%" }}>
-              <ReqHeaders headers={headers} tabId={tabId} envVars={envVars} />
-            </TabPanel>
-            <TabPanel style={{ height: "100%" }}>
-              <ReqParams params={params} tabId={tabId} />
             </TabPanel>
           </div>
         </div>

@@ -1,10 +1,11 @@
-import React from "react";
-import { LuCircle, LuCircleCheckBig, LuPlus, LuTrash2 } from "react-icons/lu";
+import React, { useEffect } from "react";
+import { LuCircle, LuCircleCheckBig, LuTrash2 } from "react-icons/lu";
 import { useStore } from "../../store/store";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LuChevronDown } from "react-icons/lu";
+import DraftEditor from "../misc/DraftEditor";
 
-const BodyFormData = ({ tabId, formData }) => {
+const BodyFormData = ({ tabId, formData, envVars }) => {
   const updateFormData = useStore((x) => x.updateFormData);
   const deleteFormData = useStore((x) => x.deleteFormData);
   const addFormData = useStore((x) => x.addFormData);
@@ -12,13 +13,21 @@ const BodyFormData = ({ tabId, formData }) => {
   const onChoseFile = async (form_id) => {
     await useStore.getState().openChoseFile(tabId, form_id);
   };
+  useEffect(() => {
+    if (formData && formData.length) {
+      let last = formData[formData.length - 1];
+      if (last && last.key !== "") {
+        addFormData(tabId);
+      }
+    }
+  }, [formData]);
   return (
-    <div className="pt-2 h-full grid" style={{ gridTemplateRows: "fit-content(100%) min-content" }}>
+    <div className="h-full grid" style={{ gridTemplateRows: "minmax(0,100%)" }}>
       {formData && formData.length ? (
-        <div className="border border-lines overflow-y-auto overflow-x-hidden">
+        <div className="pt-2 overflow-y-auto overflow-x-hidden">
           {formData.map((p) => (
-            <div key={p.id} className="flex items-center border-b border-lines last:border-none h-10">
-              <div className="border-r border-lines grow h-full w-full">
+            <div key={p.id} className="flex items-center border border-b-0 border-lines last:border-b h-8">
+              <div className="border-r border-lines h-full basis-1/2">
                 <input
                   value={p.key}
                   className="outline-none text-txtprim px-2 w-full h-full focus:text-lit focus:bg-sec"
@@ -49,8 +58,8 @@ const BodyFormData = ({ tabId, formData }) => {
                   </MenuItem>
                 </Menu>
               </div>
-              <div className="grow h-full w-full">
-                {p.type === "text" ? (
+              <div className="h-full basis-1/2">
+                {/*
                   <input
                     value={p.value}
                     className="outline-none text-txtprim px-2 w-full h-full focus:text-lit focus:bg-sec"
@@ -58,6 +67,9 @@ const BodyFormData = ({ tabId, formData }) => {
                     maxLength="999"
                     onChange={(e) => updateFormData(tabId, p.id, "value", e.target.value)}
                   />
+                  */}
+                {p.type === "text" ? (
+                  <DraftEditor value={p.value} setValue={(e) => updateFormData(tabId, p.id, "value", e)} envVars={envVars} />
                 ) : (
                   <div className="w-full h-full px-2 flex items-center cursor-pointer" onClick={() => onChoseFile(p.id)}>
                     {p.files && p.files?.length ? (
@@ -81,14 +93,6 @@ const BodyFormData = ({ tabId, formData }) => {
               </div>
             </div>
           ))}
-        </div>
-      ) : null}
-      {!formData.length || (formData.length && formData[formData.length - 1].key !== "" && formData.length < 20) ? (
-        <div className="flex mt-2">
-          <div className="flex items-center gap-x-1 text-txtsec text-sm font-bold cursor-pointer hover:text-accent" onClick={() => addFormData(tabId)}>
-            <LuPlus size="16" />
-            <p>New</p>
-          </div>
         </div>
       ) : null}
     </div>

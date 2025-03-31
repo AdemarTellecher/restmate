@@ -66,8 +66,21 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			}
 		}
 	}
-	fmt.Println("vars -> ", vars)
-	u, err := url.Parse(r.Url)
+	var rgxURL string
+	if hasCol && len(vars) > 0 {
+		re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
+		output := re.ReplaceAllStringFunc(r.Url, func(match string) string {
+			key := re.FindStringSubmatch(match)[1]
+			if val, ok := vars[key]; ok {
+				return val
+			}
+			return match
+		})
+		rgxURL = output
+	} else {
+		rgxURL = r.Url
+	}
+	u, err := url.Parse(rgxURL)
 	if err != nil {
 		resp.Msg = "Error! cannot parse URL"
 		return
@@ -77,7 +90,21 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	p := u.Query()
 	for i := range r.Params {
 		if strings.TrimSpace(r.Params[i].Key) != "" {
-			p.Add(r.Params[i].Key, r.Params[i].Value)
+			var val string
+			if hasCol && len(vars) > 0 {
+				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
+				output := re.ReplaceAllStringFunc(r.Params[i].Value, func(match string) string {
+					key := re.FindStringSubmatch(match)[1]
+					if val, ok := vars[key]; ok {
+						return val
+					}
+					return match
+				})
+				val = output
+			} else {
+				val = r.Params[i].Value
+			}
+			p.Add(r.Params[i].Key, val)
 		}
 	}
 	u.RawQuery = p.Encode()
@@ -89,7 +116,21 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			for i := range r.Body.FormData {
 				fd := r.Body.FormData[i]
 				if fd.Type != "file" && fd.Key != "" {
-					err := writer.WriteField(fd.Key, fd.Value)
+					var val string
+					if hasCol && len(vars) > 0 {
+						re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
+						output := re.ReplaceAllStringFunc(fd.Value, func(match string) string {
+							key := re.FindStringSubmatch(match)[1]
+							if val, ok := vars[key]; ok {
+								return val
+							}
+							return match
+						})
+						val = output
+					} else {
+						val = fd.Value
+					}
+					err := writer.WriteField(fd.Key, val)
 					if err != nil {
 						resp.Msg = "Error! Failed to write field formdata"
 						return
@@ -118,25 +159,23 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			writer.Close()
 			body = &b
 			autoHeaders.Set("Content-Type", writer.FormDataContentType())
-		} else {
-			fmt.Println("post -> ", r.Body.BodyRaw)
+		} else if r.Body.BodyType == "json" {
 			if hasCol && len(vars) > 0 {
 				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
 				output := re.ReplaceAllStringFunc(r.Body.BodyRaw, func(match string) string {
-					fmt.Println("match --> ", match)
 					key := re.FindStringSubmatch(match)[1]
 					if val, ok := vars[key]; ok {
 						return val
 					}
 					return match
 				})
-				fmt.Println("out with vars -> ", output)
 				body = strings.NewReader(output)
 			} else {
-				fmt.Println("out raw body -> ", r.Body.BodyRaw)
 				body = strings.NewReader(r.Body.BodyRaw)
 			}
 			autoHeaders.Set("Content-Type", "application/json")
+		} else {
+			body = nil
 		}
 	} else {
 		body = nil
@@ -149,14 +188,31 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	req.Header.Set("User-Agent", "restmate/0.0.9")
 	req.Header.Set("Accept", "*/*")
 	req.Header.Set("Connection", "close")
-	for i := range r.Headers {
-		if strings.TrimSpace(r.Headers[i].Key) != "" {
-			req.Header.Set(r.Headers[i].Key, r.Headers[i].Value)
-		}
-	}
 	for k, values := range autoHeaders {
 		for _, v := range values {
 			req.Header.Add(k, v)
+		}
+	}
+	for i := range r.Headers {
+		if strings.Contains(r.Headers[i].Key, " ") {
+			continue
+		}
+		if strings.TrimSpace(r.Headers[i].Key) != "" {
+			var val string
+			if hasCol && len(vars) > 0 {
+				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
+				output := re.ReplaceAllStringFunc(r.Headers[i].Value, func(match string) string {
+					key := re.FindStringSubmatch(match)[1]
+					if val, ok := vars[key]; ok {
+						return val
+					}
+					return match
+				})
+				val = output
+			} else {
+				val = r.Headers[i].Value
+			}
+			req.Header.Set(r.Headers[i].Key, val)
 		}
 	}
 

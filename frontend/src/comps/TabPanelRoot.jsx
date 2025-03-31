@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReqHead from "./ReqHead";
 import ReqOptionTabs from "./reqOptions/ReqOptionTabs";
 import Response from "./response/Response";
@@ -6,20 +6,11 @@ import NullResponse from "./response/NullResponse";
 import { useStore } from "../store/store";
 
 const TabPanelRoot = ({ tab }) => {
-  const [envVars, setenvVars] = useState([]);
-  const cols = useStore((x) => x.collections);
-  useEffect(() => {
-    if (tab.coll_id && tab.coll_id !== "") {
-      let c = cols.find((x) => x.id === tab.coll_id);
-      if (c.variable && c.variable.length) {
-        setenvVars(c.variable);
-      }
-    }
-  }, [tab?.coll_id, cols]);
+  const cols = useStore((x) => x.collections.find((c) => c.id === tab.coll_id));
 
   return (
     <div className="h-full grid pt-4" id="tabPanelRoot" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0,100%)" }}>
-      <ReqHead tabId={tab.id} method={tab.method} url={tab.url} name={tab.name} coll_id={tab.coll_id} />
+      <ReqHead tabId={tab.id} method={tab.method} url={tab.url} name={tab.name} miniCol={{ id: cols?.id, name: cols?.name, envVars: cols?.variable }} />
       <div
         className="h-full w-full grid py-4"
         style={{
@@ -35,7 +26,7 @@ const TabPanelRoot = ({ tab }) => {
             bodyType={tab.body?.bodyType}
             bodyRaw={tab.body?.bodyRaw}
             formData={tab.body?.formData}
-            envVars={envVars}
+            envVars={cols?.variable}
           />
         </div>
         {/*no rsp and error handler here*/}

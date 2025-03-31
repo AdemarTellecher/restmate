@@ -57,6 +57,7 @@ const HandleSpan = (props) => {
   let output = extractEnv(props?.decoratedText);
   if (output) {
     let y = props?.envVars && props.envVars.find((v) => v.key === output);
+    console.log("find ->", output, y, props);
     if (y) {
       clx = "bg-green-600";
       h = `Value: ${y.value}`;

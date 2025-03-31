@@ -1,21 +1,30 @@
-import React from "react";
-import { LuCircle, LuCircleCheckBig, LuPlus, LuTrash2 } from "react-icons/lu";
+import React, { useEffect } from "react";
+import { LuCircle, LuCircleCheckBig, LuTrash2 } from "react-icons/lu";
 import { useStore } from "../../store/store";
+import DraftEditor from "../misc/DraftEditor";
 
-const ReqParams = ({ tabId, params }) => {
+const ReqParams = ({ tabId, params, envVars }) => {
   const updateParam = useStore((x) => x.updateParams);
   const deleteParam = useStore((x) => x.deleteParam);
   const addParam = useStore((x) => x.addParam);
+  useEffect(() => {
+    if (params && params.length) {
+      let last = params[params.length - 1];
+      if (last && last.key !== "") {
+        addParam(tabId);
+      }
+    }
+  }, [params]);
   return (
-    <div className="pt-2 h-full grid" style={{ gridTemplateRows: "min-content fit-content(100%) min-content" }}>
-      <div className="">
+    <div className="pt-2 h-full grid" style={{ gridTemplateRows: "min-content minmax(0,100%)" }}>
+      <div className="flex items-center justify-between">
         <p className="text-txtsec text-sm font-bold">Query Params</p>
       </div>
       {params && params.length ? (
-        <div className="mt-2 border border-lines overflow-y-auto overflow-x-hidden">
+        <div className="pt-2 overflow-y-auto overflow-x-hidden">
           {params.map((p) => (
-            <div key={p.id} className="flex items-center border-b border-lines last:border-none h-10">
-              <div className="border-r border-lines grow h-full">
+            <div key={p.id} className="flex items-center border border-b-0 border-lines last:border-b h-8">
+              <div className="border-r border-lines h-full basis-1/2">
                 <input
                   value={p.key}
                   className="outline-none text-txtprim text-sm px-2 w-full h-full focus:text-lit focus:bg-sec"
@@ -24,14 +33,8 @@ const ReqParams = ({ tabId, params }) => {
                   onChange={(e) => updateParam(tabId, p.id, "key", e.target.value)}
                 />
               </div>
-              <div className="grow h-full">
-                <input
-                  value={p.value}
-                  className="outline-none text-txtprim text-sm px-2 w-full h-full focus:text-lit focus:bg-sec"
-                  placeholder="value"
-                  maxLength="999"
-                  onChange={(e) => updateParam(tabId, p.id, "value", e.target.value)}
-                />
+              <div className="h-full basis-1/2">
+                <DraftEditor value={p.value} setValue={(e) => updateParam(tabId, p.id, "value", e)} envVars={envVars} />
               </div>
               <div
                 className="h-full flex items-center px-2 hover:bg-sec cursor-pointer border-x border-lines"
@@ -44,14 +47,6 @@ const ReqParams = ({ tabId, params }) => {
               </div>
             </div>
           ))}
-        </div>
-      ) : null}
-      {!params.length || (params.length && params[params.length - 1].key !== "" && params.length < 20) ? (
-        <div className="flex mt-2">
-          <div className="flex items-center gap-x-1 text-txtsec text-sm font-bold cursor-pointer hover:text-accent" onClick={() => addParam(tabId)}>
-            <LuPlus size="16" />
-            <p>New</p>
-          </div>
         </div>
       ) : null}
     </div>

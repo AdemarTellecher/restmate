@@ -8,30 +8,21 @@ import ModalLayout from "./misc/ModalLayout";
 import { toast } from "react-toastify";
 import DraftEditor from "./misc/DraftEditor";
 
-const ReqHead = ({ tabId, method, url, name, coll_id }) => {
-  console.log("reqHead render");
+const ReqHead = ({ tabId, method, url, name, miniCol }) => {
   const [saveModal, setSaveModal] = useState(false);
-  const [selcol, setSelcol] = useState(coll_id);
+  const [selcol, setSelcol] = useState(miniCol?.id);
   let saveLoad = useStore((x) => x.saveLoad);
   let invokeLoading = useStore((x) => x.invokeLoading);
   let cols = useStore((x) => x.collections);
-  const getColsName = () => {
-    if (coll_id) {
-      let rsp = useStore.getState().getColName(coll_id);
-      if (!rsp) return null;
-      return rsp + " / " + name;
-    }
-    return name;
-  };
   const updateReqModal = async () => {
-    if (coll_id !== null || coll_id === "") {
+    if (!miniCol?.id || miniCol?.id === "") {
+      setSelcol(miniCol?.id);
+      setSaveModal(true);
+    } else {
       let rsp = await useStore.getState().updateReq(tabId);
       if (rsp) {
         toast.success("Request saved successfully!");
       }
-    } else {
-      setSelcol(coll_id);
-      setSaveModal(true);
     }
   };
   const onUpdateReq = async (e) => {
@@ -57,14 +48,14 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
     await useStore.getState().invokeReq(tabId);
   };
 
-  const onChangeURL = (e) => {
-    useStore.getState().updateTab(tabId, "url", e);
-  };
   return (
     <div className="h-full px-6">
       <div className="flex items-center text-accent gap-x-2">
         <LuRadio />
-        <p className="text-sm text-txtprim max-w-2/3 truncate text-ellipsis">{getColsName()}</p>
+        <p className="text-sm text-txtprim max-w-2/3 truncate text-ellipsis">
+          {miniCol?.name && miniCol?.name + " / "}
+          {name}
+        </p>
       </div>
       <div className="mt-4">
         <div className="flex items-center gap-x-3 h-10">
@@ -95,15 +86,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id }) => {
                 DELETE
               </MenuItem>
             </Menu>
-            {/*
-            <input
-              value={url}
-              onChange={(e) => useStore.getState().updateTab(tabId, "url", e.target.value)}
-              className="border-l border-txtsec text-lit w-full h-full outline-none px-4 text-lg"
-              maxLength={999}
-            />
-            */}
-            <DraftEditor value={url} setValue={(e) => useStore.getState().updateTab("tabId", "url", e)} fontsm={false} />
+            <DraftEditor envVars={miniCol?.envVars} value={url} setValue={(e) => useStore.getState().updateTab(tabId, "url", e)} fontsm={false} />
           </div>
           <div className="h-full">
             <CustomButton clx="h-full px-8" name="Send" loading={invokeLoading} onClick={onInvokeReq} />
