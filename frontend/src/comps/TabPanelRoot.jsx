@@ -4,8 +4,10 @@ import ReqOptionTabs from "./reqOptions/ReqOptionTabs";
 import Response from "./response/Response";
 import NullResponse from "./response/NullResponse";
 import { useStore } from "../store/store";
+import { BarLoader } from "react-spinners";
 
 const TabPanelRoot = ({ tab }) => {
+  let invokeLoading = useStore((x) => x.invokeLoading);
   const cols = useStore((x) => x.collections.find((c) => c.id === tab.coll_id));
 
   return (
@@ -21,6 +23,7 @@ const TabPanelRoot = ({ tab }) => {
         <div className="border-r border-lines px-6 h-full w-full">
           <ReqOptionTabs
             tabId={tab.id}
+            reqTabInx={tab.reqTabInx || 0}
             params={tab.params}
             headers={tab.headers}
             bodyType={tab.body?.bodyType}
@@ -30,7 +33,15 @@ const TabPanelRoot = ({ tab }) => {
           />
         </div>
         {/*no rsp and error handler here*/}
-        {tab.response && tab.response.statusCode ? <Response response={tab.response} /> : <NullResponse />}
+
+        <div className="h-full w-full px-6 relative">
+          {invokeLoading && (
+            <div className="absolute left-0 w-full px-2" style={{ top: "-4px" }}>
+              <BarLoader width="100%" color="var(--color-accent)" height="1px" cssOverride={{ backgroundColor: "none" }} loading={invokeLoading} />
+            </div>
+          )}
+          {tab.response && tab.response.statusCode ? <Response response={tab.response} /> : <NullResponse />}
+        </div>
       </div>
     </div>
   );

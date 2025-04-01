@@ -7,6 +7,7 @@ import CustomButton from "./misc/CustomButton";
 import ModalLayout from "./misc/ModalLayout";
 import { toast } from "react-toastify";
 import DraftEditor from "./misc/DraftEditor";
+import { EventsEmit } from "../../wailsjs/runtime/runtime";
 
 const ReqHead = ({ tabId, method, url, name, miniCol }) => {
   const [saveModal, setSaveModal] = useState(false);
@@ -88,9 +89,15 @@ const ReqHead = ({ tabId, method, url, name, miniCol }) => {
             </Menu>
             <DraftEditor envVars={miniCol?.envVars} value={url} setValue={(e) => useStore.getState().updateTab(tabId, "url", e)} fontsm={false} />
           </div>
-          <div className="h-full">
-            <CustomButton clx="h-full px-8" name="Send" loading={invokeLoading} onClick={onInvokeReq} />
-          </div>
+          {invokeLoading ? (
+            <div className="h-full">
+              <CustomButton clx="h-full px-6" bg="bg-txtsec" name="Cancel" onClick={() => EventsEmit("cancelRequest")} />
+            </div>
+          ) : (
+            <div className="h-full">
+              <CustomButton clx="h-full px-8" name="Send" onClick={onInvokeReq} />
+            </div>
+          )}
           <div className="h-full">
             <CustomButton clx="h-full px-6" bg="bg-txtsec" loading={saveLoad} name={<LuSave size="20" />} onClick={updateReqModal} />
           </div>

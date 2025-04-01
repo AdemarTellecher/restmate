@@ -2,13 +2,13 @@ import { nanoid } from "nanoid";
 import { GetRequest, InvokeRequest } from "../../wailsjs/go/main/App";
 import { ChoseFile } from "../../wailsjs/go/main/App";
 
-function tabSchema(data = {}) {
+export function tabSchema(data = {}) {
   const defaults = {
     id: nanoid(),
     name: "Untitled",
     url: "",
     method: "get",
-    headers: [{ id: nanoid(), key: "lwkejr", value: "lkwer", active: true }],
+    headers: [{ id: nanoid(), key: "", value: "", active: true }],
     params: [{ id: nanoid(), key: "", value: "", active: true }],
     body: {
       bodyType: "json",
@@ -53,6 +53,7 @@ export const createTabsSlice = (set, get) => ({
     }
     console.log("invoking...", t);
     let rsp = await InvokeRequest(t);
+    console.log("invoke RSP -> ", rsp);
     if (!rsp.success) {
       set({ invokeLoading: false });
       return false;
@@ -79,6 +80,13 @@ export const createTabsSlice = (set, get) => ({
   },
   tabInx: 0,
   setTabInx: (i) => set(() => ({ tabInx: i })),
+  setReqTabInx: (id, i) => {
+    set((x) => {
+      const t = x.tabs.find((t) => t.id === id);
+      if (!t) return;
+      t.reqTabInx = i;
+    });
+  },
 
   createTab: () => set((x) => ({ tabs: [...x.tabs, tabSchema({ name: "Untitled" })], tabInx: x.tabs.length })),
 

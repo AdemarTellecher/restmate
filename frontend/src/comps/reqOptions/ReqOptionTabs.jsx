@@ -5,12 +5,13 @@ import ReqHeaders from "./ReqHeaders";
 import ReqBodyOption from "./ReqBodyOption";
 import BodyFormData from "./BodyFormData";
 import BodyJson from "./BodyJson";
+import { useStore } from "../../store/store";
 
-const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, envVars }) => {
+const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, envVars, reqTabInx }) => {
   // console.log("reqOptions tab render");
   return (
     <div className="h-full w-full">
-      <Tabs style={{ height: "100%", width: "100%" }}>
+      <Tabs style={{ height: "100%", width: "100%" }} selectedIndex={reqTabInx} onSelect={(i) => useStore.getState().setReqTabInx(tabId, i)}>
         <div className="grid h-full w-full" style={{ gridTemplateRows: "24px minmax(0, 100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
           <div>
             <TabList className="flex items-center h-full gap-x-4 text-sm">

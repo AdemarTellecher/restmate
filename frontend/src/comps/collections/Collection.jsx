@@ -58,6 +58,9 @@ const Collection = ({ col }) => {
           <MenuItem className="text-txtprim text-sm" onClick={() => setRenameCol(true)}>
             Rename
           </MenuItem>
+          <MenuItem className="text-txtprim text-sm" onClick={() => useStore.getState().addNewReqtoCol(col.id)}>
+            Add Request
+          </MenuItem>
           <MenuItem className="text-txtprim text-sm" onClick={() => setVarModal(true)}>
             Variables
           </MenuItem>

@@ -1,6 +1,5 @@
 import { Editor } from "@monaco-editor/react";
 import React, { useRef } from "react";
-import Spinner from "../misc/Spinner";
 import { useStore } from "../../store/store";
 import { ENVIRONMENT_REGEX, extractEnv } from "../../utils/utils";
 
@@ -75,11 +74,6 @@ const BodyJson = ({ tabId, bodyRaw, envVars }) => {
           className="myeditor"
           value={bodyRaw}
           onChange={(e) => updateReqBody(tabId, "bodyRaw", e)}
-          loading={
-            <div className="flex justify-center items-center h-full w-full">
-              <Spinner />
-            </div>
-          }
           options={{
             readOnly: false,
             overviewRulerBorder: false,

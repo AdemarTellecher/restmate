@@ -4,6 +4,7 @@ import { DeleteCollection } from "../../wailsjs/go/main/App";
 import { RenameRequest } from "../../wailsjs/go/main/App";
 import { AddCollection, GetCollections, RenameCollection, UpsertRequest } from "../../wailsjs/go/main/App";
 import { nanoid } from "nanoid";
+import { tabSchema } from "./tabSlice";
 export const createColSlice = (set, get) => ({
   collections: [],
   cLoading: false,
@@ -60,6 +61,21 @@ export const createColSlice = (set, get) => ({
     let c = get().collections.find((c) => c.id === id);
     if (!c) return false;
     return c.name;
+  },
+  addNewReqtoCol: async (coll_id) => {
+    set({ saveLoad: true });
+    let t = tabSchema({ coll_id });
+    let rsp = await UpsertRequest(t);
+    if (!rsp.success) {
+      set({ saveLoad: false });
+      return false;
+    }
+    set({ collections: rsp.data, saveLoad: false });
+    set((x) => {
+      x.tabs = [...x.tabs, t];
+      x.tabInx = x.tabs.length - 1;
+    });
+    return true;
   },
   updateReq: async (id) => {
     set({ saveLoad: true });

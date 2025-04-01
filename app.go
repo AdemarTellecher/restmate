@@ -21,8 +21,9 @@ import (
 
 // App struct
 type App struct {
-	ctx context.Context
-	db  string
+	ctx        context.Context
+	db         string
+	requestCtx context.CancelFunc
 }
 
 // NewApp creates a new App application struct
@@ -35,13 +36,34 @@ func NewApp() *App {
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+	runtime.EventsOn(ctx, "cancelRequest", func(_ ...interface{}) {
+		fmt.Println("GO EVENT Triggered --->")
+		if a.requestCtx != nil {
+			fmt.Println("GO Cancelling CTX --->")
+			a.requestCtx()
+			a.requestCtx = nil
+		}
+	})
 }
 
 func (a *App) InvokeRequest(r Request) (resp JSResp) {
+	fmt.Println("INVOKE -> ")
+	fmt.Printf("%+v\n", r)
+	if a.requestCtx != nil {
+		a.requestCtx()
+		a.requestCtx = nil
+	}
 	if r.Url == "" {
 		resp.Msg = "Error! URL cannot be empty"
 		return
 	}
+	ctx, cancel := context.WithTimeout(a.ctx, 5*time.Second)
+	a.requestCtx = cancel
+	defer func() {
+		cancel()
+		a.requestCtx = nil
+	}()
+
 	hasCol := false
 	vars := make(map[string]string)
 	if r.CollId != "" {
@@ -180,7 +202,9 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	} else {
 		body = nil
 	}
-	req, err := http.NewRequest(method, u.String(), body)
+	fmt.Println("FUNC CTX -> ", ctx)
+	fmt.Println("APP CTX -> ", a.requestCtx)
+	req, err := http.NewRequestWithContext(ctx, method, u.String(), body)
 	if err != nil {
 		resp.Msg = "Error! Request initiation failed"
 		return
