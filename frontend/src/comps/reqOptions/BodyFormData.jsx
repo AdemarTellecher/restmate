@@ -19,13 +19,15 @@ const BodyFormData = ({ tabId, formData, envVars }) => {
       if (last && last.key !== "") {
         addFormData(tabId);
       }
+    } else {
+      addFormData(tabId);
     }
   }, [formData]);
   return (
     <div className="h-full grid" style={{ gridTemplateRows: "minmax(0,100%)" }}>
       {formData && formData.length ? (
         <div className="pt-2 overflow-y-auto overflow-x-hidden">
-          {formData.map((p) => (
+          {formData.map((p, i) => (
             <div key={p.id} className="flex items-center border border-b-0 border-lines last:border-b h-8">
               <div className="border-r border-lines h-full basis-1/2">
                 <input
@@ -88,9 +90,15 @@ const BodyFormData = ({ tabId, formData, envVars }) => {
               >
                 {p.active ? <LuCircleCheckBig className="text-green-500" /> : <LuCircle className="text-txtsec" />}
               </div>
-              <div className="h-full flex items-center px-2 hover:bg-sec cursor-pointer" onClick={() => deleteFormData(tabId, p.id)}>
-                <LuTrash2 className="text-red-500" />
-              </div>
+              {formData.length === i + 1 ? (
+                <div className="h-full flex items-center px-2 hover:bg-sec">
+                  <LuTrash2 className="text-txtsec" />
+                </div>
+              ) : (
+                <div className="h-full flex items-center px-2 hover:bg-sec cursor-pointer" onClick={() => deleteFormData(tabId, p.id)}>
+                  <LuTrash2 className="text-red-500" />
+                </div>
+              )}
             </div>
           ))}
         </div>

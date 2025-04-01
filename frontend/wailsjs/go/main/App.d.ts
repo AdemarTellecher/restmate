@@ -14,6 +14,8 @@ export function DeleteRequest(arg1:string,arg2:string):Promise<main.JSResp>;
 
 export function DeleteVariable(arg1:string,arg2:string):Promise<main.JSResp>;
 
+export function DuplicateRequest(arg1:string,arg2:string):Promise<main.JSResp>;
+
 export function ExportCollection(arg1:string):Promise<main.JSResp>;
 
 export function GetCollections():Promise<main.JSResp>;

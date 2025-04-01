@@ -26,6 +26,10 @@ export function DeleteVariable(arg1, arg2) {
   return window['go']['main']['App']['DeleteVariable'](arg1, arg2);
 }
 
+export function DuplicateRequest(arg1, arg2) {
+  return window['go']['main']['App']['DuplicateRequest'](arg1, arg2);
+}
+
 export function ExportCollection(arg1) {
   return window['go']['main']['App']['ExportCollection'](arg1);
 }

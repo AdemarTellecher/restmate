@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/goccy/go-json"
+	"github.com/matoous/go-nanoid/v2"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -37,9 +38,7 @@ func NewApp() *App {
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	runtime.EventsOn(ctx, "cancelRequest", func(_ ...interface{}) {
-		fmt.Println("GO EVENT Triggered --->")
 		if a.requestCtx != nil {
-			fmt.Println("GO Cancelling CTX --->")
 			a.requestCtx()
 			a.requestCtx = nil
 		}
@@ -88,20 +87,23 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			}
 		}
 	}
-	var rgxURL string
-	if hasCol && len(vars) > 0 {
-		re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
-		output := re.ReplaceAllStringFunc(r.Url, func(match string) string {
-			key := re.FindStringSubmatch(match)[1]
-			if val, ok := vars[key]; ok {
-				return val
-			}
-			return match
-		})
-		rgxURL = output
-	} else {
-		rgxURL = r.Url
+	interpolateVars := func(v string) string {
+		if hasCol && len(vars) > 0 {
+			re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
+			o := re.ReplaceAllStringFunc(v, func(m string) string {
+				key := re.FindStringSubmatch(m)[1]
+				if val, ok := vars[key]; ok {
+					return val
+				}
+				return m
+			})
+			return o
+
+		} else {
+			return v
+		}
 	}
+	var rgxURL = interpolateVars(r.Url)
 	u, err := url.Parse(rgxURL)
 	if err != nil {
 		resp.Msg = "Error! cannot parse URL"
@@ -112,20 +114,7 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	p := u.Query()
 	for i := range r.Params {
 		if strings.TrimSpace(r.Params[i].Key) != "" {
-			var val string
-			if hasCol && len(vars) > 0 {
-				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
-				output := re.ReplaceAllStringFunc(r.Params[i].Value, func(match string) string {
-					key := re.FindStringSubmatch(match)[1]
-					if val, ok := vars[key]; ok {
-						return val
-					}
-					return match
-				})
-				val = output
-			} else {
-				val = r.Params[i].Value
-			}
+			var val = interpolateVars(r.Params[i].Value)
 			p.Add(r.Params[i].Key, val)
 		}
 	}
@@ -138,20 +127,7 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			for i := range r.Body.FormData {
 				fd := r.Body.FormData[i]
 				if fd.Type != "file" && fd.Key != "" {
-					var val string
-					if hasCol && len(vars) > 0 {
-						re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
-						output := re.ReplaceAllStringFunc(fd.Value, func(match string) string {
-							key := re.FindStringSubmatch(match)[1]
-							if val, ok := vars[key]; ok {
-								return val
-							}
-							return match
-						})
-						val = output
-					} else {
-						val = fd.Value
-					}
+					var val = interpolateVars(fd.Value)
 					err := writer.WriteField(fd.Key, val)
 					if err != nil {
 						resp.Msg = "Error! Failed to write field formdata"
@@ -182,19 +158,7 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			body = &b
 			autoHeaders.Set("Content-Type", writer.FormDataContentType())
 		} else if r.Body.BodyType == "json" {
-			if hasCol && len(vars) > 0 {
-				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
-				output := re.ReplaceAllStringFunc(r.Body.BodyRaw, func(match string) string {
-					key := re.FindStringSubmatch(match)[1]
-					if val, ok := vars[key]; ok {
-						return val
-					}
-					return match
-				})
-				body = strings.NewReader(output)
-			} else {
-				body = strings.NewReader(r.Body.BodyRaw)
-			}
+			body = strings.NewReader(interpolateVars(r.Body.BodyRaw))
 			autoHeaders.Set("Content-Type", "application/json")
 		} else {
 			body = nil
@@ -202,8 +166,6 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	} else {
 		body = nil
 	}
-	fmt.Println("FUNC CTX -> ", ctx)
-	fmt.Println("APP CTX -> ", a.requestCtx)
 	req, err := http.NewRequestWithContext(ctx, method, u.String(), body)
 	if err != nil {
 		resp.Msg = "Error! Request initiation failed"
@@ -222,20 +184,7 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 			continue
 		}
 		if strings.TrimSpace(r.Headers[i].Key) != "" {
-			var val string
-			if hasCol && len(vars) > 0 {
-				re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
-				output := re.ReplaceAllStringFunc(r.Headers[i].Value, func(match string) string {
-					key := re.FindStringSubmatch(match)[1]
-					if val, ok := vars[key]; ok {
-						return val
-					}
-					return match
-				})
-				val = output
-			} else {
-				val = r.Headers[i].Value
-			}
+			var val = interpolateVars(r.Headers[i].Value)
 			req.Header.Set(r.Headers[i].Key, val)
 		}
 	}
@@ -678,6 +627,60 @@ func (a *App) RenameCollection(id, name string) (resp JSResp) {
 	collRspSlice := makeCollRsp(&c)
 	resp.Success = true
 	resp.Msg = "Collection renamed successfully"
+	resp.Data = collRspSlice
+	return
+}
+func (a *App) DuplicateRequest(coll_id, req_id string) (resp JSResp) {
+	if coll_id == "" || req_id == "" {
+		resp.Msg = "Error! Cannot duplicate request"
+		return
+	}
+	f, err := os.ReadFile(a.db)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate request"
+		return
+	}
+	var c []Collection
+	err = json.Unmarshal(f, &c)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate request"
+		return
+	}
+	for i := range c {
+		if c[i].ID == coll_id {
+			var newReq Request
+			for j := range c[i].Requests {
+				if c[i].Requests[j].ID == req_id {
+					newReq = c[i].Requests[j]
+					break
+				}
+			}
+			if newReq.ID != "" {
+				nid, err := gonanoid.New()
+				if err != nil {
+					resp.Msg = "Error! Cannot duplicate request"
+					return
+				}
+				newReq.ID = nid
+				newReq.Name += " Copy"
+				c[i].Requests = append(c[i].Requests, newReq)
+			}
+			break
+		}
+	}
+	b, err := json.Marshal(c)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate request"
+		return
+	}
+	err = os.WriteFile(a.db, b, 0644)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate request"
+		return
+	}
+	collRspSlice := makeCollRsp(&c)
+	resp.Success = true
+	resp.Msg = "Request duplicated successfully"
 	resp.Data = collRspSlice
 	return
 }

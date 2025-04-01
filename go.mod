@@ -5,6 +5,7 @@ go 1.23
 require (
 	github.com/adrg/xdg v0.5.3
 	github.com/goccy/go-json v0.10.5
+	github.com/matoous/go-nanoid/v2 v2.1.0
 	github.com/wailsapp/wails/v2 v2.10.1
 )
 

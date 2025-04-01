@@ -34,7 +34,10 @@ const DraftEditor = ({ value, setValue, fontsm = true, envVars }) => {
   }
 
   return (
-    <div className={`h-full w-full text-lit flex items-center cursor-text ${fontsm ? "text-sm" : "text-lg"}`} onClick={() => drafteditRef.current.focus()}>
+    <div
+      className={`h-full break-all w-full text-lit flex items-center cursor-text ${fontsm ? "text-sm" : "text-lg"}`}
+      onClick={() => drafteditRef.current.focus()}
+    >
       <div
         className={`${focus ? "h-fit min-h-full relative self-start z-50 text-txtlit outline-2 outline-blue-500 pt-1" : `${fontsm ? "h-5 text-txtprim" : "h-8"} overflow-hidden`} w-full bg-brand rounded-sm break-all px-2`}
       >
@@ -46,6 +49,7 @@ const DraftEditor = ({ value, setValue, fontsm = true, envVars }) => {
           handleReturn={() => "handled"}
           onFocus={() => setfocus(true)}
           onBlur={() => setfocus(false)}
+          stripPastedStyles={true}
         />
       </div>
     </div>
@@ -57,7 +61,6 @@ const HandleSpan = (props) => {
   let output = extractEnv(props?.decoratedText);
   if (output) {
     let y = props?.envVars && props.envVars.find((v) => v.key === output);
-    console.log("find ->", output, y, props);
     if (y) {
       clx = "bg-green-600";
       h = `Value: ${y.value}`;
@@ -66,8 +69,14 @@ const HandleSpan = (props) => {
     }
   }
   return (
-    <Tippy content={h}>
-      <div className="relative group inline-block" data-offset-key={props.offsetKey}>
+    <Tippy
+      content={
+        <p className="truncate whitespace-nowrap overflow-ellipsis" style={{ maxWidth: "300px", maxHeight: "300px" }}>
+          {h}
+        </p>
+      }
+    >
+      <div className="group inline-block" data-offset-key={props.offsetKey}>
         <span className={`text-lit italic font-bold rounded-md ${clx}`}>{props.children}</span>
       </div>
     </Tippy>

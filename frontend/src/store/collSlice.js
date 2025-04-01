@@ -1,10 +1,11 @@
-import { AddVariable, DeleteRequest, DeleteVariable } from "../../wailsjs/go/main/App";
+import { AddVariable, DeleteRequest, DeleteVariable, DuplicateRequest } from "../../wailsjs/go/main/App";
 import { MoveRequest } from "../../wailsjs/go/main/App";
 import { DeleteCollection } from "../../wailsjs/go/main/App";
 import { RenameRequest } from "../../wailsjs/go/main/App";
 import { AddCollection, GetCollections, RenameCollection, UpsertRequest } from "../../wailsjs/go/main/App";
 import { nanoid } from "nanoid";
 import { tabSchema } from "./tabSlice";
+import { cleanUpRequest } from "../utils/utils";
 export const createColSlice = (set, get) => ({
   collections: [],
   cLoading: false,
@@ -64,7 +65,8 @@ export const createColSlice = (set, get) => ({
   },
   addNewReqtoCol: async (coll_id) => {
     set({ saveLoad: true });
-    let t = tabSchema({ coll_id });
+    let rClone = tabSchema({ coll_id });
+    let t = cleanUpRequest(rClone);
     let rsp = await UpsertRequest(t);
     if (!rsp.success) {
       set({ saveLoad: false });
@@ -77,11 +79,22 @@ export const createColSlice = (set, get) => ({
     });
     return true;
   },
+  onDuplicateReq: async (coll_id, id) => {
+    set({ cLoading: true });
+    let rsp = await DuplicateRequest(coll_id, id);
+    if (!rsp.success) {
+      set({ cLoading: false });
+      return false;
+    }
+    set({ cLoading: false, collections: rsp.data });
+    return true;
+  },
   updateReq: async (id) => {
     set({ saveLoad: true });
     let tab = get().tabs.find((t) => t.id === id);
-    let t = structuredClone(tab);
-    delete t.response;
+    let rClone = structuredClone(tab);
+    delete rClone.response;
+    let t = cleanUpRequest(rClone);
     let rsp = await UpsertRequest(t);
     console.log(rsp);
     if (!rsp.success) {
@@ -96,8 +109,9 @@ export const createColSlice = (set, get) => ({
     //delete tab when collection is deleted
     set({ saveLoad: true });
     let tab = get().tabs.find((t) => t.id === id);
-    let t = structuredClone(tab);
-    delete t.response;
+    let rClone = structuredClone(tab);
+    delete rClone.response;
+    let t = cleanUpRequest(rClone);
     t.name = name;
     t.coll_id = coll_id;
     console.log(t);

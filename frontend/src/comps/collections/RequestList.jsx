@@ -46,6 +46,9 @@ const RequestList = ({ req }) => {
         <MenuItem className="text-txtprim text-sm" onClick={() => setRenameModal(true)}>
           Rename
         </MenuItem>
+        <MenuItem className="text-txtprim text-sm" onClick={() => useStore.getState().onDuplicateReq(req.coll_id, req.id)}>
+          Duplicate
+        </MenuItem>
         <MenuItem className="text-txtprim text-sm" onClick={() => setmoveReqModal(true)}>
           Move
         </MenuItem>

@@ -13,6 +13,8 @@ const ReqHeaders = ({ tabId, headers, envVars }) => {
       if (last && last.key !== "") {
         addHeaders(tabId);
       }
+    } else {
+      addHeaders(tabId);
     }
   }, [headers]);
   return (
@@ -22,7 +24,7 @@ const ReqHeaders = ({ tabId, headers, envVars }) => {
       </div>
       {headers && headers.length ? (
         <div className="pt-2 overflow-y-auto overflow-x-hidden">
-          {headers.map((p) => (
+          {headers.map((p, i) => (
             <div key={p.id} className="flex items-center border border-b-0 border-lines last:border-b h-8">
               <div className="border-r border-lines h-full basis-1/2">
                 <input
@@ -42,9 +44,15 @@ const ReqHeaders = ({ tabId, headers, envVars }) => {
               >
                 {p.active ? <LuCircleCheckBig className="text-green-500" /> : <LuCircle className="text-txtsec" />}
               </div>
-              <div className="h-full flex items-center px-2 hover:bg-sec cursor-pointer" onClick={() => deleteHeaders(tabId, p.id)}>
-                <LuTrash2 className="text-red-500" />
-              </div>
+              {headers.length === i + 1 ? (
+                <div className="h-full flex items-center px-2 hover:bg-sec">
+                  <LuTrash2 className="text-txtsec" />
+                </div>
+              ) : (
+                <div className="h-full flex items-center px-2 hover:bg-sec cursor-pointer" onClick={() => deleteHeaders(tabId, p.id)}>
+                  <LuTrash2 className="text-red-500" />
+                </div>
+              )}
             </div>
           ))}
         </div>

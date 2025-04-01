@@ -9,10 +9,10 @@ const RspHeaders = ({ headers }) => {
           {headers &&
             headers.map((h, id) => (
               <div key={id} className="flex items-cetner border-b border-lines py-2 last:border-none">
-                <div className="basis-1/2 border-r border-lines px-2 font-bold grow shrink-0">
+                <div className="basis-4/12 border-r border-lines px-2 font-bold grow shrink-0">
                   <p>{h.key}</p>
                 </div>
-                <div className="basis-1/2 px-2 grow shrink-0">
+                <div className="basis-8/12 px-2 grow shrink-0">
                   <p className="break-words break-all">{h.value}</p>
                 </div>
               </div>

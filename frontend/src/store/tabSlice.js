@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { GetRequest, InvokeRequest } from "../../wailsjs/go/main/App";
 import { ChoseFile } from "../../wailsjs/go/main/App";
+import { cleanUpRequest } from "../utils/utils";
 
 export function tabSchema(data = {}) {
   const defaults = {
@@ -36,21 +37,9 @@ export const createTabsSlice = (set, get) => ({
   invokeReq: async (id) => {
     set({ invokeLoading: true });
     let tab = get().tabs.find((t) => t.id === id);
-    let t = structuredClone(tab);
-    delete t.response;
-    t.headers = t.headers.filter((h) => h.key !== "" && h.active === true);
-    t.params = t.params.filter((h) => h.key !== "" && h.active === true);
-    t.body.formData = t.body.formData.filter((h) => h.key !== "" && h.active === true);
-    if (t.body?.bodyType === "json") {
-      t.body.formData = [];
-    }
-    if (t.body?.bodyType === "formdata") {
-      t.body.bodyRaw = "";
-    }
-    if (t.body?.bodyType === "none") {
-      t.body.bodyRaw = "";
-      t.body.formData = [];
-    }
+    let rClone = structuredClone(tab);
+    delete rClone.response;
+    let t = cleanUpRequest(rClone);
     console.log("invoking...", t);
     let rsp = await InvokeRequest(t);
     console.log("invoke RSP -> ", rsp);
@@ -152,18 +141,18 @@ export const createTabsSlice = (set, get) => ({
     set((x) => {
       let t = x.tabs.find((t) => t.id === id);
       if (!t) return;
-      if (t.headers.length > 1) {
-        t.headers = t.headers.filter((h) => h.id !== pId);
-      } else {
-        t.headers = [{ id: nanoid(), key: "", value: "", active: true }];
-      }
+      t.headers = t.headers.filter((h) => h.id !== pId);
     }),
 
   addHeaders: (id) =>
     set((x) => {
       let t = x.tabs.find((t) => t.id === id);
       if (!t) return;
-      t.headers.push({ id: nanoid(), key: "", value: "", active: true });
+      if (t.headers === null || !t.headers.length) {
+        t.headers = [{ id: nanoid(), key: "", value: "", active: true }];
+      } else {
+        t.headers.push({ id: nanoid(), key: "", value: "", active: true });
+      }
     }),
 
   updateParams: (id, pId, key, value) =>
@@ -179,11 +168,7 @@ export const createTabsSlice = (set, get) => ({
     set((x) => {
       let t = x.tabs.find((t) => t.id === id);
       if (!t) return;
-      if (t.params.length > 1) {
-        t.params = t.params.filter((h) => h.id !== pId);
-      } else {
-        t.params = [{ id: nanoid(), key: "", value: "", active: true }];
-      }
+      t.params = t.params.filter((h) => h.id !== pId);
     }),
 
   addParam: (id) =>
@@ -209,11 +194,7 @@ export const createTabsSlice = (set, get) => ({
     set((x) => {
       let t = x.tabs.find((t) => t.id === id);
       if (!t) return;
-      if (t.body?.formData.length > 1) {
-        t.body.formData = t.body.formData.filter((h) => h.id !== pId);
-      } else {
-        t.body.formData = [{ id: nanoid(), key: "", value: "", files: [], type: "text", active: true }];
-      }
+      t.body.formData = t.body.formData.filter((h) => h.id !== pId);
     }),
   addFormData: (id) =>
     set((x) => {
