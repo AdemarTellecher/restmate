@@ -413,7 +413,7 @@ func (a *App) ExportCollection(id string) (resp JSResp) {
 	resp.Msg = "Error! Cannot Export collection"
 	return
 }
-func (a *App) MoveRequest(id, coll_id, new_coll_id string) (resp JSResp) {
+func (a *App) MoveRequest(id, new_id, coll_id, new_coll_id string) (resp JSResp) {
 	if id == "" || coll_id == "" || new_coll_id == "" {
 		resp.Msg = "Error! Cannot move request"
 		return
@@ -448,6 +448,7 @@ func (a *App) MoveRequest(id, coll_id, new_coll_id string) (resp JSResp) {
 	opr := false
 	for i := range c {
 		if c[i].ID == new_coll_id {
+			mReq.ID = new_id
 			mReq.CollId = new_coll_id
 			c[i].Requests = append(c[i].Requests, mReq)
 			opr = true

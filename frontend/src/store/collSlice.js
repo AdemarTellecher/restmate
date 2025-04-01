@@ -3,6 +3,7 @@ import { MoveRequest } from "../../wailsjs/go/main/App";
 import { DeleteCollection } from "../../wailsjs/go/main/App";
 import { RenameRequest } from "../../wailsjs/go/main/App";
 import { AddCollection, GetCollections, RenameCollection, UpsertRequest } from "../../wailsjs/go/main/App";
+import { nanoid } from "nanoid";
 export const createColSlice = (set, get) => ({
   collections: [],
   cLoading: false,
@@ -157,8 +158,9 @@ export const createColSlice = (set, get) => ({
     return true;
   },
   moveReq: async (id, coll_id, new_coll_id) => {
+    let new_id = nanoid();
     set({ cLoading: true });
-    let rsp = await MoveRequest(id, coll_id, new_coll_id);
+    let rsp = await MoveRequest(id, new_id, coll_id, new_coll_id);
     if (!rsp.success) {
       set({ cLoading: false });
       return false;
@@ -167,6 +169,7 @@ export const createColSlice = (set, get) => ({
       x.collections = rsp.data;
       let tab = x.tabs.find((t) => t.id === id);
       if (tab) {
+        tab.id = new_id;
         tab.coll_id = new_coll_id;
       }
       x.cLoading = false;

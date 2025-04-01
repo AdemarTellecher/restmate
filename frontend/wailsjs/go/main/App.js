@@ -42,8 +42,8 @@ export function InvokeRequest(arg1) {
   return window['go']['main']['App']['InvokeRequest'](arg1);
 }
 
-export function MoveRequest(arg1, arg2, arg3) {
-  return window['go']['main']['App']['MoveRequest'](arg1, arg2, arg3);
+export function MoveRequest(arg1, arg2, arg3, arg4) {
+  return window['go']['main']['App']['MoveRequest'](arg1, arg2, arg3, arg4);
 }
 
 export function RenameCollection(arg1, arg2) {

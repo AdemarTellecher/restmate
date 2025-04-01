@@ -22,7 +22,7 @@ export function GetRequest(arg1:string,arg2:string):Promise<main.JSResp>;
 
 export function InvokeRequest(arg1:main.Request):Promise<main.JSResp>;
 
-export function MoveRequest(arg1:string,arg2:string,arg3:string):Promise<main.JSResp>;
+export function MoveRequest(arg1:string,arg2:string,arg3:string,arg4:string):Promise<main.JSResp>;
 
 export function RenameCollection(arg1:string,arg2:string):Promise<main.JSResp>;
 
