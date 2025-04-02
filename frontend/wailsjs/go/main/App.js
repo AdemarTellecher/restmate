@@ -6,6 +6,10 @@ export function AddCollection(arg1, arg2) {
   return window['go']['main']['App']['AddCollection'](arg1, arg2);
 }
 
+export function AddEnv() {
+  return window['go']['main']['App']['AddEnv']();
+}
+
 export function AddVariable(arg1, arg2) {
   return window['go']['main']['App']['AddVariable'](arg1, arg2);
 }

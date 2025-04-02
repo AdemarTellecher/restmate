@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function AddCollection(arg1:string,arg2:string):Promise<main.JSResp>;
 
+export function AddEnv():Promise<main.JSResp>;
+
 export function AddVariable(arg1:string,arg2:main.KV):Promise<main.JSResp>;
 
 export function ChoseFile():Promise<main.JSResp>;

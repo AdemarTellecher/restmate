@@ -48,7 +48,7 @@ const ReqHead = ({ tabId, method, url, name, miniCol }) => {
   const onInvokeReq = async () => {
     let rsp = await useStore.getState().invokeReq(tabId);
     if (!rsp) {
-      toast.error("Error! Request failed.");
+      toast.error("Error! Invalid request format.");
     }
   };
 

@@ -26,7 +26,8 @@ func main() {
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		OnStartup: func(ctx context.Context) {
-			app.initFile()
+			app.initFile("restmate_db.json", "db")
+			app.initFile("restmate_env.json", "env")
 			app.startup(ctx)
 		},
 		Bind: []interface{}{

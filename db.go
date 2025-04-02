@@ -8,12 +8,16 @@ import (
 	"github.com/adrg/xdg"
 )
 
-func (a *App) initFile() {
+func (a *App) initFile(fileName, t string) {
 	folderName := "restmate"
-	fileName := "restmate_db.json"
 	folderPath := path.Join(xdg.DataHome, folderName)
 	filePath := path.Join(folderPath, fileName)
-	a.db = filePath
+	if t == "db" {
+		a.db = filePath
+	}
+	if t == "env" {
+		a.env = filePath
+	}
 	if _, err := os.Stat(filePath); err == nil {
 		fmt.Println("Collection file already exists. No changes made.")
 		return

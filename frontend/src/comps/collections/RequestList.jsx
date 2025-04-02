@@ -1,4 +1,4 @@
-import { LuEllipsis } from "react-icons/lu";
+import { LuCopy, LuEllipsis, LuExternalLink, LuMove, LuPencil, LuTrash } from "react-icons/lu";
 import { useStore } from "../../store/store";
 import { getReqType } from "../../utils/helper";
 import { Menu, MenuItem } from "@szhsin/react-menu";
@@ -40,19 +40,24 @@ const RequestList = ({ req }) => {
         direction="bottom"
         gap={0}
       >
-        <MenuItem className="text-txtprim text-sm" onClick={() => useStore.getState().openTab(req)}>
+        <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => useStore.getState().openTab(req)}>
+          <LuExternalLink />
           Open in Tab
         </MenuItem>
-        <MenuItem className="text-txtprim text-sm" onClick={() => setRenameModal(true)}>
+        <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => setRenameModal(true)}>
+          <LuPencil />
           Rename
         </MenuItem>
-        <MenuItem className="text-txtprim text-sm" onClick={() => useStore.getState().onDuplicateReq(req.coll_id, req.id)}>
+        <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => useStore.getState().onDuplicateReq(req.coll_id, req.id)}>
+          <LuCopy />
           Duplicate
         </MenuItem>
-        <MenuItem className="text-txtprim text-sm" onClick={() => setmoveReqModal(true)}>
+        <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => setmoveReqModal(true)}>
+          <LuMove />
           Move
         </MenuItem>
-        <MenuItem className="text-red-400 text-sm" onClick={() => onDeleteReq()}>
+        <MenuItem className="text-red-400 text-sm gap-x-2" onClick={() => onDeleteReq()}>
+          <LuTrash />
           Delete
         </MenuItem>
       </Menu>

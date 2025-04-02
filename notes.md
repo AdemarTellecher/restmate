@@ -1,5 +1,4 @@
-
-# Todos:
+## Todos:
 
 - [ ] button active not working
 - [ ] Import restmate collection
@@ -11,13 +10,13 @@
 
 ---
 
-# About
+## About
 
 > **Restmate** is a lightweight and blazzing fast Rest API client written in GO.
 
 ---
 
-# Info Table
+## Info Table
 
 | Name     | Version | GO Version | Wails Version | React Version |
 | -------- | ------- | ---------- | ------------- | ------------- |

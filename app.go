@@ -23,6 +23,7 @@ import (
 type App struct {
 	ctx        context.Context
 	db         string
+	env        string
 	requestCtx context.CancelFunc
 }
 

@@ -69,3 +69,9 @@ type CollRsp struct {
 	Requests []ReqRsp `json:"requests"`
 	Variable []KV     `json:"variable"`
 }
+
+type Env struct {
+	ID       string            `json:"id"`
+	Name     string            `json:"name"`
+	Variable map[string]string `json:"variable"`
+}

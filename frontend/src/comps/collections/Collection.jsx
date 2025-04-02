@@ -1,5 +1,5 @@
 import { useCollapse } from "react-collapsed";
-import { LuChevronDown, LuChevronRight, LuEllipsis } from "react-icons/lu";
+import { LuChevronDown, LuChevronRight, LuDownload, LuEllipsis, LuPencil, LuPlus, LuTrash } from "react-icons/lu";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import RequestList from "./RequestList";
 import { useState } from "react";
@@ -55,19 +55,20 @@ const Collection = ({ col }) => {
           direction="bottom"
           gap={0}
         >
-          <MenuItem className="text-txtprim text-sm" onClick={() => setRenameCol(true)}>
+          <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => setRenameCol(true)}>
+            <LuPencil />
             Rename
           </MenuItem>
-          <MenuItem className="text-txtprim text-sm" onClick={() => useStore.getState().addNewReqtoCol(col.id)}>
+          <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => useStore.getState().addNewReqtoCol(col.id)}>
+            <LuPlus />
             Add Request
           </MenuItem>
-          <MenuItem className="text-txtprim text-sm" onClick={() => setVarModal(true)}>
-            Variables
-          </MenuItem>
-          <MenuItem className="text-txtprim text-sm" onClick={() => exportCollection()}>
+          <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => exportCollection()}>
+            <LuDownload />
             Export
           </MenuItem>
-          <MenuItem className="text-red-400 text-sm" onClick={() => onDeleteCol()}>
+          <MenuItem className="text-red-400 text-sm gap-x-2" onClick={() => onDeleteCol()}>
+            <LuTrash />
             Delete
           </MenuItem>
         </Menu>
