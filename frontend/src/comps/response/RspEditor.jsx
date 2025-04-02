@@ -3,7 +3,6 @@ import { Editor } from "@monaco-editor/react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LuBraces, LuChevronDown, LuCodeXml, LuCopy, LuWrapText } from "react-icons/lu";
 import { IoLogoJavascript } from "react-icons/io";
-import Spinner from "../misc/Spinner";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 
@@ -27,7 +26,6 @@ const RspEditor = ({ lang, bodyContent }) => {
     });
   };
 
-  console.log("editorlang", lang, editorLang);
   const bodyTypeIcon = (l) => {
     if (l === "JSON") {
       return (
@@ -55,7 +53,6 @@ const RspEditor = ({ lang, bodyContent }) => {
     }
   };
   function monacoSetup(monaco) {
-    console.log("theme ", monaco);
     monaco.editor.defineTheme("redTheme", {
       base: "vs-dark",
       inherit: true,
@@ -126,16 +123,12 @@ const RspEditor = ({ lang, bodyContent }) => {
             theme="redTheme"
             className="myeditor"
             value={bodyContent}
-            loading={
-              <div className="flex justify-center items-center h-full w-full">
-                <Spinner />
-              </div>
-            }
+            loading={<div className="bg-none"></div>}
             options={{
               readOnly: true,
               overviewRulerBorder: false,
               useShadowDOM: false,
-              lineNumbersMinChars: 3,
+              lineNumbersMinChars: 2,
               cursorBlinking: "smooth",
               codeLens: false,
               scrollBeyondLastLine: false,

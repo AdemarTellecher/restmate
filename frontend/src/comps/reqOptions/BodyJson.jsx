@@ -74,17 +74,18 @@ const BodyJson = ({ tabId, bodyRaw, envVars }) => {
           className="myeditor"
           value={bodyRaw}
           onChange={(e) => updateReqBody(tabId, "bodyRaw", e)}
+          loading={<div className="bg-none"></div>}
           options={{
             readOnly: false,
             overviewRulerBorder: false,
             useShadowDOM: false,
-            lineNumbersMinChars: 3,
+            lineNumbersMinChars: 2,
             cursorBlinking: "smooth",
             codeLens: false,
             scrollBeyondLastLine: false,
             wordWrap: "on",
             formatOnPaste: true,
-            formatOnType: true,
+            formatOnType: false,
             minimap: {
               enabled: false,
             },

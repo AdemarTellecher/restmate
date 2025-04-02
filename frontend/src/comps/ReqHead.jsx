@@ -46,7 +46,10 @@ const ReqHead = ({ tabId, method, url, name, miniCol }) => {
     }
   };
   const onInvokeReq = async () => {
-    await useStore.getState().invokeReq(tabId);
+    let rsp = await useStore.getState().invokeReq(tabId);
+    if (!rsp) {
+      toast.error("Error! Request failed.");
+    }
   };
 
   return (

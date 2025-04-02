@@ -54,6 +54,7 @@ export const createTabsSlice = (set, get) => ({
       }
       x.invokeLoading = false;
     });
+    return true
   },
   openChoseFile: async (tabId, form_id) => {
     let rsp = await ChoseFile();

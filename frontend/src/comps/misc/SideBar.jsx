@@ -11,7 +11,6 @@ const SideBar = () => {
   const [newColModal, setnewColModal] = useState(false);
   let cLoading = useStore((x) => x.cLoading);
   let cols = useStore((x) => x.collections);
-  console.log("cols ->", cols);
   let closeW = "50px";
   let openW = "250px";
 

@@ -42,7 +42,7 @@
 
     --theme-color-lines: var(--color-gray-700);
     --theme-color-txtprim: var(--color-gray-300);
-    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-txtsec: var(--color-neutral-500);
     --theme-color-lit: var(--color-white);
   }
   [data-theme="postman"] {
