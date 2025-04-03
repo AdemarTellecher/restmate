@@ -4,6 +4,7 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { createColSlice } from "./collSlice";
 import { createAppSlice } from "./appSlice";
+import { createEnvSlice } from "./envSlice";
 
 export const useStore = create()(
   devtools(
@@ -11,6 +12,7 @@ export const useStore = create()(
       ...createTabsSlice(...a),
       ...createColSlice(...a),
       ...createAppSlice(...a),
+      ...createEnvSlice(...a),
     })),
   ),
 );

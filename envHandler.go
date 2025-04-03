@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/goccy/go-json"
@@ -8,6 +9,23 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+func (a *App) GetEnvs() (resp JSResp) {
+	f, err := os.ReadFile(a.env)
+	if err != nil {
+		resp.Msg = "Error! Cannot add Envs"
+		return
+	}
+	var e []Env
+	err = json.Unmarshal(f, &e)
+	if err != nil {
+		resp.Msg = "Error! Cannot add Envs"
+		return
+	}
+	resp.Success = true
+	resp.Msg = "Envs fetched successfully"
+	resp.Data = e
+	return
+}
 func (a *App) AddEnv(name string) (resp JSResp) {
 	if name == "" {
 		resp.Msg = "Error! Cannot add env"
@@ -103,10 +121,12 @@ func (a *App) DeleteEnv(id string) (resp JSResp) {
 	return
 }
 func (a *App) AddVar(id, key, value string) (resp JSResp) {
+	fmt.Println("addENV -> ", id, key, value)
 	if id == "" || key == "" || value == "" {
 		resp.Msg = "Error! Cannot add variable"
 		return
 	}
+	fmt.Println("addENV -> ", id, key, value)
 	f, err := os.ReadFile(a.env)
 	if err != nil {
 		resp.Msg = "Error! Cannot add variable"
@@ -118,6 +138,7 @@ func (a *App) AddVar(id, key, value string) (resp JSResp) {
 		resp.Msg = "Error! Cannot add variable"
 		return
 	}
+	fmt.Printf("%+v\n", e)
 	for i := range e {
 		if e[i].ID == id {
 			if e[i].Variable == nil {
@@ -127,6 +148,7 @@ func (a *App) AddVar(id, key, value string) (resp JSResp) {
 			break
 		}
 	}
+	fmt.Printf("%+v\n", e)
 	b, err := json.Marshal(e)
 	if err != nil {
 		resp.Msg = "Error! Cannot add variable"

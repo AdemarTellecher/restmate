@@ -7,6 +7,7 @@ import "tippy.js/dist/tippy.css";
 function App() {
   useEffect(() => {
     useStore.getState().getCollections();
+    useStore.getState().getEnvs();
   }, []);
   return (
     <Layout>

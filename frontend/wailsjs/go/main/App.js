@@ -6,8 +6,12 @@ export function AddCollection(arg1, arg2) {
   return window['go']['main']['App']['AddCollection'](arg1, arg2);
 }
 
-export function AddEnv() {
-  return window['go']['main']['App']['AddEnv']();
+export function AddEnv(arg1) {
+  return window['go']['main']['App']['AddEnv'](arg1);
+}
+
+export function AddVar(arg1, arg2, arg3) {
+  return window['go']['main']['App']['AddVar'](arg1, arg2, arg3);
 }
 
 export function AddVariable(arg1, arg2) {
@@ -22,8 +26,16 @@ export function DeleteCollection(arg1) {
   return window['go']['main']['App']['DeleteCollection'](arg1);
 }
 
+export function DeleteEnv(arg1) {
+  return window['go']['main']['App']['DeleteEnv'](arg1);
+}
+
 export function DeleteRequest(arg1, arg2) {
   return window['go']['main']['App']['DeleteRequest'](arg1, arg2);
+}
+
+export function DeleteVar(arg1, arg2) {
+  return window['go']['main']['App']['DeleteVar'](arg1, arg2);
 }
 
 export function DeleteVariable(arg1, arg2) {
@@ -40,6 +52,10 @@ export function ExportCollection(arg1) {
 
 export function GetCollections() {
   return window['go']['main']['App']['GetCollections']();
+}
+
+export function GetEnvs() {
+  return window['go']['main']['App']['GetEnvs']();
 }
 
 export function GetRequest(arg1, arg2) {

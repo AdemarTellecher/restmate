@@ -1,4 +1,4 @@
-import { AddVariable, DeleteRequest, DeleteVariable, DuplicateRequest } from "../../wailsjs/go/main/App";
+import { DeleteRequest, DuplicateRequest } from "../../wailsjs/go/main/App";
 import { MoveRequest } from "../../wailsjs/go/main/App";
 import { DeleteCollection } from "../../wailsjs/go/main/App";
 import { RenameRequest } from "../../wailsjs/go/main/App";
@@ -35,26 +35,6 @@ export const createColSlice = (set, get) => ({
     }
     let v = get().collections.find((c) => c.id === coll_id);
     return v.variable;
-  },
-  addNewVar: async (coll_id, kv) => {
-    set({ cLoading: true });
-    let rsp = await AddVariable(coll_id, kv);
-    if (!rsp.success) {
-      set({ cLoading: false });
-      return false;
-    }
-    set({ collections: rsp.data, cLoading: false });
-    return true;
-  },
-  deleteVar: async (coll_id, name) => {
-    set({ cLoading: true });
-    let rsp = await DeleteVariable(coll_id, name);
-    if (!rsp.success) {
-      set({ cLoading: false });
-      return false;
-    }
-    set({ collections: rsp.data, cLoading: false });
-    return true;
   },
   getColName: (id) => {
     let c = get().collections.find((c) => c.id === id);
