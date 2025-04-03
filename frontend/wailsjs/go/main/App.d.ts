@@ -8,8 +8,6 @@ export function AddEnv(arg1:string):Promise<main.JSResp>;
 
 export function AddVar(arg1:string,arg2:string,arg3:string):Promise<main.JSResp>;
 
-export function AddVariable(arg1:string,arg2:main.KV):Promise<main.JSResp>;
-
 export function ChoseFile():Promise<main.JSResp>;
 
 export function DeleteCollection(arg1:string):Promise<main.JSResp>;
@@ -19,8 +17,6 @@ export function DeleteEnv(arg1:string):Promise<main.JSResp>;
 export function DeleteRequest(arg1:string,arg2:string):Promise<main.JSResp>;
 
 export function DeleteVar(arg1:string,arg2:string):Promise<main.JSResp>;
-
-export function DeleteVariable(arg1:string,arg2:string):Promise<main.JSResp>;
 
 export function DuplicateRequest(arg1:string,arg2:string):Promise<main.JSResp>;
 
@@ -38,6 +34,10 @@ export function MoveRequest(arg1:string,arg2:string,arg3:string,arg4:string):Pro
 
 export function RenameCollection(arg1:string,arg2:string):Promise<main.JSResp>;
 
+export function RenameEnv(arg1:string,arg2:string):Promise<main.JSResp>;
+
 export function RenameRequest(arg1:string,arg2:string,arg3:string):Promise<main.JSResp>;
+
+export function SelectEnv(arg1:string):Promise<main.JSResp>;
 
 export function UpsertRequest(arg1:main.Request):Promise<main.JSResp>;

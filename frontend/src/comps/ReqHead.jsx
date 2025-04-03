@@ -9,15 +9,15 @@ import { toast } from "react-toastify";
 import DraftEditor from "./misc/DraftEditor";
 import { EventsEmit } from "../../wailsjs/runtime/runtime";
 
-const ReqHead = ({ tabId, method, url, name, miniCol }) => {
+const ReqHead = ({ tabId, method, url, name, coll_id, envVars }) => {
   const [saveModal, setSaveModal] = useState(false);
-  const [selcol, setSelcol] = useState(miniCol?.id);
+  const [selcol, setSelcol] = useState(coll_id);
   let saveLoad = useStore((x) => x.saveLoad);
   let invokeLoading = useStore((x) => x.invokeLoading);
   let cols = useStore((x) => x.collections);
   const updateReqModal = async () => {
-    if (!miniCol?.id || miniCol?.id === "") {
-      setSelcol(miniCol?.id);
+    if (!coll_id || coll_id === "") {
+      setSelcol(coll_id);
       setSaveModal(true);
     } else {
       let rsp = await useStore.getState().updateReq(tabId);
@@ -25,6 +25,14 @@ const ReqHead = ({ tabId, method, url, name, miniCol }) => {
         toast.success("Request saved successfully!");
       }
     }
+  };
+  const getColsName = () => {
+    if (coll_id) {
+      let c = cols && cols.find((x) => x.id === coll_id);
+      if (!c) return name;
+      return c.name + " / " + name;
+    }
+    return name;
   };
   const onUpdateReq = async (e) => {
     e.preventDefault();
@@ -54,12 +62,11 @@ const ReqHead = ({ tabId, method, url, name, miniCol }) => {
 
   return (
     <div className="h-full px-6">
-      <div className="flex items-center text-accent gap-x-2">
-        <LuRadio />
-        <p className="text-sm text-txtprim max-w-2/3 truncate text-ellipsis">
-          {miniCol?.name && miniCol?.name + " / "}
-          {name}
-        </p>
+      <div className="flex justify-between items-center gap-x-x">
+        <div className="flex items-center text-accent gap-x-2 grow">
+          <LuRadio />
+          <p className="text-sm text-txtprim max-w-2/3 truncate text-ellipsis">{getColsName()}</p>
+        </div>
       </div>
       <div className="mt-4">
         <div className="flex items-center gap-x-3 h-10">
@@ -90,7 +97,7 @@ const ReqHead = ({ tabId, method, url, name, miniCol }) => {
                 DELETE
               </MenuItem>
             </Menu>
-            <DraftEditor envVars={miniCol?.envVars} value={url} setValue={(e) => useStore.getState().updateTab(tabId, "url", e)} fontsm={false} />
+            <DraftEditor envVars={envVars} value={url} setValue={(e) => useStore.getState().updateTab(tabId, "url", e)} fontsm={false} />
           </div>
           {invokeLoading ? (
             <div className="h-full">

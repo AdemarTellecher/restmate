@@ -14,10 +14,6 @@ export function AddVar(arg1, arg2, arg3) {
   return window['go']['main']['App']['AddVar'](arg1, arg2, arg3);
 }
 
-export function AddVariable(arg1, arg2) {
-  return window['go']['main']['App']['AddVariable'](arg1, arg2);
-}
-
 export function ChoseFile() {
   return window['go']['main']['App']['ChoseFile']();
 }
@@ -36,10 +32,6 @@ export function DeleteRequest(arg1, arg2) {
 
 export function DeleteVar(arg1, arg2) {
   return window['go']['main']['App']['DeleteVar'](arg1, arg2);
-}
-
-export function DeleteVariable(arg1, arg2) {
-  return window['go']['main']['App']['DeleteVariable'](arg1, arg2);
 }
 
 export function DuplicateRequest(arg1, arg2) {
@@ -74,8 +66,16 @@ export function RenameCollection(arg1, arg2) {
   return window['go']['main']['App']['RenameCollection'](arg1, arg2);
 }
 
+export function RenameEnv(arg1, arg2) {
+  return window['go']['main']['App']['RenameEnv'](arg1, arg2);
+}
+
 export function RenameRequest(arg1, arg2, arg3) {
   return window['go']['main']['App']['RenameRequest'](arg1, arg2, arg3);
+}
+
+export function SelectEnv(arg1) {
+  return window['go']['main']['App']['SelectEnv'](arg1);
 }
 
 export function UpsertRequest(arg1) {

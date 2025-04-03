@@ -7,11 +7,9 @@ import RenameCol from "./RenameCol";
 import { ExportCollection } from "../../../wailsjs/go/main/App";
 import { toast } from "react-toastify";
 import { useStore } from "../../store/store";
-import VarModal from "./VarModal";
 
 const Collection = ({ col }) => {
   const [renameCol, setRenameCol] = useState(false);
-  const [varModal, setVarModal] = useState(false);
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
 
   const exportCollection = async () => {
@@ -83,7 +81,6 @@ const Collection = ({ col }) => {
         )}
       </section>
       {renameCol && <RenameCol renameCol={renameCol} setRenameCol={setRenameCol} col={col} />}
-      {varModal && <VarModal varModal={varModal} setVarModal={setVarModal} vars={col.variable} coll_id={col.id} coll_name={col.name} />}
     </div>
   );
 };

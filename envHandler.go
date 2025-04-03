@@ -26,6 +26,84 @@ func (a *App) GetEnvs() (resp JSResp) {
 	resp.Data = e
 	return
 }
+
+func (a *App) SelectEnv(id string) (resp JSResp) {
+	if id == "" {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	f, err := os.ReadFile(a.env)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	var e []Env
+	err = json.Unmarshal(f, &e)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	for i := range e {
+		if e[i].ID == id {
+			e[i].Selected = true
+			continue
+		}
+		e[i].Selected = false
+	}
+	b, err := json.Marshal(e)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	err = os.WriteFile(a.env, b, 0644)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	resp.Success = true
+	resp.Msg = "Env renamed successfully"
+	resp.Data = e
+	return
+}
+
+func (a *App) RenameEnv(id, name string) (resp JSResp) {
+	if name == "" || id == "" {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	f, err := os.ReadFile(a.env)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	var e []Env
+	err = json.Unmarshal(f, &e)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	for i := range e {
+		if e[i].ID == id {
+			e[i].Name = name
+			break
+		}
+	}
+	b, err := json.Marshal(e)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	err = os.WriteFile(a.env, b, 0644)
+	if err != nil {
+		resp.Msg = "Error! Cannot rename env"
+		return
+	}
+	resp.Success = true
+	resp.Msg = "Env renamed successfully"
+	resp.Data = e
+	return
+}
+
 func (a *App) AddEnv(name string) (resp JSResp) {
 	if name == "" {
 		resp.Msg = "Error! Cannot add env"
@@ -68,6 +146,7 @@ func (a *App) AddEnv(name string) (resp JSResp) {
 	resp.Data = e
 	return
 }
+
 func (a *App) DeleteEnv(id string) (resp JSResp) {
 	if id == "" {
 		resp.Msg = "Error! Cannot delete env"
@@ -120,6 +199,7 @@ func (a *App) DeleteEnv(id string) (resp JSResp) {
 	resp.Data = e
 	return
 }
+
 func (a *App) AddVar(id, key, value string) (resp JSResp) {
 	fmt.Println("addENV -> ", id, key, value)
 	if id == "" || key == "" || value == "" {
@@ -164,6 +244,7 @@ func (a *App) AddVar(id, key, value string) (resp JSResp) {
 	resp.Data = e
 	return
 }
+
 func (a *App) DeleteVar(id, key string) (resp JSResp) {
 	if id == "" || key == "" {
 		resp.Msg = "Error! Cannot delete variable"

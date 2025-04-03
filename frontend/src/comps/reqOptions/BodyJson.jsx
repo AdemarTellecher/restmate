@@ -38,25 +38,10 @@ const BodyJson = ({ tabId, bodyRaw, envVars }) => {
         const end = start + match[0].length;
         const startPos = model.getPositionAt(start);
         const endPos = model.getPositionAt(end);
-        let clx = "";
-        let tooltip = "Value: Variable Not found!";
-        if (match[0]) {
-          const output = extractEnv(match[0]);
-          let x = envVars && envVars.find((v) => v.key === output);
-          if (!x) {
-            clx = "manacoEnvError";
-          } else {
-            clx = "manacoEnvFound";
-            tooltip = `Value: ${x.value}`;
-          }
-        }
         return {
           range: new monaco.Range(startPos.lineNumber, startPos.column, endPos.lineNumber, endPos.column),
           options: {
-            inlineClassName: clx,
-            hoverMessage: {
-              value: tooltip,
-            },
+            inlineClassName: "manacoEnvFound",
           },
         };
       });

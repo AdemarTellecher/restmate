@@ -1,8 +1,17 @@
-import { AddEnv, AddVar, DeleteVar, GetEnvs } from "../../wailsjs/go/main/App";
+import { AddEnv, AddVar, DeleteVar, GetEnvs, SelectEnv } from "../../wailsjs/go/main/App";
 
 export const createEnvSlice = (set) => ({
   envs: [],
-  envLoading: false,
+  setSelectedEnv: async (id) => {
+    set({ envLoading: true });
+    let rsp = await SelectEnv(id);
+    if (!rsp.success) {
+      set({ envLoading: false });
+      return false;
+    }
+    set({ envLoading: false, envs: rsp.data });
+    return true;
+  },
   addEnv: async (name) => {
     set({ envLoading: true });
     let rsp = await AddEnv(name);

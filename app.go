@@ -59,32 +59,26 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		a.requestCtx = nil
 	}()
 
-	hasCol := false
 	vars := make(map[string]string)
-	if r.CollId != "" {
-		hasCol = true
-		f, err := os.ReadFile(a.db)
-		if err != nil {
-			resp.Msg = "Error! Failed to read collection"
-			return
-		}
-		var c []Collection
-		err = json.Unmarshal(f, &c)
-		if err != nil {
-			resp.Msg = "Error! Failed to unmarshal collection"
-			return
-		}
-		for i := range c {
-			if c[i].ID == r.CollId {
-				for j := range c[i].Variable {
-					vars[c[i].Variable[j].Key] = c[i].Variable[j].Value
-				}
-				break
-			}
+	f, err := os.ReadFile(a.env)
+	if err != nil {
+		resp.Msg = "Error! Failed to read env file"
+		return
+	}
+	var e []Env
+	err = json.Unmarshal(f, &e)
+	if err != nil {
+		resp.Msg = "Error! Failed to unmarshal Env file"
+		return
+	}
+	for i := range e {
+		if e[i].Selected == true {
+			vars = e[i].Variable
+			break
 		}
 	}
 	interpolateVars := func(v string) string {
-		if hasCol && len(vars) > 0 {
+		if len(vars) > 0 {
 			re := regexp.MustCompile(`\{\{([\w.-]+)\}\}`)
 			o := re.ReplaceAllStringFunc(v, func(m string) string {
 				key := re.FindStringSubmatch(m)[1]
@@ -100,6 +94,9 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		}
 	}
 	var rgxURL = interpolateVars(r.Url)
+	if !strings.HasPrefix(rgxURL, "http://") && !strings.HasPrefix(rgxURL, "https://") {
+		rgxURL = "https://" + rgxURL
+	}
 	u, err := url.Parse(rgxURL)
 	if err != nil {
 		resp.Msg = "Error! cannot parse URL"
@@ -233,97 +230,6 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	return
 }
 
-func (a *App) DeleteVariable(coll_id string, name string) (resp JSResp) {
-	if coll_id == "" || name == "" {
-		resp.Msg = "Error! Cannot delete variable"
-		return
-	}
-	f, err := os.ReadFile(a.db)
-	if err != nil {
-		resp.Msg = "Error! Cannot delete variable"
-		return
-	}
-	var c []Collection
-	err = json.Unmarshal(f, &c)
-	if err != nil {
-		resp.Msg = "Error! Cannot delete variable"
-		return
-	}
-	for i := range c {
-		if c[i].ID == coll_id {
-			for j := range c[i].Variable {
-				if c[i].Variable[j].Key == name {
-					c[i].Variable = append(c[i].Variable[:j], c[i].Variable[j+1:]...)
-					break
-				}
-			}
-			break
-		}
-	}
-	b, err := json.Marshal(c)
-	if err != nil {
-		resp.Msg = "Error! Cannot delete variable"
-		return
-	}
-	err = os.WriteFile(a.db, b, 0644)
-	if err != nil {
-		resp.Msg = "Error! Cannot delete variable"
-		return
-	}
-	collRspSlice := makeCollRsp(&c)
-	resp.Success = true
-	resp.Msg = "Variable deleted successfully"
-	resp.Data = collRspSlice
-	return
-}
-func (a *App) AddVariable(coll_id string, v KV) (resp JSResp) {
-	if coll_id == "" || v.Key == "" || v.Value == "" {
-		resp.Msg = "Error! Cannot add new variable"
-		return
-	}
-	f, err := os.ReadFile(a.db)
-	if err != nil {
-		resp.Msg = "Error! Cannot add new variable"
-		return
-	}
-	var c []Collection
-	err = json.Unmarshal(f, &c)
-	if err != nil {
-		resp.Msg = "Error! Cannot add new variable"
-		return
-	}
-	for i := range c {
-		if c[i].ID == coll_id {
-			found := false
-			for j := range c[i].Variable {
-				if c[i].Variable[j].Key == v.Key {
-					c[i].Variable[j] = v
-					found = true
-					break
-				}
-			}
-			if !found {
-				c[i].Variable = append(c[i].Variable, v)
-			}
-			break
-		}
-	}
-	b, err := json.Marshal(c)
-	if err != nil {
-		resp.Msg = "Error! Cannot add new variable"
-		return
-	}
-	err = os.WriteFile(a.db, b, 0644)
-	if err != nil {
-		resp.Msg = "Error! Cannot add new variable"
-		return
-	}
-	collRspSlice := makeCollRsp(&c)
-	resp.Success = true
-	resp.Msg = "Variable add successfully to collection"
-	resp.Data = collRspSlice
-	return
-}
 func (a *App) ChoseFile() (resp JSResp) {
 	s, err := runtime.OpenMultipleFilesDialog(a.ctx, runtime.OpenDialogOptions{
 		Title: "Choose files",
@@ -382,6 +288,7 @@ func (a *App) ExportCollection(id string) (resp JSResp) {
 	resp.Msg = "Error! Cannot Export collection"
 	return
 }
+
 func (a *App) MoveRequest(id, new_id, coll_id, new_coll_id string) (resp JSResp) {
 	if id == "" || coll_id == "" || new_coll_id == "" {
 		resp.Msg = "Error! Cannot move request"
@@ -476,6 +383,7 @@ func (a *App) GetRequest(id, coll_id string) (resp JSResp) {
 	resp.Msg = "Error! Cannot fetch request"
 	return
 }
+
 func (a *App) UpsertRequest(r Request) (resp JSResp) {
 	opr := false
 	if r.CollId == "" || r.ID == "" {
@@ -531,6 +439,7 @@ func (a *App) UpsertRequest(r Request) (resp JSResp) {
 	resp.Data = collRspSlice
 	return
 }
+
 func (a *App) GetCollections() (resp JSResp) {
 	f, err := os.ReadFile(a.db)
 	if err != nil {
@@ -549,6 +458,7 @@ func (a *App) GetCollections() (resp JSResp) {
 	resp.Data = collRspSlice
 	return
 }
+
 func (a *App) AddCollection(id, name string) (resp JSResp) {
 	if id == "" || name == "" {
 		resp.Msg = "Error! Cannot add collection"
@@ -569,7 +479,6 @@ func (a *App) AddCollection(id, name string) (resp JSResp) {
 		ID:       id,
 		Name:     name,
 		Requests: []Request{},
-		Variable: []KV{},
 	}
 	c = append(c, newCol)
 	b, err := json.Marshal(c)
@@ -588,6 +497,7 @@ func (a *App) AddCollection(id, name string) (resp JSResp) {
 	resp.Data = collRspSlice
 	return
 }
+
 func (a *App) RenameCollection(id, name string) (resp JSResp) {
 	if id == "" || name == "" {
 		resp.Msg = "Error! Cannot rename collection"
@@ -626,6 +536,7 @@ func (a *App) RenameCollection(id, name string) (resp JSResp) {
 	resp.Data = collRspSlice
 	return
 }
+
 func (a *App) DuplicateRequest(coll_id, req_id string) (resp JSResp) {
 	if coll_id == "" || req_id == "" {
 		resp.Msg = "Error! Cannot duplicate request"
@@ -680,6 +591,7 @@ func (a *App) DuplicateRequest(coll_id, req_id string) (resp JSResp) {
 	resp.Data = collRspSlice
 	return
 }
+
 func (a *App) RenameRequest(coll_id, req_id, req_name string) (resp JSResp) {
 	if coll_id == "" || req_id == "" || req_name == "" {
 		resp.Msg = "Error! Cannot rename request"
@@ -723,6 +635,7 @@ func (a *App) RenameRequest(coll_id, req_id, req_name string) (resp JSResp) {
 	resp.Data = collRspSlice
 	return
 }
+
 func (a *App) DeleteRequest(coll_id, req_id string) (resp JSResp) {
 	if coll_id == "" || req_id == "" {
 		resp.Msg = "Error! Cannot delete request"
@@ -856,11 +769,11 @@ func makeCollRsp(c *[]Collection) []CollRsp {
 			ID:       (*c)[i].ID,
 			Name:     (*c)[i].Name,
 			Requests: reqRspSlice,
-			Variable: (*c)[i].Variable,
 		})
 	}
 	return collRspSlice
 }
+
 func parseMethod(m string) string {
 	if m == "get" {
 		return "GET"
@@ -873,6 +786,7 @@ func parseMethod(m string) string {
 	}
 	return "GET"
 }
+
 func parseResponseHeaders(data *http.Header) []KV {
 	var result []KV
 	for k, v := range *data {

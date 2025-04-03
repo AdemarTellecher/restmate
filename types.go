@@ -40,7 +40,6 @@ type Collection struct {
 	ID       string    `json:"id"`
 	Name     string    `json:"name"`
 	Requests []Request `json:"requests"`
-	Variable []KV      `json:"variable"`
 }
 
 type KV struct {
@@ -67,11 +66,11 @@ type CollRsp struct {
 	ID       string   `json:"id"`
 	Name     string   `json:"name"`
 	Requests []ReqRsp `json:"requests"`
-	Variable []KV     `json:"variable"`
 }
 
 type Env struct {
 	ID       string            `json:"id"`
 	Name     string            `json:"name"`
+	Selected bool              `json:"selected"`
 	Variable map[string]string `json:"variable"`
 }

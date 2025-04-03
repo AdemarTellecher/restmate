@@ -8,11 +8,11 @@ import { BarLoader } from "react-spinners";
 
 const TabPanelRoot = ({ tab }) => {
   let invokeLoading = useStore((x) => x.invokeLoading);
-  const cols = useStore((x) => x.collections.find((c) => c.id === tab.coll_id));
+  let sEnv = useStore((x) => x.envs.find((e) => e.selected));
 
   return (
     <div className="h-full grid pt-4" id="tabPanelRoot" style={{ gridTemplateRows: "min-content minmax(0,100%)", gridTemplateColumns: "minmax(0,100%)" }}>
-      <ReqHead tabId={tab.id} method={tab.method} url={tab.url} name={tab.name} miniCol={{ id: cols?.id, name: cols?.name, envVars: cols?.variable }} />
+      <ReqHead tabId={tab.id} method={tab.method} url={tab.url} name={tab.name} coll_id={tab.coll_id} envVars={sEnv?.variable} />
       <div
         className="h-full w-full grid py-4"
         style={{
@@ -29,7 +29,7 @@ const TabPanelRoot = ({ tab }) => {
             bodyType={tab.body?.bodyType}
             bodyRaw={tab.body?.bodyRaw}
             formData={tab.body?.formData}
-            envVars={cols?.variable}
+            envVars={sEnv?.variable}
           />
         </div>
         {/*no rsp and error handler here*/}

@@ -29,18 +29,6 @@ export const createColSlice = (set, get) => ({
     set({ cLoading: false, collections: rsp.data });
     return true;
   },
-  getVars: (coll_id) => {
-    if (!coll_id || coll_id === "") {
-      return [];
-    }
-    let v = get().collections.find((c) => c.id === coll_id);
-    return v.variable;
-  },
-  getColName: (id) => {
-    let c = get().collections.find((c) => c.id === id);
-    if (!c) return false;
-    return c.name;
-  },
   addNewReqtoCol: async (coll_id) => {
     set({ saveLoad: true });
     let rClone = tabSchema({ coll_id });

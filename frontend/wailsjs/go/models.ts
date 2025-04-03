@@ -73,20 +73,6 @@ export namespace main {
 	        this.data = source["data"];
 	    }
 	}
-	export class KV {
-	    key: string;
-	    value: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new KV(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.key = source["key"];
-	        this.value = source["value"];
-	    }
-	}
 	export class KeyValue {
 	    id: string;
 	    key: string;
