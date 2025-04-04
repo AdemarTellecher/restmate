@@ -24,6 +24,7 @@ type App struct {
 	ctx        context.Context
 	db         string
 	env        string
+	settings   string
 	requestCtx context.CancelFunc
 }
 

@@ -27,10 +27,10 @@
 @layer base {
   :root {
     /* --theme-color-brand: rgb(13 23 33); */
-    --theme-color-brand: rgb(33 33 33);
+    --theme-color-brand: #212121;
     /* --theme-color-sec: rgb(19 31 43); */
-    --theme-color-sec: rgb(38 38 38);
-    --theme-color-accent: rgb(99 102 241);
+    --theme-color-sec: #262626;
+    --theme-color-accent: #6366fb;
 
     --theme-color-lines: var(--color-gray-700);
     --theme-color-txtprim: var(--color-gray-300);
@@ -68,10 +68,10 @@
     --theme-color-lit: var(--color-white);
   }
   [data-theme="postman"] {
-    --theme-color-brand: rgb(33 33 33);
-    --theme-color-sec: rgb(38 38 38);
+    --theme-color-brand: #212121;
+    --theme-color-sec: #262626;
     /* --theme-color-accent: var(--color-indigo-400); */
-    --theme-color-accent: rgb(255 108 55);
+    --theme-color-accent: #ff6c37;
 
     --theme-color-lines: var(--color-gray-700);
     --theme-color-txtprim: var(--color-gray-300);

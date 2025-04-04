@@ -1,22 +1,23 @@
 import { Editor } from "@monaco-editor/react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useStore } from "../../store/store";
-import { ENVIRONMENT_REGEX, extractEnv } from "../../utils/utils";
+import { ENVIRONMENT_REGEX } from "../../utils/utils";
 
-const BodyJson = ({ tabId, bodyRaw, envVars }) => {
+const BodyJson = ({ tabId, bodyRaw }) => {
   const updateReqBody = useStore((x) => x.updateReqBody);
+  const theme = useStore((x) => x.settings.theme);
+  useEffect(() => {
+    if (monacoRef.current) {
+      setMonacoBackground(monacoRef.current);
+    }
+  }, [theme]);
   const editorRef = useRef(null);
+  const monacoRef = useRef(null);
   const decorationsRef = useRef([]);
+
   function monacoSetup(monaco) {
-    monaco.editor.defineTheme("redTheme", {
-      base: "vs-dark",
-      inherit: true,
-      rules: [],
-      colors: {
-        "editor.background": "#212121",
-      },
-    });
-    monaco.editor.setTheme("redTheme");
+    monacoRef.current = monaco;
+    setMonacoBackground(monaco);
   }
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
@@ -55,8 +56,7 @@ const BodyJson = ({ tabId, bodyRaw, envVars }) => {
           width="100%"
           height="100%"
           defaultLanguage="json"
-          theme="redTheme"
-          className="myeditor"
+          theme="restTheme"
           value={bodyRaw}
           onChange={(e) => updateReqBody(tabId, "bodyRaw", e)}
           loading={<div className="bg-none"></div>}
@@ -82,5 +82,17 @@ const BodyJson = ({ tabId, bodyRaw, envVars }) => {
     </div>
   );
 };
+function setMonacoBackground(monaco) {
+  const brandColor = getComputedStyle(document.documentElement).getPropertyValue("--color-brand").trim();
+  monaco.editor.defineTheme("restTheme", {
+    base: "vs-dark",
+    inherit: true,
+    rules: [],
+    colors: {
+      "editor.background": brandColor,
+    },
+  });
+  monaco.editor.setTheme("restTheme");
+}
 
 export default React.memo(BodyJson);

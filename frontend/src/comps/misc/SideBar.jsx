@@ -20,7 +20,7 @@ const SideBar = () => {
   let openW = "250px";
 
   const applytheme = (t) => {
-    document.documentElement.setAttribute("data-theme", t);
+    useStore.getState().setSettings("theme", t);
   };
   const createNewEnv = async (e) => {
     e.preventDefault();
@@ -69,6 +69,15 @@ const SideBar = () => {
               className="text-txtsec w-full flex justify-center items-center cursor-pointer hover:bg-sec hover:text-lit"
               style={{ height: "48px" }}
               onClick={() => applytheme("ayu")}
+            >
+              <LuCog size="22" />
+            </div>
+          </Tippy>
+          <Tippy content="theme" delay="300">
+            <div
+              className="text-txtsec w-full flex justify-center items-center cursor-pointer hover:bg-sec hover:text-lit"
+              style={{ height: "48px" }}
+              onClick={() => applytheme("dracula")}
             >
               <LuCog size="22" />
             </div>

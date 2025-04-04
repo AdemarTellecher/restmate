@@ -54,6 +54,10 @@ export function GetRequest(arg1, arg2) {
   return window['go']['main']['App']['GetRequest'](arg1, arg2);
 }
 
+export function GetSettings() {
+  return window['go']['main']['App']['GetSettings']();
+}
+
 export function InvokeRequest(arg1) {
   return window['go']['main']['App']['InvokeRequest'](arg1);
 }
@@ -76,6 +80,10 @@ export function RenameRequest(arg1, arg2, arg3) {
 
 export function SelectEnv(arg1) {
   return window['go']['main']['App']['SelectEnv'](arg1);
+}
+
+export function SetSettings(arg1, arg2) {
+  return window['go']['main']['App']['SetSettings'](arg1, arg2);
 }
 
 export function UpsertRequest(arg1) {

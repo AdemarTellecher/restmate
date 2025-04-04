@@ -12,11 +12,16 @@ func (a *App) initFile(fileName, t string) {
 	folderName := "restmate"
 	folderPath := path.Join(xdg.DataHome, folderName)
 	filePath := path.Join(folderPath, fileName)
+	writeStr := `[]`
 	if t == "db" {
 		a.db = filePath
 	}
 	if t == "env" {
 		a.env = filePath
+	}
+	if t == "settings" {
+		a.settings = filePath
+		writeStr = `{"theme": ""}`
 	}
 	if _, err := os.Stat(filePath); err == nil {
 		fmt.Println("Collection file already exists. No changes made.")
@@ -35,7 +40,7 @@ func (a *App) initFile(fileName, t string) {
 		return
 	}
 	defer file.Close()
-	_, err = file.WriteString("[]")
+	_, err = file.WriteString(writeStr)
 	if err != nil {
 		fmt.Println("Error writing to file:", err)
 		return

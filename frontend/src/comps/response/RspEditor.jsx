@@ -5,11 +5,19 @@ import { LuBraces, LuChevronDown, LuCodeXml, LuCopy, LuWrapText } from "react-ic
 import { IoLogoJavascript } from "react-icons/io";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
+import { useStore } from "../../store/store";
 
 const RspEditor = ({ lang, bodyContent }) => {
   const [editorLang, seteditorLang] = useState(lang);
   const [wrap, setWrap] = useState(true);
   const rspRef = useRef(null);
+  const monacoRef = useRef(null);
+  const theme = useStore((x) => x.settings.theme);
+  useEffect(() => {
+    if (monacoRef.current) {
+      setMonacoBackground(monacoRef.current);
+    }
+  }, [theme]);
   const formatBody = () => {
     rspRef.current.updateOptions({ readOnly: false });
     rspRef.current
@@ -53,18 +61,15 @@ const RspEditor = ({ lang, bodyContent }) => {
     }
   };
   function monacoSetup(monaco) {
-    monaco.editor.defineTheme("redTheme", {
-      base: "vs-dark",
-      inherit: true,
-      rules: [],
-      colors: {
-        "editor.background": "#212121",
-      },
-    });
-    monaco.editor.setTheme("redTheme");
+    monacoRef.current = monaco;
+    setMonacoBackground(monaco);
   }
   const editorMount = (e) => {
     rspRef.current = e;
+    e.updateOptions({ readOnly: false });
+    e.getAction("editor.action.formatDocument")
+      .run()
+      .then(() => rspRef.current.updateOptions({ readOnly: true }));
   };
   return (
     <div className="h-full w-full grid pt-2" style={{ gridTemplateRows: "min-content minmax(0, 100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
@@ -120,7 +125,7 @@ const RspEditor = ({ lang, bodyContent }) => {
             height="100%"
             language={editorLang === "JAVASCRIPT" ? "Javascript" : editorLang === "HTML" ? "html" : "json"}
             saveViewState={false}
-            theme="redTheme"
+            theme="restTheme"
             className="myeditor"
             value={bodyContent}
             loading={<div className="bg-none"></div>}
@@ -146,5 +151,17 @@ const RspEditor = ({ lang, bodyContent }) => {
     </div>
   );
 };
+function setMonacoBackground(monaco) {
+  const brandColor = getComputedStyle(document.documentElement).getPropertyValue("--color-brand").trim();
+  monaco.editor.defineTheme("restTheme", {
+    base: "vs-dark",
+    inherit: true,
+    rules: [],
+    colors: {
+      "editor.background": brandColor,
+    },
+  });
+  monaco.editor.setTheme("restTheme");
+}
 
 export default React.memo(RspEditor);

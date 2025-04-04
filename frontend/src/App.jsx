@@ -5,10 +5,16 @@ import { useStore } from "./store/store";
 import "tippy.js/dist/tippy.css";
 
 function App() {
+  const loading = useStore((x) => x.appLoading);
   useEffect(() => {
+    useStore.getState().getSettings();
     useStore.getState().getCollections();
     useStore.getState().getEnvs();
   }, []);
+
+  if (loading) {
+    return null;
+  }
   return (
     <Layout>
       <TabsRoot />

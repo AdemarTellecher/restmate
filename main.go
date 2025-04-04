@@ -28,6 +28,7 @@ func main() {
 		OnStartup: func(ctx context.Context) {
 			app.initFile("restmate_db.json", "db")
 			app.initFile("restmate_env.json", "env")
+			app.initFile("restmate_settings.json", "settings")
 			app.startup(ctx)
 		},
 		Bind: []interface{}{

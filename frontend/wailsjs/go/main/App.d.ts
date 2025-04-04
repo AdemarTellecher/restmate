@@ -28,6 +28,8 @@ export function GetEnvs():Promise<main.JSResp>;
 
 export function GetRequest(arg1:string,arg2:string):Promise<main.JSResp>;
 
+export function GetSettings():Promise<main.JSResp>;
+
 export function InvokeRequest(arg1:main.Request):Promise<main.JSResp>;
 
 export function MoveRequest(arg1:string,arg2:string,arg3:string,arg4:string):Promise<main.JSResp>;
@@ -39,5 +41,7 @@ export function RenameEnv(arg1:string,arg2:string):Promise<main.JSResp>;
 export function RenameRequest(arg1:string,arg2:string,arg3:string):Promise<main.JSResp>;
 
 export function SelectEnv(arg1:string):Promise<main.JSResp>;
+
+export function SetSettings(arg1:string,arg2:string):Promise<main.JSResp>;
 
 export function UpsertRequest(arg1:main.Request):Promise<main.JSResp>;

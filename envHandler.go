@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/goccy/go-json"
@@ -12,13 +11,13 @@ import (
 func (a *App) GetEnvs() (resp JSResp) {
 	f, err := os.ReadFile(a.env)
 	if err != nil {
-		resp.Msg = "Error! Cannot add Envs"
+		resp.Msg = "Error! Cannot get Envs"
 		return
 	}
 	var e []Env
 	err = json.Unmarshal(f, &e)
 	if err != nil {
-		resp.Msg = "Error! Cannot add Envs"
+		resp.Msg = "Error! Cannot get Envs"
 		return
 	}
 	resp.Success = true
@@ -201,12 +200,10 @@ func (a *App) DeleteEnv(id string) (resp JSResp) {
 }
 
 func (a *App) AddVar(id, key, value string) (resp JSResp) {
-	fmt.Println("addENV -> ", id, key, value)
 	if id == "" || key == "" || value == "" {
 		resp.Msg = "Error! Cannot add variable"
 		return
 	}
-	fmt.Println("addENV -> ", id, key, value)
 	f, err := os.ReadFile(a.env)
 	if err != nil {
 		resp.Msg = "Error! Cannot add variable"
@@ -218,7 +215,6 @@ func (a *App) AddVar(id, key, value string) (resp JSResp) {
 		resp.Msg = "Error! Cannot add variable"
 		return
 	}
-	fmt.Printf("%+v\n", e)
 	for i := range e {
 		if e[i].ID == id {
 			if e[i].Variable == nil {
@@ -228,7 +224,6 @@ func (a *App) AddVar(id, key, value string) (resp JSResp) {
 			break
 		}
 	}
-	fmt.Printf("%+v\n", e)
 	b, err := json.Marshal(e)
 	if err != nil {
 		resp.Msg = "Error! Cannot add variable"
