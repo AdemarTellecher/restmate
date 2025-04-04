@@ -68,7 +68,7 @@ const SideBar = () => {
             <div
               className="text-txtsec w-full flex justify-center items-center cursor-pointer hover:bg-sec hover:text-lit"
               style={{ height: "48px" }}
-              onClick={() => applytheme("")}
+              onClick={() => applytheme("ayu")}
             >
               <LuCog size="22" />
             </div>

@@ -37,6 +37,36 @@
     --theme-color-txtsec: var(--color-neutral-500);
     --theme-color-lit: var(--color-white);
   }
+  [data-theme="dracula"] {
+    --theme-color-brand: #282a36;
+    --theme-color-sec: #2e303e;
+    --theme-color-accent: #ff61ba;
+
+    --theme-color-lines: var(--color-gray-700);
+    --theme-color-txtprim: var(--color-gray-300);
+    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-lit: var(--color-white);
+  }
+  [data-theme="ayu"] {
+    --theme-color-brand: #0d1016;
+    --theme-color-sec: #151a23;
+    --theme-color-accent: #ffbb33;
+
+    --theme-color-lines: #222a3a;
+    --theme-color-txtprim: var(--color-gray-300);
+    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-lit: var(--color-white);
+  }
+  [data-theme="nord"] {
+    --theme-color-brand: #2e3440;
+    --theme-color-sec: #3b4252;
+    --theme-color-accent: #8fbcbb;
+
+    --theme-color-lines: var(--color-gray-700);
+    --theme-color-txtprim: var(--color-gray-300);
+    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-lit: var(--color-white);
+  }
   [data-theme="postman"] {
     --theme-color-brand: rgb(33 33 33);
     --theme-color-sec: rgb(38 38 38);
