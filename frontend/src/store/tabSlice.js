@@ -37,12 +37,14 @@ export const createTabsSlice = (set, get) => ({
   invokeReq: async (id) => {
     set({ invokeLoading: true });
     let tab = get().tabs.find((t) => t.id === id);
+    if (!tab || !tab.url || tab.url === "") {
+      set({ invokeLoading: false });
+      return true;
+    }
     let rClone = structuredClone(tab);
     delete rClone.response;
     let t = cleanUpRequest(rClone);
-    console.log("invoking...", t);
     let rsp = await InvokeRequest(t);
-    console.log("invoke RSP -> ", rsp);
     if (!rsp.success) {
       set({ invokeLoading: false });
       return false;
@@ -54,7 +56,7 @@ export const createTabsSlice = (set, get) => ({
       }
       x.invokeLoading = false;
     });
-    return true
+    return true;
   },
   openChoseFile: async (tabId, form_id) => {
     let rsp = await ChoseFile();

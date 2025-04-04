@@ -62,7 +62,6 @@ export const createColSlice = (set, get) => ({
     delete rClone.response;
     let t = cleanUpRequest(rClone);
     let rsp = await UpsertRequest(t);
-    console.log(rsp);
     if (!rsp.success) {
       set({ saveLoad: false });
       return false;
@@ -80,7 +79,6 @@ export const createColSlice = (set, get) => ({
     let t = cleanUpRequest(rClone);
     t.name = name;
     t.coll_id = coll_id;
-    console.log(t);
     let rsp = await UpsertRequest(t);
     if (!rsp.success) {
       set({ saveLoad: false });
@@ -100,7 +98,6 @@ export const createColSlice = (set, get) => ({
   renameCollection: async (id, name) => {
     set({ cLoading: true });
     let rsp = await RenameCollection(id, name);
-    console.log(rsp);
     if (!rsp.success) {
       set({ cLoading: false });
       return false;

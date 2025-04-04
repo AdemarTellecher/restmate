@@ -1,14 +1,16 @@
-import { LuCopy, LuEllipsis, LuExternalLink, LuPackageSearch, LuPencil, LuTrash } from "react-icons/lu";
+import { LuCopy, LuEllipsis, LuExternalLink, LuFileCog, LuPackageSearch, LuPencil, LuTrash } from "react-icons/lu";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import ModalLayout from "../misc/ModalLayout";
 import { useState } from "react";
 import CustomButton from "../misc/CustomButton";
 import { useStore } from "../../store/store";
 import { toast } from "react-toastify";
+import RenameEnv from "./RenameEnv";
 
 const EnvVar = ({ env }) => {
   const [varModal, setvarModal] = useState(false);
   const [addVar, setaddVar] = useState(false);
+  const [renameEnv, setrenameEnv] = useState(false);
   let envLoading = useStore((x) => x.envLoading);
   const onCopy = (str) => {
     navigator.clipboard.writeText(str).then(() => {
@@ -25,7 +27,7 @@ const EnvVar = ({ env }) => {
     }
     const validKey = /^[a-zA-Z0-9_-]+$/;
     if (!validKey.test(k)) {
-      toast.error("Error! Key validation failed");
+      toast.error("Error! Invalid key format.");
       return;
     }
     let rsp = await useStore.getState().addNewVar(env.id, k, v);
@@ -44,10 +46,19 @@ const EnvVar = ({ env }) => {
       toast.error("Error! Cannot delete variable.");
     }
   };
+  const onDeleteEnv = async () => {
+    let rsp = await useStore.getState().deleteEnv(env.id);
+    if (rsp) {
+      toast.success("Environment delete successfully!");
+    } else {
+      toast.error("Error! Cannot delete Environment.");
+    }
+  };
   return (
     <div className="">
       <div className="text-txtprim flex items-center py-1 hover:bg-sec hover:text-lit group">
-        <div className="grow overflow-hidden cursor-pointer pl-4" onClick={() => setvarModal(true)}>
+        <div className="flex items-center grow overflow-hidden cursor-pointer pl-4 gap-x-2" onClick={() => setvarModal(true)}>
+          <LuFileCog />
           <p className="truncate whitespace-nowrap overflow-ellipsis text-sm" style={{ width: "90%" }}>
             {env.name}
           </p>
@@ -70,11 +81,11 @@ const EnvVar = ({ env }) => {
             <LuExternalLink />
             Open
           </MenuItem>
-          <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => setRenameCol(true)}>
+          <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => setrenameEnv(true)}>
             <LuPencil />
             Rename
           </MenuItem>
-          <MenuItem className="text-red-400 text-sm gap-x-2" onClick={() => onDeleteCol()}>
+          <MenuItem className="text-red-400 text-sm gap-x-2" onClick={() => onDeleteEnv()}>
             <LuTrash />
             Delete
           </MenuItem>
@@ -133,8 +144,9 @@ const EnvVar = ({ env }) => {
                     maxLength={100}
                     autoFocus
                   />
+                  <p className="mt-2 pl-1 text-txtsec text-xs italic">Key can only contain letters, numbers, - and _</p>
                 </div>
-                <div className="mt-4">
+                <div className="mt-3">
                   <p className="text-txtprim text-sm mb-2">Value</p>
                   <textarea
                     name="value"
@@ -153,6 +165,7 @@ const EnvVar = ({ env }) => {
           </div>
         )}
       </ModalLayout>
+      {renameEnv && <RenameEnv env={env} renameEnv={renameEnv} setrenameEnv={setrenameEnv} />}
     </div>
   );
 };

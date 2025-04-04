@@ -42,8 +42,6 @@ func (a *App) startup(ctx context.Context) {
 }
 
 func (a *App) InvokeRequest(r Request) (resp JSResp) {
-	fmt.Println("INVOKE -> ")
-	fmt.Printf("%+v\n", r)
 	if a.requestCtx != nil {
 		a.requestCtx()
 		a.requestCtx = nil

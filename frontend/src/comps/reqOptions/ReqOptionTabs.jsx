@@ -8,7 +8,6 @@ import BodyJson from "./BodyJson";
 import { useStore } from "../../store/store";
 
 const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, envVars, reqTabInx }) => {
-  // console.log("reqOptions tab render");
   return (
     <div className="h-full w-full">
       <Tabs style={{ height: "100%", width: "100%" }} selectedIndex={reqTabInx} onSelect={(i) => useStore.getState().setReqTabInx(tabId, i)}>

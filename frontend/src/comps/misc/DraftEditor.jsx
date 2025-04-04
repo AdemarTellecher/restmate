@@ -3,7 +3,7 @@ import { CompositeDecorator, ContentState, Editor, EditorState } from "draft-js"
 import { useEffect, useRef, useState } from "react";
 import { ENVIRONMENT_REGEX, extractEnv } from "../../utils/utils";
 
-const DraftEditor = ({ value, setValue, fontsm = true, envVars }) => {
+const DraftEditor = ({ value, setValue, fontsm = true, envVars, invoke = null }) => {
   const [focus, setfocus] = useState(false);
   const drafteditRef = useRef(null);
   const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromText(value), getDecorators()));
@@ -20,6 +20,13 @@ const DraftEditor = ({ value, setValue, fontsm = true, envVars }) => {
     setEditorState(newEditorState);
   }, [envVars]);
 
+  const onHandleReturn = () => {
+    if (invoke) {
+      invoke();
+    }
+    return "handled";
+  };
+
   return (
     <div
       className={`h-full break-all w-full text-lit flex items-center cursor-text ${fontsm ? "text-sm" : "text-lg"}`}
@@ -33,7 +40,7 @@ const DraftEditor = ({ value, setValue, fontsm = true, envVars }) => {
           editorState={editorState}
           onChange={(e) => onHandleChanage(e)}
           autoCapitalize="false"
-          handleReturn={() => "handled"}
+          handleReturn={() => onHandleReturn()}
           onFocus={() => setfocus(true)}
           onBlur={() => setfocus(false)}
           stripPastedStyles={true}
@@ -68,7 +75,6 @@ const HandleSpan = (props) => {
   let h = "Value: Variable Not found!";
   let output = extractEnv(props?.decoratedText);
   if (output) {
-    console.log("dft ->", props?.envVars);
     let y = props?.envVars && props.envVars[output];
     if (y) {
       clx = "bg-green-600";

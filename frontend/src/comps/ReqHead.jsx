@@ -56,7 +56,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id, envVars }) => {
   const onInvokeReq = async () => {
     let rsp = await useStore.getState().invokeReq(tabId);
     if (!rsp) {
-      toast.error("Error! Invalid request format.");
+      toast.error("Error! Request failed.");
     }
   };
 
@@ -97,7 +97,7 @@ const ReqHead = ({ tabId, method, url, name, coll_id, envVars }) => {
                 DELETE
               </MenuItem>
             </Menu>
-            <DraftEditor envVars={envVars} value={url} setValue={(e) => useStore.getState().updateTab(tabId, "url", e)} fontsm={false} />
+            <DraftEditor envVars={envVars} value={url} setValue={(e) => useStore.getState().updateTab(tabId, "url", e)} fontsm={false} invoke={onInvokeReq} />
           </div>
           {invokeLoading ? (
             <div className="h-full">
