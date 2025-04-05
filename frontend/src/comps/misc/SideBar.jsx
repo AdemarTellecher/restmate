@@ -7,10 +7,12 @@ import { useStore } from "../../store/store";
 import Collection from "../collections/Collection";
 import Tippy from "@tippyjs/react";
 import EnvVar from "../envars/EnvVar";
+import SettingModal from "../settings/SettingModal";
 
 const SideBar = () => {
   const [newColModal, setnewColModal] = useState(false);
   const [newEnvModal, setnewEnvModal] = useState(false);
+  const [settingModal, setsettingModal] = useState(false);
   let cLoading = useStore((x) => x.cLoading);
   let envLoading = useStore((x) => x.envLoading);
   let envs = useStore((x) => x.envs);
@@ -19,9 +21,6 @@ const SideBar = () => {
   let closeW = "50px";
   let openW = "250px";
 
-  const applytheme = (t) => {
-    useStore.getState().setSettings("theme", t);
-  };
   const createNewEnv = async (e) => {
     e.preventDefault();
     let name = e.target.env_name.value;
@@ -68,16 +67,7 @@ const SideBar = () => {
             <div
               className="text-txtsec w-full flex justify-center items-center cursor-pointer hover:bg-sec hover:text-lit"
               style={{ height: "48px" }}
-              onClick={() => applytheme("ayu")}
-            >
-              <LuCog size="22" />
-            </div>
-          </Tippy>
-          <Tippy content="theme" delay="300">
-            <div
-              className="text-txtsec w-full flex justify-center items-center cursor-pointer hover:bg-sec hover:text-lit"
-              style={{ height: "48px" }}
-              onClick={() => applytheme("dracula")}
+              onClick={() => setsettingModal(true)}
             >
               <LuCog size="22" />
             </div>
@@ -119,6 +109,7 @@ const SideBar = () => {
           </div>
         </div>
       </div>
+      {settingModal && <SettingModal settingModal={settingModal} setsettingModal={setsettingModal} />}
       <ModalLayout open={newColModal} onClose={() => setnewColModal(false)} title="New Collection">
         <form onSubmit={createNewCollection}>
           <div className="p-6">

@@ -26,7 +26,7 @@ export function tabSchema(data = {}) {
       ],
     },
     coll_id: null,
-    response: {},
+    response: null,
   };
   return { ...defaults, ...data };
 }

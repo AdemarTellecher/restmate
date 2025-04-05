@@ -22,3 +22,26 @@ export const cleanUpRequest = (t) => {
   }
   return t;
 };
+
+export const colors = [
+  {
+    name: "restmate",
+    palettes: ["#212121", "#262626", "#6366fb"],
+  },
+  {
+    name: "dracula",
+    palettes: ["#282a36", "#2e303e", "#ff61ba"],
+  },
+  {
+    name: "ayu",
+    palettes: ["#0d1016", "#151a23", "#ffbb33"],
+  },
+  {
+    name: "nord",
+    palettes: ["#2e3440", "#3b4252", "#8fbcbb"],
+  },
+  {
+    name: "malta",
+    palettes: ["#212121", "#262626", "#ff6c37"],
+  },
+];

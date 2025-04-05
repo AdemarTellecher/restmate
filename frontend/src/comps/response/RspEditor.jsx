@@ -18,6 +18,15 @@ const RspEditor = ({ lang, bodyContent }) => {
       setMonacoBackground(monacoRef.current);
     }
   }, [theme]);
+  useEffect(() => {
+    if (rspRef && rspRef.current) {
+      rspRef.current.updateOptions({ readOnly: false });
+      rspRef.current
+        .getAction("editor.action.formatDocument")
+        .run()
+        .then(() => rspRef.current.updateOptions({ readOnly: true }));
+    }
+  }, [bodyContent]);
   const formatBody = () => {
     rspRef.current.updateOptions({ readOnly: false });
     rspRef.current

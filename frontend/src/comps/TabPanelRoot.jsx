@@ -5,6 +5,7 @@ import Response from "./response/Response";
 import NullResponse from "./response/NullResponse";
 import { useStore } from "../store/store";
 import { BarLoader } from "react-spinners";
+import ErrorResponse from "./response/ErrorResponse";
 
 const TabPanelRoot = ({ tab }) => {
   let invokeLoading = useStore((x) => x.invokeLoading);
@@ -40,7 +41,8 @@ const TabPanelRoot = ({ tab }) => {
               <BarLoader width="100%" color="var(--color-accent)" height="1px" cssOverride={{ backgroundColor: "none" }} loading={invokeLoading} />
             </div>
           )}
-          {tab.response && tab.response.statusCode ? <Response response={tab.response} /> : <NullResponse />}
+          {!tab.response && <NullResponse />}
+          {tab.response && (!tab.response.statusCode ? <ErrorResponse msg={tab.response.errorContent} /> : <Response response={tab.response} />)}
         </div>
       </div>
     </div>

@@ -37,6 +37,16 @@
     --theme-color-txtsec: var(--color-neutral-500);
     --theme-color-lit: var(--color-white);
   }
+  [data-theme="restmate"] {
+    --theme-color-brand: #212121;
+    --theme-color-sec: #262626;
+    --theme-color-accent: #6366fb;
+
+    --theme-color-lines: var(--color-gray-700);
+    --theme-color-txtprim: var(--color-gray-300);
+    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-lit: var(--color-white);
+  }
   [data-theme="dracula"] {
     --theme-color-brand: #282a36;
     --theme-color-sec: #2e303e;
@@ -67,7 +77,7 @@
     --theme-color-txtsec: var(--color-gray-500);
     --theme-color-lit: var(--color-white);
   }
-  [data-theme="postman"] {
+  [data-theme="malta"] {
     --theme-color-brand: #212121;
     --theme-color-sec: #262626;
     /* --theme-color-accent: var(--color-indigo-400); */

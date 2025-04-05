@@ -181,17 +181,20 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		}
 	}
 
+	var result Result
 	cli := http.Client{}
 	startTime := time.Now()
 	response, err := cli.Do(req)
 	d := time.Since(startTime).Milliseconds()
 	if err != nil {
+		result.ErrorContent = err.Error()
+		resp.Success = true
 		resp.Msg = "Error! Request action failed"
+		resp.Data = result
 		return
 	}
 	defer response.Body.Close()
 	duration := fmt.Sprintf("%d", d)
-	var result Result
 	result.StatusCode = response.StatusCode
 	result.HttpStatus = response.Status
 	result.Headers = parseResponseHeaders(&response.Header)
