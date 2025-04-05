@@ -71,16 +71,16 @@ function findWithRegex(regex, contentBlock, callback) {
   }
 }
 const HandleSpan = (props) => {
-  let clx = "bg-gray-600";
+  let clx = "!bg-gray-600";
   let h = "Value: Variable Not found!";
   let output = extractEnv(props?.decoratedText);
   if (output) {
     let y = props?.envVars && props.envVars[output];
     if (y) {
-      clx = "bg-green-600";
+      clx = "!text-green-600";
       h = `Value: ${y}`;
     } else {
-      clx = "bg-red-600";
+      clx = "!text-red-600";
     }
   }
   return (
@@ -92,7 +92,7 @@ const HandleSpan = (props) => {
       }
     >
       <div className="group inline-block" data-offset-key={props.offsetKey}>
-        <span className={`text-lit italic font-bold rounded-md ${clx}`}>{props.children}</span>
+        <span className={`italic font-bold ${clx}`}>{props.children}</span>
       </div>
     </Tippy>
   );

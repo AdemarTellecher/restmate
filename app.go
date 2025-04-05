@@ -51,7 +51,7 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		resp.Msg = "Error! URL cannot be empty"
 		return
 	}
-	ctx, cancel := context.WithTimeout(a.ctx, 5*time.Second)
+	ctx, cancel := context.WithTimeout(a.ctx, 10*time.Second)
 	a.requestCtx = cancel
 	defer func() {
 		cancel()
