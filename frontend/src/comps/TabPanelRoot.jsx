@@ -2,7 +2,7 @@ import React from "react";
 import ReqHead from "./ReqHead";
 import ReqOptionTabs from "./reqOptions/ReqOptionTabs";
 import Response from "./response/Response";
-import NullResponse from "./response/NullResponse";
+import BeforeResponse from "./response/BeforeResponse";
 import { useStore } from "../store/store";
 import { BarLoader } from "react-spinners";
 import ErrorResponse from "./response/ErrorResponse";
@@ -41,7 +41,7 @@ const TabPanelRoot = ({ tab }) => {
               <BarLoader width="100%" color="var(--color-accent)" height="1px" cssOverride={{ backgroundColor: "none" }} loading={invokeLoading} />
             </div>
           )}
-          {!tab.response && <NullResponse />}
+          {!tab.response && <BeforeResponse />}
           {tab.response && (!tab.response.statusCode ? <ErrorResponse msg={tab.response.errorContent} /> : <Response response={tab.response} />)}
         </div>
       </div>

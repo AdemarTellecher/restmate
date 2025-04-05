@@ -1,5 +1,5 @@
 import { BsRocketTakeoff } from "react-icons/bs";
-const NullResponse = () => {
+const BeforeResponse = () => {
   return (
     <div className="grid h-full w-full" style={{ gridTemplateRows: "min-content minmax(0, 100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
       <div className="h-full w-full">
@@ -17,4 +17,4 @@ const NullResponse = () => {
   );
 };
 
-export default NullResponse;
+export default BeforeResponse;

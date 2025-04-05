@@ -23,6 +23,7 @@ export const cleanUpRequest = (t) => {
   return t;
 };
 
+export const restmate_version = "1.01.1";
 export const colors = [
   {
     name: "restmate",

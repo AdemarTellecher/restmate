@@ -46,6 +46,14 @@ const EnvVar = ({ env }) => {
       toast.error("Error! Cannot delete variable.");
     }
   };
+  const onDuplicateEnv = async () => {
+    let rsp = await useStore.getState().duplicateEnv(env.id);
+    if (rsp) {
+      toast.success("Environment duplicated successfully!");
+    } else {
+      toast.error("Error! Cannot duplicate Environment.");
+    }
+  };
   const onDeleteEnv = async () => {
     let rsp = await useStore.getState().deleteEnv(env.id);
     if (rsp) {
@@ -84,6 +92,10 @@ const EnvVar = ({ env }) => {
           <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => setrenameEnv(true)}>
             <LuPencil />
             Rename
+          </MenuItem>
+          <MenuItem className="text-txtprim text-sm gap-x-2" onClick={() => onDuplicateEnv()}>
+            <LuCopy />
+            Duplicate
           </MenuItem>
           <MenuItem className="text-red-400 text-sm gap-x-2" onClick={() => onDeleteEnv()}>
             <LuTrash />

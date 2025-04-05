@@ -34,6 +34,10 @@ export function DeleteVar(arg1, arg2) {
   return window['go']['main']['App']['DeleteVar'](arg1, arg2);
 }
 
+export function DuplicateEnv(arg1) {
+  return window['go']['main']['App']['DuplicateEnv'](arg1);
+}
+
 export function DuplicateRequest(arg1, arg2) {
   return window['go']['main']['App']['DuplicateRequest'](arg1, arg2);
 }

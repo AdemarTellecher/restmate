@@ -26,6 +26,55 @@ func (a *App) GetEnvs() (resp JSResp) {
 	return
 }
 
+func (a *App) DuplicateEnv(id string) (resp JSResp) {
+	if id == "" {
+		resp.Msg = "Error! Cannot duplicate env"
+		return
+	}
+	f, err := os.ReadFile(a.env)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate env"
+		return
+	}
+	var e []Env
+	err = json.Unmarshal(f, &e)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate env"
+		return
+	}
+	var d Env
+	for i := range e {
+		if e[i].ID == id {
+			d = e[i]
+			break
+		}
+	}
+	if d.ID != "" {
+		nid, err := gonanoid.New()
+		if err != nil {
+			resp.Msg = "Error! Cannot duplicate env"
+			return
+		}
+		d.ID = nid
+		d.Selected = false
+		d.Name += " Copy"
+		e = append(e, d)
+	}
+	b, err := json.Marshal(e)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate env"
+		return
+	}
+	err = os.WriteFile(a.env, b, 0644)
+	if err != nil {
+		resp.Msg = "Error! Cannot duplicate env"
+		return
+	}
+	resp.Success = true
+	resp.Msg = "Env duplicated successfully"
+	resp.Data = e
+	return
+}
 func (a *App) SelectEnv(id string) (resp JSResp) {
 	if id == "" {
 		resp.Msg = "Error! Cannot rename env"

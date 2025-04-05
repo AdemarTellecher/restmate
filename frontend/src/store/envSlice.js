@@ -1,4 +1,4 @@
-import { AddEnv, AddVar, DeleteEnv, DeleteVar, GetEnvs, RenameEnv, SelectEnv } from "../../wailsjs/go/main/App";
+import { AddEnv, AddVar, DeleteEnv, DeleteVar, DuplicateEnv, GetEnvs, RenameEnv, SelectEnv } from "../../wailsjs/go/main/App";
 
 export const createEnvSlice = (set) => ({
   envs: [],
@@ -33,14 +33,26 @@ export const createEnvSlice = (set) => ({
     set({ envLoading: false, envs: rsp.data });
     return true;
   },
+  duplicateEnv: async (id) => {
+    set({ envLoading: true });
+    let rsp = await DuplicateEnv(id);
+    console.log("rsp dup -> ", rsp);
+    if (!rsp.success) {
+      set({ envLoading: false });
+      return false;
+    }
+    set({ envLoading: false, envs: rsp.data });
+    return true;
+  },
   deleteEnv: async (id) => {
     set({ envLoading: true });
     let rsp = await DeleteEnv(id);
     if (!rsp.success) {
       set({ envLoading: false });
-      return;
+      return false;
     }
     set({ envLoading: false, envs: rsp.data });
+    return true;
   },
   getEnvs: async () => {
     set({ envLoading: true });
