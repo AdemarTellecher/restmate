@@ -35,7 +35,7 @@ export const colors = [
   },
   {
     name: "ayu",
-    palettes: ["#0d1016", "#151a23", "#ffbb33"],
+    palettes: ["#0d1016", "#151a23", "#df9e1c"],
   },
   {
     name: "nord",
@@ -44,5 +44,9 @@ export const colors = [
   {
     name: "malta",
     palettes: ["#212121", "#262626", "#ff6c37"],
+  },
+  {
+    name: "tokyoNight",
+    palettes: ["#16161f", "#1a1b27", "#c53b53"],
   },
 ];

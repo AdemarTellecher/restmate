@@ -60,9 +60,9 @@
   [data-theme="ayu"] {
     --theme-color-brand: #0d1016;
     --theme-color-sec: #151a23;
-    --theme-color-accent: #ffbb33;
+    --theme-color-accent: #df9e1c;
 
-    --theme-color-lines: #222a3a;
+    --theme-color-lines: #191f2b;
     --theme-color-txtprim: var(--color-gray-300);
     --theme-color-txtsec: var(--color-gray-500);
     --theme-color-lit: var(--color-white);
@@ -82,6 +82,17 @@
     --theme-color-sec: #262626;
     /* --theme-color-accent: var(--color-indigo-400); */
     --theme-color-accent: #ff6c37;
+
+    --theme-color-lines: var(--color-gray-700);
+    --theme-color-txtprim: var(--color-gray-300);
+    --theme-color-txtsec: var(--color-gray-500);
+    --theme-color-lit: var(--color-white);
+  }
+  [data-theme="tokyoNight"] {
+    --theme-color-brand: #16161f;
+    --theme-color-sec: #1a1b27;
+    /* --theme-color-accent: var(--color-indigo-400); */
+    --theme-color-accent: #c53b53;
 
     --theme-color-lines: var(--color-gray-700);
     --theme-color-txtprim: var(--color-gray-300);

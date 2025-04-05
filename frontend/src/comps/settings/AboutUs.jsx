@@ -1,10 +1,14 @@
 import { BsRocketTakeoff } from "react-icons/bs";
 import { restmate_version } from "../../utils/utils";
+import { BrowserOpenURL } from "../../../wailsjs/runtime/runtime";
 const AboutUs = () => {
+  const onOpenPatreon = () => {
+    BrowserOpenURL("https://patreon.com/aunjaffery");
+  };
   return (
     <div className="px-6 pb-4 relative">
       <div className="absolute inset-0 w-full h-full z-0">
-        <div className="flex justify-start items-end h-full w-full text-txtsec opacity-30">
+        <div className="flex justify-start items-end h-full w-full text-txtsec opacity-60">
           <BsRocketTakeoff
             size="160"
             className="hover:text-accent transition-all  duration-300 ease-in-out transform  hover:translate-x-[20px] hover:translate-y-[-20px]"
@@ -21,9 +25,9 @@ const AboutUs = () => {
         <p className="text-xs text-txtsec mt-2 tracking-wider">Help us keep it blazing fast with your support!</p>
         <p className="text-xs text-txtsec mt-1 tracking-wider">
           Buy us a coffee on{" "}
-          <a href="https://patreon.com/aunjaffery" target="_blank" className="text-accent hover:text-blue-400 hover:underline">
+          <span className="text-accent hover:text-blue-400 hover:underline cursor-pointer" onClick={onOpenPatreon}>
             Patreon
-          </a>
+          </span>
         </p>
       </div>
     </div>
