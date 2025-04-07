@@ -40,7 +40,7 @@ func (a *App) ImportCollection() (resp JSResp) {
 		return
 	}
 	var pmSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	var rmSchema = "https://schema.restmate.com/json/collection/v1.01.1/collection.json"
+	var rmSchema = "https://schema.restmate.com/json/collection/collection.json"
 
 	restFile, err := os.ReadFile(a.db)
 	if err != nil {
@@ -77,7 +77,29 @@ func (a *App) ImportCollection() (resp JSResp) {
 		c = append(c, col)
 		newcols = true
 	} else if checkin.Info.Schema == rmSchema {
-
+		var expCol ExportCollection
+		err = json.Unmarshal(f, &expCol)
+		if err != nil {
+			resp.Msg = "Error! Failed to read file"
+			return
+		}
+		col_id, err := gonanoid.New()
+		if err != nil {
+			resp.Msg = "Error! Failed to read file"
+			return
+		}
+		expCol.Collection.ID = col_id
+		//new IDs for requests
+		for i := range expCol.Collection.Requests {
+			req_id, err := gonanoid.New()
+			if err != nil {
+				continue
+			}
+			expCol.Collection.Requests[i].ID = req_id
+			expCol.Collection.Requests[i].CollId = col_id
+		}
+		c = append(c, expCol.Collection)
+		newcols = true
 	} else {
 		resp.Msg = "Error! Collection file is invalid"
 		return

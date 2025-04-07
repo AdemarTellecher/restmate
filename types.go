@@ -39,9 +39,17 @@ type Request struct {
 type Collection struct {
 	ID       string    `json:"id"`
 	Name     string    `json:"name"`
+	Schema   string    `json:"schema"`
 	Requests []Request `json:"requests"`
 }
 
+type ExportCollection struct {
+	Info struct {
+		Schema string `json:"schema"`
+		Name   string `json:"name"`
+	} `json:"info"`
+	Collection Collection `json:"collection"`
+}
 type KV struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`

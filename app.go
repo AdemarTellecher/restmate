@@ -272,7 +272,11 @@ func (a *App) ExportCollection(id string) (resp JSResp) {
 	}
 	for i := range c {
 		if c[i].ID == id {
-			b, err := json.Marshal(c[i])
+			var exp ExportCollection
+			exp.Info.Schema = "https://schema.restmate.com/json/collection/collection.json"
+			exp.Info.Name = "Restmate"
+			exp.Collection = c[i]
+			b, err := json.Marshal(exp)
 			if err != nil {
 				resp.Msg = "Error! Cannot Export collection"
 				return
