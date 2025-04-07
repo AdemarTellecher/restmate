@@ -36,7 +36,6 @@ export const createEnvSlice = (set) => ({
   duplicateEnv: async (id) => {
     set({ envLoading: true });
     let rsp = await DuplicateEnv(id);
-    console.log("rsp dup -> ", rsp);
     if (!rsp.success) {
       set({ envLoading: false });
       return false;

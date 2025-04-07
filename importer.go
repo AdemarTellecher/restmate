@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"strings"
 
@@ -11,7 +10,6 @@ import (
 )
 
 func (a *App) ImportCollection() (resp JSResp) {
-	fmt.Println("started import ---> ")
 	s, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
 		Title: "Choose file",
 	})
@@ -38,14 +36,12 @@ func (a *App) ImportCollection() (resp JSResp) {
 	var checkin checkinfo
 	err = json.Unmarshal(f, &checkin)
 	if err != nil {
-		fmt.Println("error in chkin Unmarshal", err)
 		resp.Msg = "Error! Collection file is invalid"
 		return
 	}
 	var pmSchema = "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	var rmSchema = "https://schema.restmate.com/json/collection/v1.01.1/collection.json"
 
-	fmt.Println("schema -> ", checkin.Info.Schema)
 	restFile, err := os.ReadFile(a.db)
 	if err != nil {
 		resp.Msg = "Error! Failed to read file"
@@ -62,7 +58,6 @@ func (a *App) ImportCollection() (resp JSResp) {
 		var pm PMCollection
 		err = json.Unmarshal(f, &pm)
 		if err != nil {
-			fmt.Println("error in PM Unmarshal")
 			resp.Msg = "Error! Failed to read file"
 			return
 		}
@@ -74,18 +69,11 @@ func (a *App) ImportCollection() (resp JSResp) {
 		col.Name = pm.Info.Name
 		col_id, err := gonanoid.New()
 		if err != nil {
-			fmt.Println("error in nanoid")
 			resp.Msg = "Error! Failed to read file"
 			return
 		}
 		col.ID = col_id
 		PMRecursion(&pm.Item, &col.Requests, col_id)
-		fmt.Println("---- IMPORT COLLECTECTOPM -----")
-		fmt.Println(col.Name, col.ID)
-		for r := range col.Requests {
-			fmt.Printf("%+v\n", col.Requests[r])
-			fmt.Println("---- Requst -----")
-		}
 		c = append(c, col)
 		newcols = true
 	} else if checkin.Info.Schema == rmSchema {
