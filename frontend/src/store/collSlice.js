@@ -1,4 +1,4 @@
-import { DeleteRequest, DuplicateRequest } from "../../wailsjs/go/main/App";
+import { DeleteRequest, DuplicateRequest, ImportCollection } from "../../wailsjs/go/main/App";
 import { MoveRequest } from "../../wailsjs/go/main/App";
 import { DeleteCollection } from "../../wailsjs/go/main/App";
 import { RenameRequest } from "../../wailsjs/go/main/App";
@@ -6,6 +6,7 @@ import { AddCollection, GetCollections, RenameCollection, UpsertRequest } from "
 import { nanoid } from "nanoid";
 import { tabSchema } from "./tabSlice";
 import { cleanUpRequest } from "../utils/utils";
+import { toast } from "react-toastify";
 export const createColSlice = (set, get) => ({
   collections: [],
   cLoading: false,
@@ -18,6 +19,17 @@ export const createColSlice = (set, get) => ({
       return;
     }
     set({ cLoading: false, collections: rsp.data });
+  },
+  importCollection: async () => {
+    set({ cLoading: true });
+    let rsp = await ImportCollection();
+    if (!rsp.success) {
+      set({ cLoading: false });
+      toast.error(rsp.msg);
+      return;
+    }
+    set({ cLoading: false, collections: rsp.data });
+    toast.success(rsp.msg);
   },
   addCols: async (c) => {
     set({ cLoading: true });

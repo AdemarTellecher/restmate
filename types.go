@@ -74,3 +74,34 @@ type Env struct {
 	Selected bool              `json:"selected"`
 	Variable map[string]string `json:"variable"`
 }
+type PMCollection struct {
+	Info struct {
+		Schema string `json:"schema"`
+		Name   string `json:"name"`
+	} `json:"info"`
+	Item []Item `json:"item"`
+}
+type Item struct {
+	Name    string `json:"name"`
+	Item    []Item `json:"item,omitempty"`
+	Request struct {
+		Method string `json:"method"`
+		Header []KV   `json:"header"`
+		URL    struct {
+			Raw string `json:"raw"`
+		} `json:"url"`
+		Body struct {
+			Mode     string `json:"mode"`
+			FormData []struct {
+				KV
+				Type string `json:"type"`
+			} `json:"formdata"`
+			Raw     string `json:"raw"`
+			Options struct {
+				Raw struct {
+					Language string `json:"language"`
+				} `json:"raw"`
+			} `json:"options"`
+		} `json:"body"`
+	} `json:"request,omitempty"`
+}

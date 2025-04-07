@@ -84,7 +84,10 @@ const SideBar = () => {
               </div>
             </Tippy>
             <Tippy content="Import Collection" delay="300">
-              <div className="text-xs text-txtprim bg-sec py-1 px-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-lit">
+              <div
+                className="text-xs text-txtprim bg-sec py-1 px-2 rounded-sm cursor-pointer hover:bg-gray-600 hover:text-lit"
+                onClick={() => useStore.getState().importCollection()}
+              >
                 <p>Import</p>
               </div>
             </Tippy>

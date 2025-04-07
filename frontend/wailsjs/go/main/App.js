@@ -62,6 +62,10 @@ export function GetSettings() {
   return window['go']['main']['App']['GetSettings']();
 }
 
+export function ImportCollection() {
+  return window['go']['main']['App']['ImportCollection']();
+}
+
 export function InvokeRequest(arg1) {
   return window['go']['main']['App']['InvokeRequest'](arg1);
 }

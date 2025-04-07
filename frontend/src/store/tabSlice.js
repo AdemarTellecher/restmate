@@ -178,7 +178,11 @@ export const createTabsSlice = (set, get) => ({
     set((x) => {
       let t = x.tabs.find((t) => t.id === id);
       if (!t) return;
-      t.params.push({ id: nanoid(), key: "", value: "", active: true });
+      if (t.params === null || !t.params.length) {
+        t.params = [{ id: nanoid(), key: "", value: "", active: true }];
+      } else {
+        t.params.push({ id: nanoid(), key: "", value: "", active: true });
+      }
     }),
 
   updateFormData: (id, pId, key, value) =>
