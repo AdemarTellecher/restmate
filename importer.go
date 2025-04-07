@@ -83,6 +83,10 @@ func (a *App) ImportCollection() (resp JSResp) {
 			resp.Msg = "Error! Failed to read file"
 			return
 		}
+		if expCol.Collection.ID == "" || expCol.Collection.Name == "" {
+			resp.Msg = "Error! Failed to read file"
+			return
+		}
 		col_id, err := gonanoid.New()
 		if err != nil {
 			resp.Msg = "Error! Failed to read file"
@@ -91,11 +95,15 @@ func (a *App) ImportCollection() (resp JSResp) {
 		expCol.Collection.ID = col_id
 		//new IDs for requests
 		for i := range expCol.Collection.Requests {
+			if expCol.Collection.Requests[i].ID == "" || expCol.Collection.Requests[i].Name == "" {
+				continue
+			}
 			req_id, err := gonanoid.New()
 			if err != nil {
 				continue
 			}
 			expCol.Collection.Requests[i].ID = req_id
+			expCol.Collection.Requests[i].Method = validateMethod(expCol.Collection.Requests[i].Method)
 			expCol.Collection.Requests[i].CollId = col_id
 		}
 		c = append(c, expCol.Collection)
@@ -141,8 +149,7 @@ func PMRecursion(items *[]Item, reqs *[]Request, coll_id string) {
 		}
 		rq.ID = req_id
 		rq.Name = itm.Name
-		rq.Method = itm.Request.Method
-		rq.Method = strings.ToLower(rq.Method)
+		rq.Method = validateMethod(itm.Request.Method)
 		rq.Url = itm.Request.URL.Raw
 		rq.CollId = coll_id
 		for h := range itm.Request.Header {
@@ -185,9 +192,16 @@ func PMRecursion(items *[]Item, reqs *[]Request, coll_id string) {
 		} else {
 			rq.Body.BodyType = "none"
 		}
-		if itm.Request.Body.Options.Raw.Language == "json" {
-			rq.Body.BodyRaw = itm.Request.Body.Raw
-		}
+		rq.Body.BodyRaw = itm.Request.Body.Raw
 		*reqs = append(*reqs, rq)
+	}
+}
+func validateMethod(str string) string {
+	str = strings.ToLower(str)
+	switch str {
+	case "get", "post", "put", "delete":
+		return str
+	default:
+		return "get"
 	}
 }
