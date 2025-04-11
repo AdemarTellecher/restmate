@@ -43,7 +43,9 @@ jobs:
 
       - run: node --version
 
-      - run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+      - name: Install wails
+        shell: bash
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build frontend assets
         shell: bash

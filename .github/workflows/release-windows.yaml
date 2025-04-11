@@ -22,6 +22,7 @@ jobs:
         run: echo "BUILD_NAME=rusty-${GITHUB_REF_NAME}.windows-amd64" >> $GITHUB_ENV
 
       - name: Extract version out of tag
+        shell: bash
         run: |
           version=$(echo ${GITHUB_REF_NAME} | sed -e 's/^v//')
           echo "BUILD_VER=$version" >> $GITHUB_ENV
