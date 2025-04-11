@@ -7,14 +7,15 @@
 <strong>Restmate is a modern lightweight cross-platform Rest API Client available for Mac, Windows, and
 Linux.</strong>
 </div>
+<br><br>
 
 <div align="center">
- <img alt="screenshot" src="screenshots/restmate1.png">
- <img alt="screenshot" src="screenshots/restmate2.png">
+ <img alt="screenshot" src="screenshots/restmate1.png" width="45%">
+ <img alt="screenshot" src="screenshots/restmate2.png" width="45%">
 </div>
 <div align="center">
- <img alt="screenshot" src="screenshots/restmate3.png">
- <img alt="screenshot" src="screenshots/restmate4.png">
+ <img alt="screenshot" src="screenshots/restmate3.png" width="45%">
+ <img alt="screenshot" src="screenshots/restmate4.png" width="45%">
 </div>
 
 ## Feature
