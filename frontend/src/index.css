@@ -26,15 +26,14 @@
 
 @layer base {
   :root {
-    /* --theme-color-brand: rgb(13 23 33); */
-    --theme-color-brand: #212121;
-    /* --theme-color-sec: rgb(19 31 43); */
-    --theme-color-sec: #262626;
-    --theme-color-accent: #6366fb;
+    --theme-color-brand: #16161f;
+    --theme-color-sec: #1a1b27;
+    /* --theme-color-accent: var(--color-indigo-400); */
+    --theme-color-accent: #c53b53;
 
     --theme-color-lines: #2f3845;
     --theme-color-txtprim: var(--color-gray-300);
-    --theme-color-txtsec: var(--color-neutral-500);
+    --theme-color-txtsec: var(--color-gray-500);
     --theme-color-lit: var(--color-white);
   }
   [data-theme="restmate"] {
