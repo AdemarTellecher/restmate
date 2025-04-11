@@ -54,6 +54,7 @@ jobs:
           mv tmp.json wails.json
           cat wails.json
           cd frontend
+          rm package-lock.json
           jq '.version = "${{ env.BUILD_VER }}"' package.json > tmp.json
           mv tmp.json package.json
           cat package.json
@@ -62,7 +63,7 @@ jobs:
       - name: Install Ubuntu prerequisites
         shell: bash
         run: |
-          sudo apt-get update
+          # sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
 
       - name: Build wails app for Linux
