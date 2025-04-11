@@ -10,12 +10,8 @@ Linux.</strong>
 <br><br>
 
 <div align="center">
- <img alt="screenshot" src="screenshots/restmate1.png" width="45%">
- <img alt="screenshot" src="screenshots/restmate2.png" width="45%">
-</div>
-<div align="center">
- <img alt="screenshot" src="screenshots/restmate3.png" width="45%">
- <img alt="screenshot" src="screenshots/restmate4.png" width="45%">
+ <img alt="screenshot" src="screenshots/restmate1.png">
+ <img alt="screenshot" src="screenshots/restmate2.png">
 </div>
 
 ## Feature
