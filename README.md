@@ -4,7 +4,7 @@
 <h1 align="center">Restmate</h1>
 
 <div align="center">
-<strong>Restmate is a modern lightweight cross-platform Rest API Client available for Mac, Windows, and
+<strong>Restmate is a modern lightweight cross-platform Rest API Client, designed to simplify and expedite the testing process for developers. Available for Mac, Windows, and
 Linux.</strong>
 </div>
 <br><br>
