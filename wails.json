@@ -9,5 +9,12 @@
   "author": {
     "name": "aunjaffery",
     "email": "aunjafery@gmail.com"
+  },
+  "info": {
+    "companyName": "Restmate",
+    "productName": "Restmate",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright © 2025",
+    "comments": "Rest API client"
   }
 }

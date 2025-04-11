@@ -1,0 +1,89 @@
+name: Release Windows App
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  # Necessary for most environments as build failure can occur due to OOM issues
+  NODE_OPTIONS: "--max-old-space-size=4096"
+
+jobs:
+  release:
+    name: Release Windows App
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set build name with tag
+        shell: bash
+        run: echo "BUILD_NAME=rusty-${GITHUB_REF_NAME}.windows-amd64" >> $GITHUB_ENV
+
+      - name: Extract version out of tag
+        run: |
+          version=$(echo ${GITHUB_REF_NAME} | sed -e 's/^v//')
+          echo "BUILD_VER=$version" >> $GITHUB_ENV
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "^1.24.1"
+
+      - name: check go version
+        shell: bash
+        run: go version
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: check node version
+        shell: bash
+        run: node --version
+
+      - name: Install chocolatey
+        uses: crazy-max/ghaction-chocolatey@v2
+        with:
+          args: install nsis jq
+
+      - name: Build frontend assets
+        shell: bash
+        run: |
+          jq '.info.productVersion = "${{ env.BUILD_VER }}"' wails.json > tmp.json
+          mv tmp.json wails.json
+          cat wails.json
+          cd frontend
+          jq '.version = "${{ env.BUILD_VER }}"' package.json > tmp.json
+          mv tmp.json package.json
+          cat package.json
+
+      - name: Install wails
+        shell: bash
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Build Windows NSIS installer
+        shell: bash
+        run: |
+          wails build -clean -nsis -webview2 embed
+
+      - name: Rename installer
+        working-directory: ./build/bin
+        run: Rename-Item -Path "restmate-amd64-installer.exe" -NewName "${{ env.BUILD_NAME }}.exe"
+
+      - name: show files and build name
+        shell: bash
+        run: |
+          echo "Current directory contents:"
+          ls -alh
+          echo "Current build contents:"
+          ls -alh build || true
+          echo "Build output (if exists):"
+          ls -alh build/bin || true
+
+      - name: Upload Release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./build/bin/${{ env.BUILD_NAME }}.exe
+          token: ${{ secrets.GITHUB_TOKEN }}

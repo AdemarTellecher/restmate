@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Restmate
+Exec=/usr/local/bin/restmate
+Terminal=false
+Type=Application
+Icon=restmate
+StartupWMClass=restmate
+MimeType=x-scheme-handler/restmate;
+Comment=Rest api client
+Categories=Utility;

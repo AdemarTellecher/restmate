@@ -1,0 +1,99 @@
+name: Release Linux App
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  # Necessary for most environments as build failure can occur due to OOM issues
+  NODE_OPTIONS: "--max-old-space-size=4096"
+
+jobs:
+  release:
+    name: Release Linux App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set build name with tag
+        run: echo "BUILD_NAME=reatmate-${GITHUB_REF_NAME}.linux-amd64" >> $GITHUB_ENV
+
+      - name: Extract version out of tag
+        run: |
+          version=$(echo ${GITHUB_REF_NAME} | sed -e 's/^v//')
+          echo "BUILD_VER=$version" >> $GITHUB_ENV
+
+      - name: Echo vars
+        run: |
+          echo "build name is ${{ env.BUILD_NAME }}"
+          echo "version is ${{ env.BUILD_VER }}"
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "^1.24.1"
+
+      - run: go version
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: node --version
+
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Build frontend assets
+        shell: bash
+        run: |
+          jq '.info.productVersion = "${{ env.BUILD_VER }}"' wails.json > tmp.json
+          mv tmp.json wails.json
+          cat wails.json
+          cd frontend
+          jq '.version = "${{ env.BUILD_VER }}"' package.json > tmp.json
+          mv tmp.json package.json
+          cat package.json
+
+
+      - name: Install Ubuntu prerequisites
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
+
+      - name: Build wails app for Linux
+        run: wails build -clean -tags webkit2_41 -o ${{ env.BUILD_NAME }}
+
+      - name: show files and build name
+        run: |
+          echo "Current directory contents:"
+          ls -alh
+          echo "Current build contents:"
+          ls -alh build || true
+          echo "Build output (if exists):"
+          ls -alh build/bin || true
+
+      - name: Install nfpm
+        run: |
+          go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+
+      - name: Package with nfpm (.deb and .rpm)
+        run: |
+          NAME=${{ env.BUILD_NAME }} VERSION=${{ env.BUILD_VER }} nfpm pkg --packager deb --config nfpm.yaml -t ${{ env.BUILD_NAME }}.deb
+          NAME=${{ env.BUILD_NAME }} VERSION=${{ env.BUILD_VER }} nfpm pkg --packager rpm --config nfpm.yaml -t ${{ env.BUILD_NAME }}.rpm
+
+      - name: show files and build name
+        run: |
+          echo "Current directory contents:"
+          ls -alh
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            *.deb
+            *.rpm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
