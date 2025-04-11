@@ -7,10 +7,11 @@
 <strong>Restmate is a modern lightweight cross-platform Rest API Client, designed to simplify and expedite the testing process for developers. Available for Mac, Windows, and
 Linux.</strong>
 </div>
-<br><br>
+<br>
 
 <div align="center">
  <img alt="screenshot" src="screenshots/restmate1.png">
+ <br>
  <img alt="screenshot" src="screenshots/restmate2.png">
 </div>
 
