@@ -19,7 +19,7 @@ jobs:
 
       - name: Set build name with tag
         shell: bash
-        run: echo "BUILD_NAME=rusty-${GITHUB_REF_NAME}.windows-amd64" >> $GITHUB_ENV
+        run: echo "BUILD_NAME=restmate-${GITHUB_REF_NAME}.windows-amd64" >> $GITHUB_ENV
 
       - name: Extract version out of tag
         shell: bash

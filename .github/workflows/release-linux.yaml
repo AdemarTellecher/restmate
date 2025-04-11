@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set build name with tag
-        run: echo "BUILD_NAME=reatmate-${GITHUB_REF_NAME}.linux-amd64" >> $GITHUB_ENV
+        run: echo "BUILD_NAME=restmate-${GITHUB_REF_NAME}.linux-amd64" >> $GITHUB_ENV
 
       - name: Extract version out of tag
         run: |
