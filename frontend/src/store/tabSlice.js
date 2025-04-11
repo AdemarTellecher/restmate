@@ -31,7 +31,7 @@ export function tabSchema(data = {}) {
   return { ...defaults, ...data };
 }
 export const createTabsSlice = (set, get) => ({
-  tabs: [tabSchema({ name: "new name func", url: "http://localhost:4000" })],
+  tabs: [tabSchema()],
 
   invokeLoading: false,
   invokeReq: async (id) => {
