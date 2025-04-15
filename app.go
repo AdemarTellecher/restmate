@@ -25,6 +25,7 @@ type App struct {
 	db         string
 	env        string
 	settings   string
+	jarFile    string
 	requestCtx context.CancelFunc
 }
 

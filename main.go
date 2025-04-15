@@ -29,6 +29,7 @@ func main() {
 			app.initFile("restmate_db.json", "db")
 			app.initFile("restmate_env.json", "env")
 			app.initFile("restmate_settings.json", "settings")
+			app.initFile("restmate_jar.json", "jar")
 			app.startup(ctx)
 		},
 		Bind: []interface{}{

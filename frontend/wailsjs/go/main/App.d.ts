@@ -24,6 +24,8 @@ export function DuplicateRequest(arg1:string,arg2:string):Promise<main.JSResp>;
 
 export function ExportCollection(arg1:string):Promise<main.JSResp>;
 
+export function GetAllCookies():Promise<main.JSResp>;
+
 export function GetCollections():Promise<main.JSResp>;
 
 export function GetEnvs():Promise<main.JSResp>;

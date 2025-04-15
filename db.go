@@ -19,6 +19,9 @@ func (a *App) initFile(fileName, t string) {
 	if t == "env" {
 		a.env = filePath
 	}
+	if t == "jar" {
+		a.jarFile = filePath
+	}
 	if t == "settings" {
 		a.settings = filePath
 		writeStr = `{"theme": ""}`

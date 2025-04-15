@@ -46,6 +46,10 @@ export function ExportCollection(arg1) {
   return window['go']['main']['App']['ExportCollection'](arg1);
 }
 
+export function GetAllCookies() {
+  return window['go']['main']['App']['GetAllCookies']();
+}
+
 export function GetCollections() {
   return window['go']['main']['App']['GetCollections']();
 }
