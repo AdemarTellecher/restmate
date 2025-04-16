@@ -15,7 +15,7 @@ function App() {
     useStore.getState().getSettings();
     useStore.getState().getCollections();
     useStore.getState().getEnvs();
-    getCooks();
+    // getCooks();
   }, []);
 
   if (loading) {

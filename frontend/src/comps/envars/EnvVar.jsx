@@ -131,7 +131,7 @@ const EnvVar = ({ env }) => {
                   <div className="flex justify-center mb-2 text-orange-400">
                     <LuPackageSearch size="50" />
                   </div>
-                  <p className="text-txtprim text-sm text-center mb-1">Variables not found for the nnvironment</p>
+                  <p className="text-txtprim text-sm text-center mb-1">Variables not found for the environment</p>
                   <p className="text-txtprim truncate whitespace-nowrap overflow-ellipsis text-center font-bold" style={{ width: "100%" }}>
                     {env.name}
                   </p>

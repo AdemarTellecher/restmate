@@ -7,9 +7,9 @@ export const cleanUpRequest = (t) => {
   if (!t) {
     return t;
   }
-  t.headers = t.headers.filter((h) => h.key !== "" && h.active === true);
-  t.params = t.params.filter((h) => h.key !== "" && h.active === true);
-  t.body.formData = t.body.formData.filter((h) => h.key !== "" && h.active === true);
+  t.headers = t.headers && t.headers.filter((h) => h.key !== "" && h.active === true);
+  t.params = t.params && t.params.filter((h) => h.key !== "" && h.active === true);
+  t.body.formData = t.body.formData && t.body.formData.filter((h) => h.key !== "" && h.active === true);
   if (t.body?.bodyType === "json") {
     t.body.formData = [];
   }
