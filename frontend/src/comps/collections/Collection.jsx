@@ -7,6 +7,7 @@ import RenameCol from "./RenameCol";
 import { ExportCollection } from "../../../wailsjs/go/main/App";
 import { toast } from "react-toastify";
 import { useStore } from "../../store/store";
+import { memo } from "react";
 
 const Collection = ({ col }) => {
   const [renameCol, setRenameCol] = useState(false);
@@ -85,4 +86,4 @@ const Collection = ({ col }) => {
   );
 };
 
-export default Collection;
+export default memo(Collection);

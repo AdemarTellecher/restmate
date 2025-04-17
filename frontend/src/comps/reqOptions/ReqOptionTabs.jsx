@@ -12,7 +12,7 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, en
     <div className="h-full w-full">
       <Tabs style={{ height: "100%", width: "100%" }} selectedIndex={reqTabInx} onSelect={(i) => useStore.getState().setReqTabInx(tabId, i)}>
         <div className="grid h-full w-full" style={{ gridTemplateRows: "24px minmax(0, 100%)", gridTemplateColumns: "minmax(0px, 100%)" }}>
-          <div>
+          <div className="flex justify-between items-center">
             <TabList className="flex items-center h-full gap-x-4 text-sm">
               <Tab
                 selectedClassName="!text-lit bg-brand !border-accent"
@@ -33,6 +33,9 @@ const ReqOptionTabs = ({ tabId, params, headers, bodyType, bodyRaw, formData, en
                 Body
               </Tab>
             </TabList>
+            <div className="cursor-pointer" onClick={() => useStore.getState().setCookieModal(true)}>
+              <p className="text-xs bg-brand text-blue-400 font-bold">Cookies</p>
+            </div>
           </div>
           <div className="h-full w-full">
             <TabPanel style={{ height: "100%" }}>

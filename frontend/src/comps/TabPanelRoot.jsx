@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import ReqHead from "./ReqHead";
 import ReqOptionTabs from "./reqOptions/ReqOptionTabs";
 import Response from "./response/Response";
@@ -49,4 +49,4 @@ const TabPanelRoot = ({ tab }) => {
   );
 };
 
-export default React.memo(TabPanelRoot);
+export default memo(TabPanelRoot);
