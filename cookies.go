@@ -12,7 +12,7 @@ func (a *App) GetAllCookies() (resp JSResp) {
 		resp.Msg = "Error! Cannot get cookies"
 		return
 	}
-	var data []map[string]interface{}
+	var data []map[string]any
 	if err := json.Unmarshal(f, &data); err != nil {
 		resp.Msg = "Error! Cannot get cookies"
 		return
