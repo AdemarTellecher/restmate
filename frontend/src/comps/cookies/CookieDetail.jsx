@@ -1,40 +1,36 @@
 import { memo } from "react";
 import { useCollapse } from "react-collapsed";
-import { LuX } from "react-icons/lu";
+import { LuChevronDown, LuChevronRight, LuX } from "react-icons/lu";
 
 const CookieDetail = ({ name, cookies }) => {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
   function formatCookie(cookieObj) {
     let cookieStr = `${cookieObj.Name}=${cookieObj.Value}; `;
-
-    if (cookieObj.Expires) {
-      const expires = new Date(cookieObj.Expires).toUTCString();
-      cookieStr += `expires=${expires}; `;
-    }
-
     if (cookieObj.Path) {
-      cookieStr += `path=${cookieObj.Path}; `;
+      cookieStr += `Path=${cookieObj.Path}; `;
     }
-
     if (cookieObj.Domain) {
-      cookieStr += `domain=${cookieObj.Domain}; `;
+      cookieStr += `Domain=${cookieObj.Domain}; `;
     }
-
     if (cookieObj.Secure) {
-      cookieStr += "secure; ";
+      cookieStr += "Secure; ";
     }
-
     if (cookieObj.HttpOnly) {
       cookieStr += "HttpOnly; ";
+    }
+    if (cookieObj.Expires) {
+      const expires = new Date(cookieObj.Expires).toUTCString();
+      cookieStr += `Expires=${expires}; `;
     }
 
     return cookieStr.trim();
   }
   return (
-    <div className="p-2">
-      <div className="flex justify-between items-center">
-        <div {...getToggleProps()} className="text-txtprim grow cursor-pointer">
-          <p>{name ? name : ""}</p>
+    <div className="mb-4">
+      <div className="flex justify-between items-center bg-sec p-2 rounded-md">
+        <div {...getToggleProps()} className="text-txtprim grow cursor-pointer flex items-center justify-start gap-x-1">
+          <div>{isExpanded ? <LuChevronDown size="14" /> : <LuChevronRight size="14" />}</div>
+          <p className="text-sm">{name ? name : ""}</p>
         </div>
         <div className="text-txtprim cursor-pointer hover:text-red-400">
           <LuX />
