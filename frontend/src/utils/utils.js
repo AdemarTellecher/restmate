@@ -100,4 +100,19 @@ export const dumbcookie = [
     Updated: "2025-04-16T04:34:32.768730809+05:00",
     CanonicalHost: "localhost",
   },
+  {
+    Name: "jwt_token2",
+    Value:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpc3MiOiJmeW5leC1hcHAiLCJleHAiOjE3NDQ4MDMyNzIsImlhdCI6MTc0NDc2MDA3Mn0.WgDDuqlwTbycaMnvrXTYa1CQtYiSntfS9A1KcQ9FQ5E",
+    Domain: "localhost",
+    Secure: false,
+    HttpOnly: false,
+    Persistent: true,
+    HostOnly: true,
+    Expires: "2025-04-16T00:34:32Z",
+    Creation: "2025-04-16T03:01:31.760415518+05:00",
+    LastAccess: "2025-04-16T04:34:32.768730809+05:00",
+    Updated: "2025-04-16T04:34:32.768730809+05:00",
+    CanonicalHost: "localhost",
+  },
 ];

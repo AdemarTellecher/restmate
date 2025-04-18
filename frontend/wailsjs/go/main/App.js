@@ -18,8 +18,16 @@ export function ChoseFile() {
   return window['go']['main']['App']['ChoseFile']();
 }
 
+export function ClearAllCookies() {
+  return window['go']['main']['App']['ClearAllCookies']();
+}
+
 export function DeleteCollection(arg1) {
   return window['go']['main']['App']['DeleteCollection'](arg1);
+}
+
+export function DeleteCookies(arg1) {
+  return window['go']['main']['App']['DeleteCookies'](arg1);
 }
 
 export function DeleteEnv(arg1) {

@@ -10,7 +10,11 @@ export function AddVar(arg1:string,arg2:string,arg3:string):Promise<main.JSResp>
 
 export function ChoseFile():Promise<main.JSResp>;
 
+export function ClearAllCookies():Promise<main.JSResp>;
+
 export function DeleteCollection(arg1:string):Promise<main.JSResp>;
+
+export function DeleteCookies(arg1:string):Promise<main.JSResp>;
 
 export function DeleteEnv(arg1:string):Promise<main.JSResp>;
 

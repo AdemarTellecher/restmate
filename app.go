@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/goccy/go-json"
+	cookiejar "github.com/juju/persistent-cookiejar"
 	"github.com/matoous/go-nanoid/v2"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -182,11 +183,12 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		}
 	}
 
+	jar, err := cookiejar.New(&cookiejar.Options{Filename: a.jarFile})
+
 	var result Result
-	cli := http.Client{}
+	cli := http.Client{Jar: jar}
 	startTime := time.Now()
 	response, err := cli.Do(req)
-	d := time.Since(startTime).Milliseconds()
 	if err != nil {
 		result.ErrorContent = err.Error()
 		resp.Success = true
@@ -194,6 +196,13 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		resp.Data = result
 		return
 	}
+	jar.SetCookies(u, response.Cookies())
+	err = jar.Save()
+	if err != nil {
+		resp.Msg = "Error! Failed to read cookies"
+		return
+	}
+	d := time.Since(startTime).Milliseconds()
 	defer response.Body.Close()
 	duration := fmt.Sprintf("%d", d)
 	result.StatusCode = response.StatusCode
@@ -203,7 +212,7 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 
 	buf, err := io.ReadAll(response.Body)
 	if err != nil {
-		resp.Msg = "Error! failed to read response body"
+		resp.Msg = "Error! Failed to read response body"
 		return
 	}
 	ct := strings.ToLower(strings.Split(response.Header.Get("Content-Type"), ";")[0])

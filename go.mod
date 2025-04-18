@@ -5,6 +5,7 @@ go 1.23
 require (
 	github.com/adrg/xdg v0.5.3
 	github.com/goccy/go-json v0.10.5
+	github.com/juju/persistent-cookiejar v1.0.0
 	github.com/matoous/go-nanoid/v2 v2.1.0
 	github.com/wailsapp/wails/v2 v2.10.1
 )
@@ -15,6 +16,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e // indirect
+	github.com/juju/go4 v0.0.0-20160222163258-40d72ab9641a // indirect
 	github.com/labstack/echo/v4 v4.13.3 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/leaanthony/go-ansi-parser v1.6.1 // indirect
@@ -36,6 +38,8 @@ require (
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
+	gopkg.in/errgo.v1 v1.0.1 // indirect
+	gopkg.in/retry.v1 v1.0.3 // indirect
 )
 
 // replace github.com/wailsapp/wails/v2 v2.10.1 => /home/aunox/go/pkg/mod

@@ -2,10 +2,13 @@ import { memo } from "react";
 import { useCollapse } from "react-collapsed";
 import { LuChevronDown, LuChevronRight, LuX } from "react-icons/lu";
 
-const CookieDetail = ({ name, cookies }) => {
+const CookieDetail = ({ name, cookies, deleteCookie }) => {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse();
   function formatCookie(cookieObj) {
-    let cookieStr = `${cookieObj.Name}=${cookieObj.Value}; `;
+    if (!cookieObj.Name) {
+      return "";
+    }
+    let cookieStr = `${cookieObj.Name ? cookieObj.Name : ""}=${cookieObj.Value ? cookieObj.Value : ""}; `;
     if (cookieObj.Path) {
       cookieStr += `Path=${cookieObj.Path}; `;
     }
@@ -22,7 +25,6 @@ const CookieDetail = ({ name, cookies }) => {
       const expires = new Date(cookieObj.Expires).toUTCString();
       cookieStr += `Expires=${expires}; `;
     }
-
     return cookieStr.trim();
   }
   return (
@@ -32,14 +34,14 @@ const CookieDetail = ({ name, cookies }) => {
           <div>{isExpanded ? <LuChevronDown size="14" /> : <LuChevronRight size="14" />}</div>
           <p className="text-sm">{name ? name : ""}</p>
         </div>
-        <div className="text-txtprim cursor-pointer hover:text-red-400">
+        <div className="text-txtprim cursor-pointer hover:text-red-400" onClick={() => deleteCookie(name)}>
           <LuX />
         </div>
       </div>
       {cookies && cookies.length ? (
         <section {...getCollapseProps()}>
           {cookies.map((c, id) => (
-            <div key={id} className="text-txtprim bg-gray-600/40 p-3 w-full rounded-md mt-2">
+            <div key={id} className="text-txtprim bg-gray-600/40 p-2 w-full rounded-md mt-2">
               <p className="text-xs break-all break-words">{formatCookie(c)}</p>
             </div>
           ))}
