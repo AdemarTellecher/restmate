@@ -184,7 +184,10 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 	}
 
 	jar, err := cookiejar.New(&cookiejar.Options{Filename: a.jarFile})
-
+	if err != nil {
+		resp.Msg = "Error! Failed to read cookies"
+		return
+	}
 	var result Result
 	cli := http.Client{Jar: jar}
 	startTime := time.Now()
@@ -196,15 +199,15 @@ func (a *App) InvokeRequest(r Request) (resp JSResp) {
 		resp.Data = result
 		return
 	}
+	d := time.Since(startTime).Milliseconds()
+	duration := fmt.Sprintf("%d", d)
 	jar.SetCookies(u, response.Cookies())
 	err = jar.Save()
 	if err != nil {
 		resp.Msg = "Error! Failed to read cookies"
 		return
 	}
-	d := time.Since(startTime).Milliseconds()
 	defer response.Body.Close()
-	duration := fmt.Sprintf("%d", d)
 	result.StatusCode = response.StatusCode
 	result.HttpStatus = response.Status
 	result.Headers = parseResponseHeaders(&response.Header)
