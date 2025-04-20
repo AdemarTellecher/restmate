@@ -30,9 +30,11 @@ const CookieDetail = ({ name, cookies, deleteCookie }) => {
   return (
     <div className="mb-4">
       <div className="flex justify-between items-center bg-sec p-2 rounded-md">
-        <div {...getToggleProps()} className="text-txtprim grow cursor-pointer flex items-center justify-start gap-x-1">
+        <div {...getToggleProps()} className="text-txtprim grow overflow-hidden cursor-pointer flex items-center justify-start gap-x-1">
           <div>{isExpanded ? <LuChevronDown size="14" /> : <LuChevronRight size="14" />}</div>
-          <p className="text-sm">{name ? name : ""}</p>
+          <p className="truncate whitespace-nowrap overflow-ellipsis text-sm" style={{ width: "90%" }}>
+            {name ? name : ""}
+          </p>
         </div>
         <div className="text-txtprim cursor-pointer hover:text-red-400" onClick={() => deleteCookie(name)}>
           <LuX />
