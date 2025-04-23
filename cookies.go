@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/goccy/go-json"
@@ -24,8 +23,6 @@ func (a *App) GetAllCookies() (resp JSResp) {
 	return
 }
 func (a *App) DeleteCookies(name string) (resp JSResp) {
-	fmt.Println("jarFile -> ", a.jarFile)
-	fmt.Println("name -> ", name)
 	f, err := os.ReadFile(a.jarFile)
 	if err != nil {
 		resp.Msg = "Error! Cannot delete cookies"
@@ -59,7 +56,6 @@ func (a *App) DeleteCookies(name string) (resp JSResp) {
 			resp.Msg = "Error! Cannot delete cookies"
 			return
 		}
-
 	}
 	resp.Success = true
 	resp.Msg = "Cookies fetched successfully"

@@ -15,7 +15,6 @@ const CookieModal = () => {
   const getCooks = async () => {
     setcookieLoad(true);
     let r = await GetAllCookies();
-    console.log(r);
     if (r.success && r.data && r.data.length) {
       let group = r?.data.reduce((acc, obj) => {
         const k = obj.Domain;
