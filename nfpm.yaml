@@ -9,6 +9,14 @@ description: "Rest API client"
 homepage: "https://github.com/aunjaffery/restmate"
 license: MIT
 
+overrides:
+  deb:
+    depends:
+      - libwebkit2gtk-4.1-0
+  rpm:
+    depends:
+      - webkit2gtk4.1
+
 contents:
   - src: ./build/bin/${NAME}
     dst: /usr/local/bin/restmate
