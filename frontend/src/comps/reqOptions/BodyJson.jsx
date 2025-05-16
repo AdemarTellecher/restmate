@@ -21,6 +21,9 @@ const BodyJson = ({ tabId, bodyRaw }) => {
   }
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+      console.log("Ctrl+Enter pressed!");
+    });
     updateDecorations(editor, monaco);
     editor.onDidChangeModelContent(() => {
       updateDecorations(editor, monaco);
