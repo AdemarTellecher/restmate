@@ -23,42 +23,41 @@ export const cleanUpRequest = (t) => {
   return t;
 };
 
-export const restmate_version = "1.01.1";
 export const hotkeys_json = [
   //comps/misc/SideBar.jsx
   {
-    name: "Toggle sidebar",
-    key: "ctrl + b",
+    name: "Toggle Sidebar",
+    key: ["Ctrl", "B"],
   },
   {
     name: "New Collection",
-    key: "ctrl + n",
+    key: ["Ctrl", "N"],
   },
   //comps/TabsRoot.jsx
   {
     name: "New Tab",
-    key: "ctrl + t",
+    key: ["Ctrl", "T"],
   },
   {
     name: "Next Tab",
-    key: "ctrl + right",
+    key: ["Ctrl", "Right"],
   },
   {
     name: "Previous Tab",
-    key: "ctrl + left",
+    key: ["Ctrl", "Left"],
   },
   //comps/ReqHead.jsx
   {
     name: "Save Request",
-    key: "ctrl + s",
+    key: ["Ctrl", "S"],
   },
   {
     name: "Invoke Request",
-    key: "ctrl + enter",
+    key: ["Ctrl", "Enter"],
   },
   {
     name: "Close Tab",
-    key: "ctrl + w",
+    key: ["Ctrl", "W"],
   },
 ];
 export const colors = [

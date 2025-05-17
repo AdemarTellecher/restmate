@@ -1,6 +1,7 @@
 import { BsRocketTakeoff } from "react-icons/bs";
-import { restmate_version } from "../../utils/utils";
 import { BrowserOpenURL } from "../../../wailsjs/runtime/runtime";
+import pkg from "../../../package.json";
+
 const AboutUs = () => {
   const onOpenPatreon = () => {
     BrowserOpenURL("https://patreon.com/aunjaffery");
@@ -17,7 +18,7 @@ const AboutUs = () => {
       </div>
       <div className="relative z-10">
         <p className="text-lit font-bold text-2xl tracking-wider">Restmate</p>
-        <p className="text-xs text-txtsec">version {restmate_version}</p>
+        <p className="text-xs text-txtsec">version {pkg.version}</p>
         <p className="text-xs text-txtsec mt-2 tracking-wider">
           Restmate is a blazing fast, lightweight REST API client built for developers who need speed and efficiency without compromising system performance.
           Simplify your API testing and integration with ease.

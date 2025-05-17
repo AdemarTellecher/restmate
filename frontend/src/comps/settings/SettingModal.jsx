@@ -1,8 +1,9 @@
-import { LuInfo, LuPalette, LuX } from "react-icons/lu";
+import { LuInfo, LuKeyboard, LuPalette, LuX } from "react-icons/lu";
 import ModalLayout from "../misc/ModalLayout";
 import { useState } from "react";
 import Themes from "./Themes";
 import AboutUs from "./AboutUs";
+import Shortcuts from "./Shortcuts";
 
 const SettingModal = ({ settingModal, setsettingModal }) => {
   const [currentSetting, setcurrentSetting] = useState("themes");
@@ -27,6 +28,10 @@ const SettingModal = ({ settingModal, setsettingModal }) => {
             <LuPalette />
             <p className="text-xs">Themes</p>
           </div>
+          <div className={getClx("shortcuts")} onClick={() => setcurrentSetting("shortcuts")}>
+            <LuKeyboard />
+            <p className="text-xs">Shortcuts</p>
+          </div>
           <div className={getClx("about")} onClick={() => setcurrentSetting("about")}>
             <LuInfo />
             <p className="text-xs">About</p>
@@ -41,6 +46,7 @@ const SettingModal = ({ settingModal, setsettingModal }) => {
             </div>
             {currentSetting === "themes" && <Themes />}
             {currentSetting === "about" && <AboutUs />}
+            {currentSetting === "shortcuts" && <Shortcuts />}
           </div>
         </div>
       </div>
