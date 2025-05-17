@@ -2,6 +2,7 @@ import { Editor } from "@monaco-editor/react";
 import React, { useEffect, useRef } from "react";
 import { useStore } from "../../store/store";
 import { ENVIRONMENT_REGEX } from "../../utils/utils";
+import { toast } from "react-toastify";
 
 const BodyJson = ({ tabId, bodyRaw }) => {
   const updateReqBody = useStore((x) => x.updateReqBody);
@@ -14,6 +15,12 @@ const BodyJson = ({ tabId, bodyRaw }) => {
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const decorationsRef = useRef([]);
+  const onInvokeReq = async () => {
+    let rsp = await useStore.getState().invokeReq(tabId);
+    if (!rsp) {
+      toast.error("Error! Request failed.");
+    }
+  };
 
   function monacoSetup(monaco) {
     monacoRef.current = monaco;
@@ -22,7 +29,7 @@ const BodyJson = ({ tabId, bodyRaw }) => {
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-      console.log("Ctrl+Enter pressed!");
+      onInvokeReq();
     });
     updateDecorations(editor, monaco);
     editor.onDidChangeModelContent(() => {

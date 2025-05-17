@@ -8,6 +8,7 @@ import Collection from "../collections/Collection";
 import Tippy from "@tippyjs/react";
 import EnvVar from "../envars/EnvVar";
 import SettingModal from "../settings/SettingModal";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const SideBar = () => {
   const [newColModal, setnewColModal] = useState(false);
@@ -18,6 +19,8 @@ const SideBar = () => {
   let envs = useStore((x) => x.envs);
   let cols = useStore((x) => x.collections);
   let sideBarType = useStore((x) => x.sideBarType);
+  useHotkeys("ctrl+b", () => useStore.getState().setSideBar("col"), { enableOnFormTags: ["input", "select", "textarea"] });
+  useHotkeys("ctrl+n", () => setnewColModal(true), { enableOnFormTags: ["input", "select", "textarea"] });
   let closeW = "50px";
   let openW = "250px";
 
@@ -113,24 +116,6 @@ const SideBar = () => {
         </div>
       </div>
       {settingModal && <SettingModal settingModal={settingModal} setsettingModal={setsettingModal} />}
-      <ModalLayout open={newColModal} onClose={() => setnewColModal(false)} title="New Collection">
-        <form onSubmit={createNewCollection}>
-          <div className="p-6">
-            <p className="text-txtprim text-sm mb-2">Collection Name</p>
-            <input
-              name="coll_name"
-              className="border border-txtsec text-lit w-full outline-none p-1 px-3 text-lg focus:border-txtprim rounded-sm"
-              required
-              maxLength={100}
-              autoFocus
-            />
-            <div className="w-full flex justify-end items-center mt-6 gap-x-4">
-              <CustomButton name="Create" type="submit" loading={cLoading} clx="px-4 py-1" />
-              <CustomButton name="Close" bg="bg-txtsec" clx="px-4 py-1" onClick={() => setnewColModal(false)} />
-            </div>
-          </div>
-        </form>
-      </ModalLayout>
       <ModalLayout open={newColModal} onClose={() => setnewColModal(false)} title="New Collection">
         <form onSubmit={createNewCollection}>
           <div className="p-6">

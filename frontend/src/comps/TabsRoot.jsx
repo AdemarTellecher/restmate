@@ -6,9 +6,11 @@ import TabPanelRoot from "./TabPanelRoot";
 import { useStore } from "../store/store";
 import { getReqType } from "../utils/helper";
 import EnvSelector from "./envars/EnvSelector";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const TabsRoot = () => {
   const { tabs, deleteTab, createTab, tabInx } = useStore();
+  useHotkeys("ctrl+t", () => createTab(), { enableOnFormTags: ["input", "select", "textarea"] });
   const tabsWrapper = useRef(null);
   const scrolLeftBtn = useRef(null);
   const scrolRightBtn = useRef(null);

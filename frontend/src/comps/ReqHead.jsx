@@ -8,6 +8,7 @@ import ModalLayout from "./misc/ModalLayout";
 import { toast } from "react-toastify";
 import DraftEditor from "./misc/DraftEditor";
 import { EventsEmit } from "../../wailsjs/runtime/runtime";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const ReqHead = ({ tabId, method, url, name, coll_id, envVars }) => {
   const [saveModal, setSaveModal] = useState(false);
@@ -15,6 +16,9 @@ const ReqHead = ({ tabId, method, url, name, coll_id, envVars }) => {
   let saveLoad = useStore((x) => x.saveLoad);
   let invokeLoading = useStore((x) => x.invokeLoading);
   let cols = useStore((x) => x.collections);
+  useHotkeys("ctrl+s", () => updateReqModal(), { enableOnFormTags: ["input", "select", "textarea"] });
+  useHotkeys("ctrl+enter", () => onInvokeReq(), { enableOnFormTags: ["input", "select", "textarea"] });
+  useHotkeys("ctrl+w", () => useStore.getState().deleteTab(tabId), { enableOnFormTags: ["input", "select", "textarea"] });
   const updateReqModal = async () => {
     if (!coll_id || coll_id === "") {
       setSelcol(coll_id);
