@@ -9,8 +9,10 @@ import EnvSelector from "./envars/EnvSelector";
 import { useHotkeys } from "react-hotkeys-hook";
 
 const TabsRoot = () => {
-  const { tabs, deleteTab, createTab, tabInx } = useStore();
+  const { tabs, deleteTab, createTab, tabInx, nextTab, prevTab } = useStore();
   useHotkeys("ctrl+t", () => createTab(), { enableOnFormTags: ["input", "select", "textarea"] });
+  useHotkeys("ctrl+right", () => nextTab(), { enableOnFormTags: ["input", "select", "textarea"] });
+  useHotkeys("ctrl+left", () => prevTab(), { enableOnFormTags: ["input", "select", "textarea"] });
   const tabsWrapper = useRef(null);
   const scrolLeftBtn = useRef(null);
   const scrolRightBtn = useRef(null);
@@ -53,7 +55,7 @@ const TabsRoot = () => {
     });
   };
   return (
-    <Tabs style={{ height: "100%" }} selectedIndex={tabInx} onSelect={(i) => useStore.getState().setTabInx(i)}>
+    <Tabs style={{ height: "100%" }} selectedIndex={tabInx} onSelect={(i) => useStore.getState().setTabInx(i)} disableLeftRightKeys={true}>
       <div className="grid h-full" style={{ gridTemplateRows: "48px minmax(0,100%)", gridTemplateColumns: "100%" }}>
         <div className="w-full h-full flex justify-between items-center bg-sec">
           <div className="flex items-center h-full min-w-0">

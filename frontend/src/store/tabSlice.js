@@ -72,6 +72,20 @@ export const createTabsSlice = (set, get) => ({
   },
   tabInx: 0,
   setTabInx: (i) => set(() => ({ tabInx: i })),
+  nextTab: () => {
+    set((x) => {
+      if (x.tabs.length === 0) return x;
+      const nextIndex = (x.tabInx + 1) % x.tabs.length;
+      return { tabInx: nextIndex };
+    });
+  },
+  prevTab: () => {
+    set((x) => {
+      if (x.tabs.length === 0) return x;
+      const prevIndex = (x.tabInx - 1 + x.tabs.length) % x.tabs.length;
+      return { tabInx: prevIndex };
+    });
+  },
   setReqTabInx: (id, i) => {
     set((x) => {
       const t = x.tabs.find((t) => t.id === id);
@@ -89,9 +103,6 @@ export const createTabsSlice = (set, get) => ({
       const eInx = x.tabs.findIndex((tab) => tab.id === t.id);
       if (eInx !== -1) {
         x.tabInx = eInx;
-        // const updatedTabs = [...x.tabs];
-        // updatedTabs[eInx] = t;
-        // return { tabs: updatedTabs, tabInx: eInx };
       } else {
         return { tabs: [...x.tabs, rsp.data], tabInx: x.tabs.length };
       }
